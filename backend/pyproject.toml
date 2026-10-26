@@ -1,0 +1,44 @@
+[project]
+name = "homemind-backend"
+version = "0.1.0"
+description = "HomeMind smart home multi-agent application"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi==0.162.0",
+  "uvicorn==0.54.0",
+  "pydantic-settings==2.16.1",
+]
+
+[dependency-groups]
+dev = [
+  "httpx==0.28.1",
+  "pytest==9.1.1",
+  "ruff==0.17.2",
+]
+agent-compat = [
+  "langgraph==1.2.17",
+  "langchain==1.4.7",
+  "langgraph-checkpoint-mysql[asyncmy]==3.0.0",
+  "asyncmy==0.2.17",
+]
+
+[tool.uv]
+default-groups = ["dev", "agent-compat"]
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/homemind"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

@@ -1,0 +1,6 @@
+:root { font-family: Inter, "Microsoft YaHei", "PingFang SC", sans-serif; color: #2d4434; background: #f8f8f1; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible { outline: 2px solid #92ad76; outline-offset: 4px; }
+::selection { background: #dbe5c6; }
