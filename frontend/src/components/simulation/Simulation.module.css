@@ -1,0 +1,66 @@
+.banner { margin: 24px 0; }
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 24px 0; padding: 20px 23px; background: #eef2e6; border: 1px solid #dce4d0; border-radius: 13px; }
+.clockLabel { font-size: 11px; color: #758367; }
+.clockValue { display: block; margin-top: 6px; font-size: 25px; color: #294633; letter-spacing: -.7px; }
+.clockValue small { margin-left: 6px; font-size: 12px; }
+.toolbarActions { display: flex; gap: 8px; flex-wrap: wrap; }
+.metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 24px 0; }
+.metric { padding: 17px 20px; background: #fffefa; border: 1px solid #e0e5d7; border-radius: 11px; }
+.metric span { display: block; font-size: 11px; color: #7d8872; }
+.metric strong { display: block; margin-top: 6px; font-size: 25px; font-weight: 500; color: #344d38; }
+.metric small { font-size: 11px; margin-left: 5px; font-weight: 400; }
+.room { margin: 29px 0; }
+.roomHead { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.roomHead > div { min-width: 0; max-width: 100%; }
+.roomHead h2 { margin: 0; font-size: 23px; font-weight: 550; color: #2b4533; overflow-wrap: anywhere; }
+.roomHead p { display: flex; gap: 14px; flex-wrap: wrap; margin: 9px 0 0; font-size: 12px; color: #7c8671; }
+.roomButtons { display: flex; gap: 8px; flex-wrap: wrap; }
+.entityGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.entityCard { min-width: 0; display: flex; flex-direction: column; background: #fffefa; border: 1px solid #e1e5d8; border-radius: 13px; padding: 18px; }
+.entityHead { display: flex; align-items: center; gap: 10px; }
+.entityIcon { display: grid; place-items: center; flex: 0 0 31px; height: 34px; border-radius: 9px; background: #edf2e4; color: #5c7b51; font-size: 19px; }
+.entityIdentity { min-width: 0; flex: 1; }
+.entityIdentity h3 { margin: 0 0 4px; font-size: 13px; font-weight: 550; overflow-wrap: anywhere; color: #304c36; }
+.entityIdentity > span { font-size: 10px; color: #929987; }
+.entityHead :global(.ant-tag) { margin: 0; font-size: 10px; }
+.entityValue { margin-top: 22px; font-size: 21px; min-height: 30px; color: #294634; }
+.entityMeta { display: flex; justify-content: space-between; gap: 6px; margin: 10px 0 19px; font-size: 10px; color: #89947c; }
+.controlForm, .sensorControls { display: grid; gap: 11px; margin-bottom: 16px; }
+.sensorControls { margin-top: auto; }
+.controlHint { font-size: 10px; color: #95a184; line-height: 1.6; }
+.controlRow { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.controlRow > :global(.ant-select), .controlRow > :global(.ant-input-number) { min-width: 0; flex: 1; }
+.controlRow > label { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #7f8b72; min-width: 0; flex: 1; white-space: nowrap; }
+.controlRow :global(.ant-input-number), .positionLabel :global(.ant-input-number) { width: 100%; }
+.controlRow :global(.ant-input-number-group-wrapper) { min-width: 0; flex: 1; }
+.twoButtons { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.positionLabel { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11px; color: #7f8b72; white-space: nowrap; }
+.positionLabel > :global(.ant-input-number) { min-width: 0; flex: 1; }
+.positionLabel > :global(.ant-input-number-group-wrapper) { min-width: 0; flex: 1; }
+.entityActions { display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: auto; padding-top: 12px; border-top: 1px solid #edf0e5; }
+.entityActions :global(.ant-btn) { font-size: 11px; color: #7a886c; }
+.pendingNote { margin: -8px 0 13px; padding: 6px 8px; color: #957c32; background: #f6f1dd; border-radius: 5px; font-size: 11px; }
+.manageHeader { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 29px 0 18px; }
+.manageHeader h2 { margin: 0; font-size: 21px; font-weight: 500; }
+.manageHeader p { color: #819073; font-size: 12px; line-height: 1.8; }
+.manageRoom { background: #fffefa; padding: 22px; border: 1px solid #dfe5d4; border-radius: 13px; margin-bottom: 18px; }
+.manageRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 0; border-bottom: 1px solid #edf0e6; }
+.manageRow:last-child { border: 0; }
+.manageRow strong { font-size: 13px; font-weight: 500; color: #3b543c; overflow-wrap: anywhere; }
+.manageRow small { display: block; font-size: 11px; color: #939d84; margin-top: 4px; }
+.manageRow > div { min-width: 0; }
+.manageActions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; flex-shrink: 0; }
+.eventList { background: #f0f3e9; border: 1px solid #e0e6d7; border-radius: 12px; padding: 18px 22px; margin: 25px 0; }
+.eventList h2 { font-size: 15px; margin: 0 0 13px; font-weight: 500; }
+.eventList p { display: flex; gap: 14px; margin: 10px 0; font-size: 11px; color: #708065; line-height: 1.7; }
+.eventList time { white-space: nowrap; color: #9ba78b; }
+.eventList p > span { min-width: 0; overflow-wrap: anywhere; }
+.faultForm { display: grid; gap: 21px; }
+.faultForm > label { display: grid; gap: 10px; font-size: 13px; color: #4a6149; }
+.faultDescription { font-size: 12px; line-height: 1.9; color: #81916f; background: #f1f5e8; padding: 12px; border-radius: 9px; }
+.qualityRow { display: flex; align-items: center; justify-content: space-between; font-size: 13px; padding-bottom: 14px; border-bottom: 1px solid #edf1e4; }
+.formHint { margin-top: 0; font-size: 12px; line-height: 1.9; color: #8b967e; }
+.empty { padding: 30px; background: #fffefa; border: 1px dashed #dce4ce; border-radius: 12px; text-align: center; }
+.fetchError { margin-top: 25px; }
+@media (max-width: 1200px) { .entityGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .toolbar { padding: 17px; gap: 17px; } .toolbarActions { gap: 7px; } .toolbarActions :global(.ant-btn) { font-size: 12px; } .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } .metric { padding: 15px; } .metric strong { font-size: 23px; } .entityGrid { grid-template-columns: minmax(0, 1fr); } .roomHead { flex-direction: column; } .roomHead p { gap: 10px; font-size: 11px; } .entityCard { padding: 20px; } .manageRoom { padding: 17px; } .manageRow { align-items: flex-start; } .manageActions { gap: 3px; max-width: 140px; } .eventList { padding: 16px; } .entityIdentity h3 { font-size: 14px; } }

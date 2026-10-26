@@ -8,6 +8,7 @@
 .navigation a, .navigation button { display: flex; align-items: center; gap: 12px; min-height: 47px; padding: 12px 14px; border: 0; border-radius: 9px; background: transparent; font: inherit; font-size: 13px; text-decoration: none; text-align: left; }
 .navigation .activeNav { background: #31594a; color: #f1f5e8; }
 .navigation button { color: #9eb2a6; cursor: not-allowed; }
+.navigation button:not(:disabled) { cursor: pointer; color: #cbdccb; }
 .navigation button span:last-child:not(:first-child) { margin-left: auto; font-size: 9px; color: #9eb2a6; }
 .navigation :global(.anticon) { font-size: 17px; }
 .sidebarNote { margin: auto 9px 24px; padding-top: 80px; }
@@ -65,8 +66,12 @@
 .readOnlyLabel { margin-left: auto; color: #7e8c6c; font-size: 9px; white-space: nowrap; }
 .footer { display: flex; justify-content: space-between; gap: 12px; padding-top: 24px; color: #98a08e; font-size: 8px; }
 .footer span:last-child { font-size: 7px; letter-spacing: 1.5px; }
+.healthFooter { max-width: 440px; margin: 30px 0; }
+.mobileTabs { display: none; }
+.selectedTab { color: #eaf1e4 !important; background: #31594a !important; }
 
 @media (min-width: 1600px) { .main { padding-top: 35px; } .hero { padding-top: 57px; } }
 @media (max-width: 1150px) { .shell { grid-template-columns: 195px minmax(0, 1fr); } .sidebar { padding-inline: 17px; } .brand { font-size: 20px; } .main { padding-inline: 28px; } .workspace { grid-template-columns: minmax(250px, .9fr) minmax(0, 1.2fr); gap: 16px; } .connection, .template { padding-inline: 19px; } }
 @media (max-width: 900px) { .shell { grid-template-columns: 1fr; } .sidebar { padding: 18px 25px; flex-direction: row; align-items: center; justify-content: space-between; gap: 14px; } .brandIcon { width: 33px; height: 35px; font-size: 22px; } .brandCaption { font-size: 8px; } .navLabel, .sidebarNote, .sidebarFoot { display: none; } .navigation { display: flex; gap: 4px; } .navigation a, .navigation button { min-height: 36px; padding: 9px; font-size: 11px; gap: 7px; } .navigation button > span:last-child:not(:first-child) { display: none; } .main { padding: 23px 25px; } .hero { padding-top: 33px; } }
 @media (max-width: 620px) { .sidebar { padding: 17px 20px; } .navigation { display: none; } .main { padding: 20px; } .topbar { padding-bottom: 18px; } .hero { padding: 29px 0 25px; } .hero h1 { font-size: 29px; letter-spacing: -1.2px; } .heroText { font-size: 11px; } .mobileBreak { display: block; } .eyebrow { font-size: 8px; letter-spacing: 1.8px; } .summary { margin-bottom: 20px; padding: 18px 0; } .summary > div { padding-inline: 12px; } .summary > div > span { font-size: 10px; } .summary strong { font-size: 27px; } .summary small { padding-left: 5px; font-size: 9px; } .summary p { font-size: 9px; } .workspace { grid-template-columns: minmax(0, 1fr); gap: 18px; } .connection { padding: 22px; } .statusIcon { margin-top: 19px; } .connectionText { min-height: auto; } .template { padding: 21px 18px 0; } .template h2 { font-size: 18px; } .sketch { min-height: 200px; } .nextStep { padding: 17px; gap: 12px; flex-wrap: wrap; } .readOnlyLabel { display: none; } .nextStep p { font-size: 9px; } .footer { line-height: 1.7; } .footer span:last-child { display: none; } }
+@media (max-width: 900px) { .mobileTabs { display: flex; gap: 8px; margin-bottom: 15px; } .mobileTabs button { padding: 10px 16px; border: 1px solid #dce4cf; border-radius: 8px; background: #eff3e5; color: #58734b; font: inherit; font-size: 12px; cursor: pointer; } }

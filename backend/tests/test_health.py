@@ -22,8 +22,8 @@ def test_health_reports_api_liveness_without_external_services() -> None:
     assert response.json() == {
         "status": "ok",
         "service": "homemind-api",
-        "version": "0.1.0",
-        "stage": "M1",
+        "version": "0.2.0",
+        "stage": "M2",
     }
 
 

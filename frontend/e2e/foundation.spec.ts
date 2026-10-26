@@ -8,18 +8,19 @@ test('网页通过真实代理确认 HomeMind API 在线', async ({ page, reques
   const response = await request.get('/api/health');
   expect(response.status()).toBe(200);
   expect(await response.json()).toEqual({
-    status: 'ok', service: 'homemind-api', version: '0.1.0', stage: 'M1',
+    status: 'ok', service: 'homemind-api', version: '0.2.0', stage: 'M2',
   });
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
   await expect(page.getByText('后端已连接', { exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('让家，按你的节奏运转。');
-  await expect(page.getByText('模板预览', { exact: true })).toBeVisible();
+  await expect(page.getByTestId('entity-count')).toHaveText('12个');
   await expect(page.getByRole('button', { name: /重新检查/ })).toBeEnabled();
   expect(errors).toEqual([]);
   await mkdir(outputDirectory, { recursive: true });
-  await page.screenshot({ path: path.join(outputDirectory, 'm1-desktop.png'), fullPage: true });
+  await page.screenshot({ path: path.join(outputDirectory, 'm2-desktop.png'), fullPage: true });
+  await page.screenshot({ path: path.join(outputDirectory, 'm2-desktop-overview.png') });
 });
 
 test('浏览器离线后显示失败，恢复网络并显式重试可连接', async ({ page, context }) => {
@@ -54,5 +55,7 @@ test('390px 手机视口可操作且没有横向溢出', async ({ page }) => {
   }));
   expect(geometry.page).toBeLessThanOrEqual(geometry.viewport);
   await mkdir(outputDirectory, { recursive: true });
-  await page.screenshot({ path: path.join(outputDirectory, 'm1-mobile.png'), fullPage: true });
+  await page.screenshot({ path: path.join(outputDirectory, 'm2-mobile.png'), fullPage: true });
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ path: path.join(outputDirectory, 'm2-mobile-overview.png') });
 });
