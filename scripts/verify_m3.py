@@ -115,7 +115,7 @@ def server(env, phase):
                         "Owned API exited before readiness; inspect its project output log."
                     )
                 try:
-                    if call(probe, "/health").get("stage") == "M3":
+                    if call(probe, "/health").get("stage") in {"M3", "M4"}:
                         break
                 except (OSError, RuntimeError):
                     time.sleep(0.2)

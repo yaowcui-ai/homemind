@@ -42,6 +42,7 @@ def test_environment() -> dict[str, str]:
             "HOMEMIND_DATABASE_INSTANCE_ID": instance,
             "HOMEMIND_ENVIRONMENT": "test",
             "HOMEMIND_SIMULATION_DEBUG_ENABLED": "true",
+            "HOMEMIND_MODEL_ENABLED": "false",
             "PYTHONUTF8": "1",
         }
     )

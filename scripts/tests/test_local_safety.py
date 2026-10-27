@@ -52,3 +52,13 @@ def test_test_database_never_falls_back_to_application_database(tmp_path, monkey
     monkeypatch.setenv("HOMEMIND_DATABASE_INSTANCE_ID", "synthetic-installation")
     with pytest.raises(RuntimeError):
         local_config.test_environment()
+
+
+def test_automatic_test_environment_never_enables_a_real_model(tmp_path, monkeypatch):
+    monkeypatch.setattr(local_config, "MYSQL_ENV", tmp_path / "absent.env")
+    monkeypatch.setenv(
+        "HOMEMIND_TEST_DATABASE_URL", "mysql+asyncmy://synthetic@127.0.0.1/homemind_test"
+    )
+    monkeypatch.setenv("HOMEMIND_DATABASE_INSTANCE_ID", "synthetic-installation")
+    monkeypatch.setenv("HOMEMIND_MODEL_ENABLED", "true")
+    assert local_config.test_environment()["HOMEMIND_MODEL_ENABLED"] == "false"

@@ -2,7 +2,7 @@
 
 日期：2026-10-27（Asia/Shanghai）。
 
-状态：阶段细化设计，待用户审阅；尚未开始 M4 实现与真实模型验收。
+状态：早期 M4 技术输入，随后已按用户授权的[产品 B 补充设计](2026-10-27-product-b-design.md)实现。以下保留原方案；最终新增拒绝/确认/任务推进/恢复契约以 B 补充和代码为准，实际完成与验证见[B记录](../../verification/product-b-single-agent.md)。不将原计划自动视为全部已验证能力。
 
 依据：[已确认总体设计](2026-10-26-homemind-system-design.md)、[M4 路线](../../homemind-development-roadmap.md)、[M3 接续](../../../CURRENT_CONTEXT.md)。本阶段由用户“现在继续下一步”发起，不推进 M5。
 

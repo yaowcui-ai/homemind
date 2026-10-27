@@ -77,3 +77,6 @@ jobs:
       - name: Browser checks
         working-directory: frontend
         run: npm run test:e2e
+      - name: Controlled agent browser checks (no provider calls)
+        working-directory: frontend
+        run: npm run test:e2e:agent
