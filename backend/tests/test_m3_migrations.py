@@ -49,7 +49,8 @@ def test_latest_alembic_head_is_binary_key_upgrade_of_existing_installations():
     config = Config()
     config.set_main_option("script_location", str(Path(homemind.__file__).with_name("migrations")))
     script = ScriptDirectory.from_config(config)
-    assert script.get_current_head() == REVISION == "0002_m3"
+    assert script.get_current_head() == REVISION == "0003_m4"
+    assert script.get_revision("0003_m4").down_revision == "0002_m3"
     assert script.get_revision("0002_m3").down_revision == "0001_m3"
 
 

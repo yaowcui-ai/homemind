@@ -23,6 +23,8 @@ def request_hash(request):
 
 
 def replay(task, body):
+    if task.mode != "rule":
+        raise SimulationError(409, "idempotency_conflict", "此幂等键已用于不同任务模式")
     normalized = normalize(body, task.preferences_snapshot)
     if request_hash(normalized) != task.request_hash:
         raise SimulationError(409, "idempotency_conflict", "此幂等键已用于不同请求，请更换幂等键")
@@ -31,7 +33,16 @@ def replay(task, body):
 def summary(task):
     return {
         key: getattr(task, key)
-        for key in ("id", "scenario", "status", "created_at", "updated_at", "world_id", "message")
+        for key in (
+            "id",
+            "mode",
+            "scenario",
+            "status",
+            "created_at",
+            "updated_at",
+            "world_id",
+            "message",
+        )
     }
 
 
@@ -50,8 +61,15 @@ async def detail(session, task):
                 "preferences_snapshot",
                 "initial_snapshot",
                 "final_snapshot",
-                "verification",
+                "plan",
+                "agent_run",
             )
+        },
+        "verification": task.verification
+        or {
+            "due_at_minutes": task.plan.get("due_at_minutes"),
+            "checked_at_minutes": task.final_snapshot["simulated_minutes"],
+            "conditions": [],
         },
         "actions": [
             {
@@ -118,6 +136,19 @@ def tasks_router():
                 preferences = preference_view(await session.get(Preference, home_id))
                 normalized = normalize(body, preferences)
                 plan = plan_rules(engine, normalized, preferences)
+                if not request.app.state.settings.simulation_debug_enabled:
+                    rooms = {room["id"]: room for room in engine.snapshot()["rooms"]}
+                    needs_clock = plan["due_at_minutes"] is not None or any(
+                        rooms[goal["room_id"]]["temperature_c"] is None
+                        or rooms[goal["room_id"]]["temperature_c"] > goal["target"]
+                        for goal in plan["temperatures"]
+                    )
+                    if needs_clock:
+                        raise SimulationError(
+                            422,
+                            "simulation_debug_required",
+                            "此温度目标需要仿真时间推进；请开启演示调试后重新提交",
+                        )
                 now = int(time.time())
                 initial = engine.snapshot()
                 task = Task(
@@ -149,14 +180,14 @@ def tasks_router():
             database.busy.discard(home_id)
 
     @router.get("")
-    async def list_tasks(request: Request):
+    async def list_tasks(request: Request, submission_key: str | None = None):
         home_id = require_home(request)
         async with request.app.state.database.sessions() as session:
+            query = select(Task).where(Task.home_id == home_id)
+            if submission_key is not None:
+                query = query.where(Task.idempotency_key == submission_key)
             tasks = await session.scalars(
-                select(Task)
-                .where(Task.home_id == home_id)
-                .order_by(Task.created_at.desc(), Task.id.desc())
-                .limit(50)
+                query.order_by(Task.created_at.desc(), Task.id.desc()).limit(50)
             )
             return [summary(task) for task in tasks]
 
@@ -182,10 +213,61 @@ def tasks_router():
                     .order_by(Action.sequence)
                 )
             )
+            if (task.mode == "single_agent" and not actions) or task.status in {
+                "planning",
+                "waiting_input",
+                "waiting_confirmation",
+            }:
+                return await detail(session, task)
             task.status, task.message, task.verification = verify(engine, task, actions)
             task.final_snapshot = engine.snapshot()
             task.updated_at = int(time.time())
             await session.flush()
             return await detail(session, task)
+
+    @router.post("/{task_id}/advance")
+    async def advance_task(task_id: str, body: EmptyBody, request: Request):
+        home_id = require_home(request)
+        if not request.app.state.settings.simulation_debug_enabled:
+            raise SimulationError(403, "simulation_debug_disabled", "任务时间推进仅限仿真调试模式")
+        database = request.app.state.database
+        if home_id in database.busy:
+            raise SimulationError(409, "home_busy", "当前家庭正在处理任务")
+        database.busy.add(home_id)
+        try:
+            async with database.home(home_id, task_id=task_id) as (session, _, engine):
+                task = await task_by_id(session, home_id, task_id)
+                actions = list(
+                    await session.scalars(
+                        select(Action)
+                        .where(Action.home_id == home_id, Action.task_id == task_id)
+                        .order_by(Action.sequence)
+                    )
+                )
+                if task.world_id != engine._world_id:
+                    raise SimulationError(409, "world_changed", "环境已重置，旧任务不可推进")
+                if not actions or task.status not in {"waiting_verification", "partial"}:
+                    raise SimulationError(
+                        409, "task_not_continuable", "此任务没有已执行的可继续目标"
+                    )
+                due = task.plan["due_at_minutes"]
+                if due is not None:
+                    if due <= engine._minutes:
+                        raise SimulationError(
+                            409, "deadline_passed", "已到达或错过目标时刻，不可补造历史证据"
+                        )
+                    minutes = due - engine._minutes
+                elif task.scenario == "sleep" and task.plan["temperatures"]:
+                    minutes = 10
+                else:
+                    raise SimulationError(409, "task_not_continuable", "此任务没有待推进的温度目标")
+                engine.advance(minutes)
+                task.status, task.message, task.verification = verify(engine, task, actions)
+                task.final_snapshot = engine.snapshot()
+                task.updated_at = int(time.time())
+                await session.flush()
+                return await detail(session, task)
+        finally:
+            database.busy.discard(home_id)
 
     return router

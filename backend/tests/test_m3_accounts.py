@@ -10,7 +10,7 @@ def test_missing_database_is_unavailable_without_memory_fallback():
     with TestClient(
         create_app(Settings(_env_file=None, database_url=None, database_instance_id=None))
     ) as client:
-        assert client.get("/health").json()["stage"] == "M3"
+        assert client.get("/health").json()["stage"] == "M4"
         response = client.get("/auth/session")
         assert response.status_code == 503
         assert response.json()["detail"]["code"] == "database_unavailable"

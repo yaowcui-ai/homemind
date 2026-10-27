@@ -100,6 +100,8 @@ class Task(Base):
     request_hash: Mapped[str] = mapped_column(String(64))
     request: Mapped[dict[str, Any]] = mapped_column(JSON)
     scenario: Mapped[str] = mapped_column(String(24))
+    mode: Mapped[str] = mapped_column(String(24), default="rule", server_default="rule")
+    agent_run: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
     status: Mapped[str] = mapped_column(String(32))
     world_id: Mapped[str] = mapped_column(String(64))
     initial_snapshot: Mapped[dict[str, Any]] = mapped_column(JSON)

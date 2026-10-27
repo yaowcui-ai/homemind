@@ -10,6 +10,8 @@ from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
 
 from homemind import __version__
+from homemind.agent.model import DeepSeekModel
+from homemind.agent.routes import agent_router
 from homemind.auth import AttemptLimiter, auth_router, authenticate, protect_write, require_home
 from homemind.config import Settings
 from homemind.persistence.database import Database
@@ -23,7 +25,7 @@ class HealthResponse(BaseModel):
     status: Literal["ok"] = "ok"
     service: Literal["homemind-api"] = "homemind-api"
     version: str = __version__
-    stage: Literal["M3"] = "M3"
+    stage: Literal["M4"] = "M4"
 
 
 def error_response(error):
@@ -55,6 +57,11 @@ def create_app(settings: Settings | None = None, *, database: Database | None = 
     app = FastAPI(title="HomeMind", version=__version__, lifespan=lifespan)
     app.state.settings = settings if settings is not None else Settings()
     config = app.state.settings
+    app.state.agent_model = (
+        DeepSeekModel(config)
+        if config.model_enabled and config.model_api_key and config.model_api_key.get_secret_value()
+        else None
+    )
     app.state.database = database
     if database is None and config.database_url and config.database_instance_id:
         app.state.database = Database(
@@ -108,5 +115,6 @@ def create_app(settings: Settings | None = None, *, database: Database | None = 
     app.include_router(auth_router())
     app.include_router(preferences_router())
     app.include_router(simulation_router())
+    app.include_router(agent_router())
     app.include_router(tasks_router())
     return app

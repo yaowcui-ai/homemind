@@ -3,12 +3,29 @@
 from contextlib import contextmanager
 from uuid import uuid4
 
+import httpx
 import pytest
+import requests
 from fastapi.testclient import TestClient
 
 from homemind.app import create_app
 from homemind.config import Settings
 from homemind.persistence.database import Database
+
+
+@pytest.fixture(autouse=True)
+def no_external_http(monkeypatch):
+    """Use ASGI/mock transports and gated MySQL; never use external HTTP in tests."""
+
+    def blocked(*_args, **_kwargs):
+        raise AssertionError("默认测试禁止外部HTTP；请使用内存ASGI或MockTransport")
+
+    async def blocked_async(*_args, **_kwargs):
+        blocked()
+
+    monkeypatch.setattr(httpx.HTTPTransport, "handle_request", blocked)
+    monkeypatch.setattr(httpx.AsyncHTTPTransport, "handle_async_request", blocked_async)
+    monkeypatch.setattr(requests.Session, "request", blocked)
 
 
 @contextmanager

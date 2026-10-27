@@ -258,3 +258,75 @@ def test_mysql_idempotency_keys_preserve_case_for_same_and_different_content(mys
         )
         assert conflict.status_code == 409
         assert len(client.get("/tasks").json()) == 4
+
+
+def test_mysql_agent_clarification_reopens_and_executes_once(mysql_installation):
+    from test_m4_agent import ScriptedModel, plan
+
+    database, settings, app, names, _ = mysql_installation
+    with TestClient(app) as first:
+        register(first, names[0])
+        snapshot = first.get("/simulation").json()
+        request = {"text": "请选择后打开指定灯", "expected_world_id": snapshot["world_id"]}
+        app.state.agent_model = ScriptedModel(
+            {
+                "kind": "clarify",
+                "question": "哪个房间",
+                "options": [
+                    {"id": r["id"], "label": r["name"], "kind": "room"} for r in snapshot["rooms"]
+                ],
+            }
+        )
+        task_response = first.post(
+            "/tasks/agent", json=request, headers={"Idempotency-Key": "mysql-agent-create-123"}
+        )
+        assert task_response.status_code == 200, task_response.text
+        waiting = task_response.json()
+        assert waiting["status"] == "waiting_input" and waiting["mode"] == "single_agent"
+        cookie = first.cookies.get("homemind_session")
+        csrf = first.headers["X-CSRF-Token"]
+    reopened = Database(
+        str(database.engine.url.render_as_string(hide_password=False)),
+        instance_id=database.instance_id,
+    )
+    second_app = create_app(settings, database=reopened)
+    model = ScriptedModel(plan(snapshot))
+    second_app.state.agent_model = model
+    with TestClient(second_app) as second:
+        second.cookies.set("homemind_session", cookie)
+        second.headers.update({"Origin": "http://testserver", "X-CSRF-Token": csrf})
+        url = f"/tasks/{waiting['id']}"
+        assert second.get(url).json() == waiting
+        reply = {"text": "第一个房间", "expected_turn": 0}
+        headers = {"Idempotency-Key": "mysql-agent-reply-123"}
+        response = second.post(url + "/reply", json=reply, headers=headers)
+        assert response.status_code == 200, response.text
+        done = response.json()
+        assert done["id"] == waiting["id"] and done["status"] == "succeeded"
+        assert done["agent_run"]["model_calls"] == 2 and done["agent_run"]["usage"] is None
+        assert (
+            done["agent_run"]["turn"] == 1
+            and "mysql-agent-reply-123" in done["agent_run"]["operations"]
+        )
+        assert len(done["actions"]) == 1 and done["actions"][0]["status"] == "verified"
+        assert second.post(url + "/reply", json=reply, headers=headers).json() == done
+        assert (
+            second.post(
+                "/tasks/agent", json=request, headers={"Idempotency-Key": "mysql-agent-create-123"}
+            ).json()
+            == done
+        )
+        assert len(model.calls) == 1
+        assert second.get(url).json() == done
+
+        async def inspect():
+            async with reopened.sessions() as session:
+                stored = await session.get(Task, done["id"])
+                actions = list(
+                    await session.scalars(select(Action).where(Action.task_id == done["id"]))
+                )
+                assert stored.mode == "single_agent" and stored.agent_run == done["agent_run"]
+                assert len(actions) == 1
+
+        asyncio.run(inspect())
+    asyncio.run(reopened.close())

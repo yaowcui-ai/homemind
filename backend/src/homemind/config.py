@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     database_url: SecretStr | None = None
     database_instance_id: str | None = None
     simulation_debug_enabled: bool = False
+    model_enabled: bool = False
+    model_provider: Literal["deepseek"] = "deepseek"
+    model_name: str = Field(default="deepseek-flash", min_length=1, max_length=120)
+    model_base_url: str = "https://api.deepseek.com"
+    model_api_key: SecretStr | None = None
     allowed_origins: list[str] = [
         "http://127.0.0.1:5174",
         "http://localhost:5174",
@@ -29,6 +34,13 @@ class Settings(BaseSettings):
         if value is not None and not value.get_secret_value().startswith("mysql+asyncmy://"):
             raise ValueError("数据库必须使用 mysql+asyncmy")
         return value
+
+    @field_validator("model_base_url")
+    @classmethod
+    def official_provider(cls, value):
+        if value.rstrip("/") != "https://api.deepseek.com":
+            raise ValueError("本阶段仅支持 DeepSeek 官方 API 地址")
+        return value.rstrip("/")
 
     model_config = SettingsConfigDict(
         env_prefix="HOMEMIND_",
