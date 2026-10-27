@@ -16,6 +16,8 @@ LangGraph 为主、LangChain 为辅的 Agent 编排从 M4 开始；现在的任�
 
 后续开发先读 [接续记录](CURRENT_CONTEXT.md) 和 [阶段路线](docs/homemind-development-roadmap.md)。接口和状态语义见 [M3 实施设计](docs/superpowers/specs/2026-10-27-m3-accounts-persistence-design.md)。
 
+前端改版进行中：[Figma 浅色控制台初稿](https://www.figma.com/design/Bo7Jqfnh4NNRQiMwNvXc2O)。已生成桌面/手机可编辑页面，尚未同步当前 React；Figma 工具额度耗尽前发现的排版问题及检查范围见 [设计记录](docs/verification/figma-redesign.md)。
+
 ## 环境要求
 
 - Python 3.12，由 uv 按 `backend/.python-version` 创建；本次使用 3.12.14。
