@@ -44,11 +44,11 @@
 
 ## 3. 模型与配置
 
-供应商和模型由用户指定，不读取其他项目的密钥或隐式继承其他项目的供应商设置。当前尚未收到本项目真实模型配置。
+用户已选择 **DeepSeek 官方 API**。默认模型采用 `deepseek-flash`，API 地址 `https://api.deepseek.com`，M4 使用非思考模式（`thinking.type=disabled`）进行工具调用，降低编排复杂度。2026-10-27 核对官方文档：该模型当前由 DeepSeek-V4.1-Flash-1017 提供，支持工具调用与 JSON 输出。模型别名可能随供应商升级映射到新版本，验证记录应保存请求模型名及响应返回的实际模型标识（如有）。当前尚未配置或调用本项目真实密钥；不读取其他项目的密钥或隐式继承其他项目的供应商设置。
 
 后端增加本项目配置：`HOMEMIND_MODEL_ENABLED`、`HOMEMIND_MODEL_PROVIDER`、`HOMEMIND_MODEL_NAME`、`HOMEMIND_MODEL_BASE_URL`、`HOMEMIND_MODEL_API_KEY`。密钥使用 `SecretStr`，只写入忽略的 `backend/.env`；示例文件只写字段说明与占位符。默认不启用模型。
 
-先支持用户选择的一个提供工具调用能力的聊天模型，不扩展模型市场或浏览器端密钥设置。供应商 SDK/适配包在确定供应商后核对版本并锁定。模型名、API 地址与供应商能力以届时官方文档和实际最小调用为准，不把其他模型的兼容性推定为当前模型的兼容性。
+先支持 DeepSeek，不扩展模型市场或浏览器端密钥设置。优先核对 `langchain-deepseek` 对所选模型及非思考参数的实际兼容性，在实现时锁定适配包版本；不能只按旧版集成文档中的旧模型示例判断。使用稳定 Chat Completions 接口及客户端 Pydantic 严格解析，不依赖 `/beta` 的服务端 strict 模式；JSON 输出支持不等于自动满足业务契约。供应商不保证输出通过本项目契约，解析失败仍须停止。模型名、API 地址与能力以官方文档和实际最小调用为准。
 
 模型未配置时，网页显示“自然语言任务尚未配置模型”，规则任务与家庭控制继续可用；不自动用规则或测试替身冒充模型结果。
 
@@ -162,4 +162,7 @@ M3 的规则规划与单 Agent 规划最终产生同一执行计划格式，共�
 
 - [LangGraph workflows and agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents)：显式图、模型工具调用和结构化输出。
 - [LangChain tools](https://docs.langchain.com/oss/python/langchain/tools)：工具输入契约与受限上下文。
-- [LangChain DeepSeek 集成](https://docs.langchain.com/oss/python/integrations/chat/deepseek)：候选供应商的适配组件说明；最终模型能力需按所选供应商官方资料和实际最小请求核对。
+- [DeepSeek 官方 API 入口](https://api-docs.deepseek.com/)：当前 API 地址和模型名。
+- [DeepSeek 模型说明](https://api-docs.deepseek.com/quick_start/pricing/)：模型版本映射和能力。
+- [DeepSeek 工具调用](https://api-docs.deepseek.com/guides/tool_calls/)：非思考模式及 strict Beta 的边界。
+- [LangChain DeepSeek 集成](https://docs.langchain.com/oss/python/integrations/chat/deepseek)：适配组件说明；最终模型能力以供应商官方资料和实际最小请求为准。
