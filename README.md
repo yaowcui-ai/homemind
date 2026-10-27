@@ -1,12 +1,14 @@
 # HomeMind
 
-智能家居多 Agent 协同调度网页系统，当前实现 **M3：账号隔离、MySQL 持久化与规则基线**。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家三个明确规则场景。
+目标定位：**将生活意图转为可解释、可核验联动任务的智能家居 AI 助手（仿真验证版）**。当前可运行实现仍是 **M3：账号隔离、MySQL 持久化与规则基线**。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家三个明确规则场景。
 
 LangGraph 为主、LangChain 为辅的 Agent 编排从 M4 开始；现在的任务执行使用固定规则，没有模型调用或真实硬件。
 
+后续按用户确认的产品阶段 A—E 推进，优先形成完整任务体验与真实效果证据，再验证按需多 Agent 的收益。阶段 A 产品定义材料：[PRD](docs/product/prd.md)、[需求证据与验证计划](docs/product/validation-plan.md)、[产品决策与迭代](docs/product/decision-iteration-log.md)。材料中的规划与假设不代表已实现或已验证。
+
 ## 项目边界与技术栈
 
-本目录是独立 Git 仓库，当前分支 `codex/m3-accounts-persistence`。父工作区通过本地 `.git/info/exclude` 忽略本目录，旧项目不纳入本仓库。
+本目录是独立 Git 仓库，当前产品定义分支 `codex/product-definition`。父工作区通过本地 `.git/info/exclude` 忽略本目录，旧项目不纳入本仓库。
 
 - 前端：React、TypeScript、Vite、Ant Design、TanStack Query。
 - API：Python 3.12、FastAPI、Pydantic Settings、Uvicorn。
@@ -196,4 +198,4 @@ npm.cmd run test:e2e
 
 ## 下一阶段
 
-M4 接入 LangGraph 单 Agent 自然语言闭环，继续共用当前约束与执行边界。本阶段没有真实模型、Agent、SSE、后台时钟、重规划/取消或检查点恢复，也没有真实设备和公网部署；按阶段交付，等待用户启动下一步。
+下一步是产品阶段 B：以新 PRD 对齐 M4 技术设计，接入 LangGraph 单 Agent 自然语言闭环，继续共用当前约束与执行边界，并完善任务时间引导和定位。当前没有真实模型、Agent、SSE、后台时钟、重规划/取消或检查点恢复，也没有真实设备和公网部署；A 阶段材料交付后等待用户启动 B。
