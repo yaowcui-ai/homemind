@@ -92,6 +92,12 @@ def validate_plan(engine, output, request, *, debug):
         parameters = engine._validate_control(
             entity, ControlRequest(action=intent["action"], parameters=intent["parameters"])
         )
+        if (
+            entity.type == EntityType.LIGHT
+            and parameters.get("power") is True
+            and parameters.get("brightness_pct") == 0
+        ):
+            fail("contradictory_parameters", "开灯不能同时指定零亮度，未执行任何动作")
         if scenario == "away" and parameters != {
             EntityType.LIGHT: {"power": False},
             EntityType.CLIMATE: {"mode": "off"},

@@ -927,3 +927,44 @@ def test_unexecuted_verification_has_stable_shape_and_no_fake_failure_time(clien
         for record in task["agent_run"]["records"]
         if record["stage"] == "failed"
     )
+
+
+def test_contradictory_light_plan_blocks_all_actions_before_first_write(client):
+    snapshot = home(client)
+    room_id = snapshot["rooms"][0]["id"]
+    response = client.post(
+        "/simulation/entities", json={"room_id": room_id, "name": "参数矛盾测试灯", "type": "light"}
+    )
+    assert response.status_code == 200, response.text
+    before = home(client)
+    proposed = plan(before)
+    assert len(proposed["actions"]) == 2
+    proposed["actions"][1]["parameters"] = {"power": True, "brightness_pct": 0}
+    task = submit(client, ScriptedModel(proposed), key="contradictory-light-123").json()
+    assert task["status"] == "failed"
+    assert task["agent_run"]["failure_code"] == "contradictory_parameters"
+    assert task["actions"] == []
+    assert home(client) == before
+
+
+@pytest.mark.parametrize("brightness,power", [(0, False), (70, True)])
+def test_agent_brightness_only_preserves_device_power_semantics(client, brightness, power):
+    before = home(client)
+    proposed = plan(before)
+    light_id = proposed["actions"][0]["entity_id"]
+    if brightness == 0:
+        response = client.post(
+            "/simulation/controls/" + light_id,
+            json={"action": "set_light", "parameters": {"power": True}},
+        )
+        assert response.status_code == 200
+    before = home(client)
+    proposed = plan(before)
+    proposed["actions"][0]["parameters"] = {"brightness_pct": brightness}
+    task = submit(client, ScriptedModel(proposed), key="brightness-only-" + str(brightness)).json()
+    assert task["status"] == "succeeded"
+    assert task["actions"][0]["status"] == "verified"
+    light = next(
+        entity for entity in task["final_snapshot"]["entities"] if entity["id"] == light_id
+    )
+    assert light["state"]["brightness_pct"] == brightness and light["state"]["power"] is power
