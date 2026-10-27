@@ -4,7 +4,7 @@
 
 ## 当前授权与进度
 
-用户按阶段授权；最新“继续下一步。”授权 M3。**M3 已完成，停在 M4 前**，等待用户发起下一阶段。助手负责阶段内实现、必要检查和修复，不自动推进全部项目。
+用户按阶段授权；最新“现在继续下一步”授权 M4。**M3 已完成，M4 细化设计已写，待用户审阅后实现**。助手负责阶段内实现、必要检查和修复，不自动推进 M5。
 
 本目录为独立 Git 仓库，分支 `codex/m3-accounts-persistence`，基线 M2 提交 `8ad99fd`。父仓库通过 `.git/info/exclude` 忽略本目录，旧项目未提交改动不纳入提交。
 
@@ -40,6 +40,10 @@
 
 ## 下一步
 
-等待用户发起 **M4：LangGraph 单 Agent 自然语言闭环**。当前没有模型调用、Agent、SSE、后台时钟、取消/重规划、图检查点恢复或真实硬件；这些依阶段接入，不用纯仿真事务冒充外部设备 exactly-once。
+用户已发起 **M4：LangGraph 单 Agent 自然语言闭环**。[M4 细化设计](docs/superpowers/specs/2026-10-27-m4-single-agent-design.md)已写并自查，尚未修改业务代码或运行真实模型。按 brainstorming 技能的书面设计审阅要求，等待用户确认后编写实施计划并执行；不将已授权 M4 误记成尚未授权。
+
+已异步询问本项目模型供应商/模型名/API 地址，目前未收到答复，不读取旧项目密钥。缺少真实模型配置不妨碍后续代码与离线测试，但真实接入必须单独实际验证。上一轮已修复前端安装目录不完整造成的 Vite 命令缺失及原生依赖错误；README 已补首次/日常启动与排错步骤。
+
+当前仍没有模型调用、Agent、SSE、后台时钟、取消/重规划、图检查点恢复或真实硬件；这些依阶段接入，不用纯仿真事务冒充外部设备 exactly-once。
 
 入口：[路线](docs/homemind-development-roadmap.md)、[M3 设计](docs/superpowers/specs/2026-10-27-m3-accounts-persistence-design.md)、[计划](docs/superpowers/plans/2026-10-27-m3-accounts-persistence.md)、[验证记录](docs/verification/m3-accounts-persistence.md)。

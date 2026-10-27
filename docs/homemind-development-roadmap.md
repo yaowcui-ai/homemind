@@ -21,7 +21,7 @@
 - [ ] M10：部署与交付。
 - [ ] M11：可选真实设备扩展，不属于 v1 完成要求。
 
-当前状态：M3 账号隔离、MySQL 持久化与规则基线已完成，停在 M4 前。实际启动和演示见 [项目说明](../README.md)，接续与检查见 [当前记录](../CURRENT_CONTEXT.md)、[M3 验证](verification/m3-accounts-persistence.md)。当前已有多账号独立家庭和三个规则场景，没有模型/Agent、SSE 或真实硬件；后续逐阶段细化。
+当前状态：M3 账号隔离、MySQL 持久化与规则基线已完成；用户已发起 M4，[M4 细化设计](superpowers/specs/2026-10-27-m4-single-agent-design.md)待审阅，尚未实现。实际启动和演示见 [项目说明](../README.md)，接续与检查见 [当前记录](../CURRENT_CONTEXT.md)、[M3 验证](verification/m3-accounts-persistence.md)。当前已有多账号独立家庭和三个规则场景，没有模型/Agent、SSE 或真实硬件；后续逐阶段细化。
 
 ## 如何让助手逐步开发
 

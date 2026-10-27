@@ -26,27 +26,44 @@ LangGraph 为主、LangChain 为辅的 Agent 编排从 M4 开始；现在的任�
 
 ## Windows 启动
 
-首次先打开 Docker Desktop，等待引擎就绪。终端一准备本项目数据库并启动 API：
+按“Docker → 数据库 → API → 网页”的顺序启动。先打开 Docker Desktop，等待 Linux 引擎就绪；前后端使用两个独立 PowerShell 终端，运行期间保持打开。
+
+### 首次准备或依赖变更后
+
+安装锁文件指定的后端与前端依赖，等每条命令成功结束后再继续：
 
 ```powershell
 Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind'
 python -m uv sync --project backend --frozen
+Set-Location frontend
+npm.cmd ci --include=dev --include=optional --bin-links=true
+```
+
+Vite 属于开发依赖，必须安装；Windows 使用 `npm.cmd`。不要在安装尚未完成时同时启动网页。正常日常启动无需重复安装依赖。
+
+### 每次打开项目
+
+终端一：在项目根目录检查/启动数据库、完成迁移，再启动 API：
+
+```powershell
+Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind'
 python scripts/setup_mysql.py
 Set-Location backend
 python -m uv run --frozen python -m homemind
 ```
 
-终端二启动网页：
+数据库准备成功会显示“应用库与独立测试库迁移完成。”；随后 API 显示 `Uvicorn running on http://127.0.0.1:8100`。如果数据库准备失败，先处理终端报错，再启动 API。
+
+终端二：启动网页：
 
 ```powershell
 Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind\frontend'
-npm.cmd ci
 npm.cmd run dev
 ```
 
-打开 [网页](http://127.0.0.1:5174/)。首次显示登录/注册；用户名使用 3—32 位字母、数字、下划线，密码 12—128 字符。注册创建一次独立家庭，之后登录不会恢复已删除设备。
+看到 Vite 输出本地地址后，打开 [网页](http://127.0.0.1:5174/)。首次显示登录/注册；用户名使用 3—32 位字母、数字、下划线，密码 12—128 字符。注册创建一次独立家庭，之后登录不会恢复已删除设备。
 
-依赖已安装后，日常可先在项目根目录运行 `python scripts/setup_mysql.py` 确认数据库启动与迁移，再分别运行两个启动命令。该脚本保留匹配的容器和卷，不重建已有数据。网页/API 停止时在自己的终端按 `Ctrl+C`。
+数据库准备脚本保留匹配的容器和卷，不重建已有数据。网页/API 停止时在各自终端按 `Ctrl+C`。
 
 数据库只暴露 `127.0.0.1:13306`，不使用旧项目的 3306。需要停止本项目数据库时，在项目根目录执行：
 
@@ -55,6 +72,34 @@ docker compose --project-name homemind --env-file .local/mysql.env --file deploy
 ```
 
 这会保留卷。日常操作不需要删除卷或清空数据库。
+
+### 启动常见问题
+
+**`'vite' 不是内部或外部命令，也不是可运行的程序或批处理文件`**
+
+先确认终端位于本项目 `frontend` 目录。该错误表示 npm 找不到本地 Vite 命令，常见于未安装开发依赖或安装目录不完整。2026-10-27 本机实际排查发现：Vite 包存在，但整个 `node_modules/.bin` 缺失；恢复命令入口后又发现原生组件加载失败与构建依赖错误，最终按锁文件完整重装解决。
+
+先在本项目网页终端按 `Ctrl+C` 停止开发服务，再执行以下命令；每条成功后再执行下一条：
+
+```powershell
+Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind\frontend'
+npm.cmd ci --include=dev --include=optional --bin-links=true
+npm.cmd run dev -- --help
+npm.cmd run build
+npm.cmd run dev
+```
+
+`npm ci` 会重建 `node_modules` 并沿用 `package-lock.json` 的版本。无需全局安装 Vite、删除锁文件或修改源码。本次修复已实际验证 Vite 命令加载和 TypeScript/Vite 构建通过。若仍失败，保留完整安装报错，不只截取最后一行。
+
+**`npm warn deprecated whatwg-encoding@3.1.1`**
+
+这是间接依赖的弃用提示，本次安装仍成功完成，不是 Vite 命令缺失的原因。以安装命令是否成功结束及后续构建结果为准。
+
+**`GET /auth/session` 返回 503，页面显示“数据库未就绪”**
+
+这表示账号接口尚不能使用数据库，`/health` 成功不能代替数据库检查。确认 Docker 引擎已运行，在项目根目录重新执行 `python scripts/setup_mysql.py`；成功后在后端终端按 `Ctrl+C`，按上面的终端一命令重启 API，再点击网页“重试连接”。后端命令 `python -m uv run --frozen python -m homemind` 本身是正确的。
+
+若仍返回 503，检查后端终端的报错，以及当前终端是否残留其他目标的 `HOMEMIND_DATABASE_URL` / `HOMEMIND_DATABASE_INSTANCE_ID` 环境变量（它们优先于 `backend/.env`）。不要将密码或完整连接串贴入日志，也不要用 `.env.example` 覆盖已生成的配置。
 
 ## 数据资源与配置
 
