@@ -17,11 +17,18 @@ def check() -> dict[str, object]:
 
     network_error = RuntimeError("Network is disabled in this check")
     with patch("socket.socket.connect", side_effect=network_error):
+        from cryptography.hazmat.primitives.asymmetric import padding, rsa
         from langchain_core.tools import tool
         from langgraph.checkpoint.base import BaseCheckpointSaver
         from langgraph.checkpoint.memory import InMemorySaver
         from langgraph.checkpoint.mysql.asyncmy import AsyncMySaver
         from langgraph.graph import END, START, StateGraph
+
+        # MySQL 8 caching_sha2_password full authentication needs RSA encryption
+        # before its fast-auth cache is populated. Importing asyncmy alone misses this.
+        rsa_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+        if rsa_key.key_size != 2048 or padding.OAEP is None:
+            raise RuntimeError("MySQL full-auth cryptography backend is unavailable")
 
         @tool
         def increment(value: int) -> int:
@@ -49,12 +56,17 @@ def check() -> dict[str, object]:
         "langgraph-checkpoint",
         "langgraph-checkpoint-mysql",
         "asyncmy",
+        "sqlalchemy",
+        "alembic",
+        "argon2-cffi",
+        "cryptography",
     )
     return {
         "versions": {name: version(name) for name in packages},
         "langchain_tool": "passed",
         "langgraph_memory_checkpoint": "passed",
         "mysql_adapter_import": "passed",
+        "mysql_full_auth_crypto_backend": "passed",
         "mysql_connection_and_restore": "not_run",
         "model_invocations": 0,
         "network_connections_allowed": False,

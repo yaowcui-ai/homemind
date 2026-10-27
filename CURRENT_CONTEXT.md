@@ -1,37 +1,45 @@
 # HomeMind 当前接续
 
-更新日期：2026-10-26（Asia/Shanghai）。
+更新日期：2026-10-27（Asia/Shanghai）。
 
-## 用户授权和当前阶段
+## 当前授权与进度
 
-用户已批准总体设计，M1 已完成；最新“ok，开始下一步。”授权实施 M2 可配置家庭与设备仿真。M2 已完成，当前停在 M3 开始前，等待用户发起下一阶段。助手负责当前阶段编码、必要验证和修复，不能自动推进全部阶段。
+用户按阶段授权；最新“继续下一步。”授权 M3。**M3 已完成，停在 M4 前**，等待用户发起下一阶段。助手负责阶段内实现、必要检查和修复，不自动推进全部项目。
 
-本目录为独立 Git 仓库，当前分支 `codex/m2-simulation`，从 M1 提交 `5a86177` 开始。父工作区的 `.git/info/exclude` 忽略 `/homemind/`，原有项目和未提交修改不纳入本仓库。
+本目录为独立 Git 仓库，分支 `codex/m3-accounts-persistence`，基线 M2 提交 `8ad99fd`。父仓库通过 `.git/info/exclude` 忽略本目录，旧项目未提交改动不纳入提交。
 
-## 当前事实
+## 当前实现
 
-- Python 3.12.14 独立虚拟环境及 uv 锁文件已创建。
-- Node 24.14.1 / npm 11.11.0，前端 package-lock 已创建。
-- 后端 111 项测试、前端 24 项测试、Playwright 10 项真实浏览器检查通过；包含 M1 基础检查和新增 M2 业务/交互回归。
-- LangChain 工具、LangGraph 内存检查点和 MySQL 适配器导入检查通过，未连接 MySQL、未请求模型。
-- version=0.2.0，stage=M2。React 已接真实仿真接口，支持默认两房十二实体、六种类型、新增/改名/迁移/停用/归档、主读数绑定、设备控制与传感器事件、故障和 reset。
-- 后端为锁保护的本地 `demo-home`，每应用实例独立 ID 与状态，所有读返回独立快照。production 不挂载未鉴权仿真接口。时间按用户推进的整数分钟流动，物理模型使用 Decimal 和固定舍入；状态/配置版本分开。
-- 灯、空调、窗帘可控制；传感器只读，人工改变通过独立模拟事件。主读数未绑定/失效或观测未知时返回 null；离线不自动关闭物理设备。
-- 五种故障持续到更改；延迟在到期分钟边界应用，再运行该分钟物理模型。配置变更、停用、迁移、归档、故障变化及 reset 取消相关待执行动作。控制后网页独立读取快照，结果区分 verified/failed/unknown。
-- reset 保留配置清单、名称、ID、归属、主绑定、启用及初始参数，换 world_id、清空时间/能耗/故障/延迟；归档实体不复活。当前只有进程内保存，重启恢复默认，不使用多个 worker。
-- 前端构建、ESLint、后端 Ruff/格式、uv 锁检查与 56 包依赖检查通过；npm ci 已按锁文件重新安装 302 包成功。
-- M2 桌面和 390px 手机截图保存在 `output/m2-desktop.png`、`output/m2-mobile.png`，首屏另有 `m2-*-overview.png`。M1 截图继续保留。
-- 后端规格/质量、前端规格/质量独立审阅已批准。审阅发现的手机长房间名溢出、配置表单重复提交均有先失败再修复的回归记录；表单通过同步 useRef 锁和 pending 禁用阻止重复保存。M1 的离线重查 networkMode=always 回归继续通过。
-- M2 首次浏览器脚本的虚拟下拉选项/中文标签定位失败原样保留；修正后完整十项通过。测试进程继续补充本机 NO_PROXY，不修改系统/终端代理。
-- 临时 API、Vite 和浏览器验收进程已退出，5174/8100 没有留下常驻服务；用户需按 README 在两个终端启动。
-- GitHub Actions 配置已写入并通过本地 YAML 结构检查，未对外发布，也未声称远端 CI 已执行。
+- Python 3.12.14 / uv；Node 24.14.1 / npm 11.11.0。版本 0.3.0、stage=M3，依赖锁已更新。
+- 独立 MySQL Compose 项目 `homemind`，服务 mysql、卷 homemind_mysql_data、127.0.0.1:13306。实际 MySQL 8.4.11，app/test 分库分账号；容器/卷安装标签、镜像摘要与身份保存在 `.local/`。
+- 随机凭据只在忽略的 `.local/mysql.env` 与 `backend/.env`；不可打印、提交或复制到前端，不读取旧项目密钥。Compose 显式项目环境覆盖父终端遗留值，同名资源或安装标记不匹配时拒绝接管。
+- 关系表保存用户、会话、家庭、房间、实体/归档/物理状态、偏好、任务、动作与事件。迁移 `0001_m3` → `0002_m3`；后者仅将任务幂等键列明确二进制排序。应用无内存/SQLite 降级，测试 SQLite 仅显式注入。
+- Cookie/Argon2id/CSRF/Origin；注册一次模板，每账号一独立家庭。全部业务、调试和任务引用限定认证 home_id；退出撤销会话。
+- 保留 M2 可配置两房十二实体、控制/感知分开、Decimal 分钟热模型与能耗、故障/延迟、归档、主读数未知与保留配置的 reset。全部状态通过家庭事务重建/保存；登录或重启不播种已移除设备。
+- 规则基线三个模板：homecoming/sleep/away，按配置发现实体，遵守保留/保护、窗口/主读数质量，统一绝对动作与独立核验；按家庭幂等及执行占用。任务/动作/初始偏好和快照持久保存。
+- 回家目标要求恰好目标分钟的显式核验证据，首次证据不可覆盖；没有该时刻证据时不以晚达标冒充按时完成。成功历史 verify 为只读重放，其他部分/失败条件可继续核验但不重发动作。
+- 网页含注册登录/退出、家庭配置、规则表单/结果、偏好。查询按 home_id 分键，代次丢弃迟到响应；标签页通知及焦点/pageshow 重新核对。核对期间页面、弹窗和浮层都 hidden/inert；同账号保留草稿和未知提交键，不同账号清缓存并重挂载。
+- 调试开关默认 false；本项目本地初始化显式 true，开启模拟事件/故障/时间推进/reset。生产普通配置/读取/控制仍鉴权，Cookie Secure。
 
-## 启动与检查
+## 已验证
 
-完整命令和五分钟演示见 [README](README.md)。默认后端 127.0.0.1:8100，网页 127.0.0.1:5174。前端 `/api/health` 和 `/api/simulation` 分别代理到后端 `/health`、`/simulation`。
+- 根代理独立最终后端：153 passed、3 MySQL-gated skips；前端 30 passed；真实浏览器最终 21 passed。
+- 独立测试库实际 MySQL：3 passed；两个真实 API 进程前后比较会话、完整环境/配置、归档、偏好、任务/动作及幂等重放，一致；证据 `output/m3-restart-proof.json`。
+- 根资源防护 3 passed；后端 Ruff/格式 36 文件、根脚本 6 文件、前端 ESLint/TypeScript/Vite 通过；uv 锁/67 包兼容、离线工具/图/适配器/RSA 检查通过。
+- 后端规格/质量与前端/根脚本规格/质量分别独立只读审阅，问题修复后复核批准。保留冷认证依赖缺项、deadline、大小写、历史、重试键、跨标签、焦点、portal 等原始 red/green 记录。
+- 桌面/手机、登录、任务结果和任务手机表单截图在 `output/m3-*.png`，已目视检查。旧 M1/M2 证据继续保留。
+- CI 已配置专属 MySQL、迁移、后端/脚本/浏览器检查；本轮未发布或运行远端 CI。
 
-不要从旧项目自动读取密钥。当前阶段不需要模型或数据库配置，不创建业务数据库，不启动其他项目容器。
+## 启动与服务状态
 
-## 下一阶段
+完整步骤见 [README](README.md)。先确认 Docker 引擎已运行；项目根目录 `python scripts/setup_mysql.py` 保留数据并检查迁移；API/网页分别在自己的终端启动，默认 8100/5174。
 
-等待用户发起 M3，再细化并实现账号隔离、业务持久化与规则基线。本阶段尚无账号、数据库、Agent、SSE、真实模型调用或硬件接入。总体范围见 [开发路线](docs/homemind-development-roadmap.md) 和 [默认实体](docs/superpowers/specs/2026-10-26-homemind-default-entities-design.md)；M2 接口、模型和检查证据分别见 [实施设计](docs/superpowers/specs/2026-10-26-m2-simulation-design.md)、[实施计划](docs/superpowers/plans/2026-10-26-m2-simulation.md) 和 [验证记录](docs/verification/m2-simulation.md)。
+验收的临时网页/API、18100 重启检查进程已退出。本项目 MySQL 保留运行、数据卷保留；只停止本轮身份核实的进程。
+
+**Docker 原未运行，本轮启动引擎时触发了既有容器按原策略自动恢复。** 已如实记录该环境副作用；后续未对旧容器执行停止/重建或数据库操作，不能声称旧服务状态完全未变。
+
+## 下一步
+
+等待用户发起 **M4：LangGraph 单 Agent 自然语言闭环**。当前没有模型调用、Agent、SSE、后台时钟、取消/重规划、图检查点恢复或真实硬件；这些依阶段接入，不用纯仿真事务冒充外部设备 exactly-once。
+
+入口：[路线](docs/homemind-development-roadmap.md)、[M3 设计](docs/superpowers/specs/2026-10-27-m3-accounts-persistence-design.md)、[计划](docs/superpowers/plans/2026-10-27-m3-accounts-persistence.md)、[验证记录](docs/verification/m3-accounts-persistence.md)。

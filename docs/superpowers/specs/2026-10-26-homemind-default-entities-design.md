@@ -2,7 +2,7 @@
 
 日期：2026-10-26（Asia/Shanghai）
 
-状态：默认模板、实体能力和可配置规则已由用户确认，作为 v1 开发基线。M2 已实现本地演示家庭的配置与仿真；账号注册、归属隔离与持久化属于 M3，Agent 工具与任务约束随后接入。实际实现边界见 [M2 验证记录](../../verification/m2-simulation.md)。
+状态：默认模板、实体能力和可配置规则已确认。M2 完成配置与仿真；M3 已实现注册、独立家庭归属、一次模板、MySQL 持久化及规则任务，Agent 从 M4 接入。实际边界见 [M3 验证记录](../../verification/m3-accounts-persistence.md)。
 
 上位规范：[系统设计](2026-10-26-homemind-system-design.md)。开发顺序：[阶段路线](../../homemind-development-roadmap.md)。
 

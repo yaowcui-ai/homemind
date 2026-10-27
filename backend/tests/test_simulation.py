@@ -3,16 +3,7 @@
 from concurrent.futures import ThreadPoolExecutor
 
 import pytest
-from fastapi.testclient import TestClient
-
-from homemind.app import create_app
-from homemind.config import Settings
-
-
-@pytest.fixture
-def client():
-    with TestClient(create_app(Settings(environment="test"))) as instance:
-        yield instance
+from conftest import authenticated_client
 
 
 def snapshot(client):
@@ -54,9 +45,9 @@ def advance(client, minutes):
     return response.json()
 
 
-def test_default_template_and_independent_apps(client):
+def test_default_template_and_independent_apps(client, tmp_path):
     before = snapshot(client)
-    assert before["home_id"] == "demo-home"
+    assert before["home_id"] == client.get("/auth/session").json()["user"]["home_id"]
     assert before["simulated_minutes"] == before["energy_wh"] == 0
     assert before["outdoor_temperature_c"] == 32
     assert len(before["rooms"]) == 2
@@ -88,7 +79,7 @@ def test_default_template_and_independent_apps(client):
         item["enabled"] and item["available"] and item["known"] for item in before["entities"]
     )
     assert snapshot(client) == before
-    with TestClient(create_app(Settings(environment="test"))) as other:
+    with authenticated_client(tmp_path / "other.db") as other:
         separate = snapshot(other)
         assert separate["world_id"] != before["world_id"]
         assert {item["id"] for item in before["entities"]}.isdisjoint(
@@ -534,14 +525,12 @@ def test_advance_bounds_and_strict_integer(client, minutes):
     assert snapshot(client) == before
 
 
-def test_production_does_not_mount_unauthenticated_simulation():
-    with TestClient(create_app(Settings(environment="production"))) as client:
-        assert client.get("/simulation").status_code == 404
-        assert client.post("/simulation/reset", json={}).status_code == 404
-        assert all(
-            not path.startswith("/simulation")
-            for path in client.get("/openapi.json").json()["paths"]
-        )
+def test_debug_is_explicitly_disabled_while_authenticated_reads_remain_available(tmp_path):
+    with authenticated_client(tmp_path / "debug-off.db", debug=False) as instance:
+        assert instance.get("/simulation").status_code == 200
+        assert instance.post("/simulation/reset", json={}).status_code == 403
+        light = entity(snapshot(instance), "light")
+        assert control(instance, light, "set_light", {"power": True}).status_code == 200
 
 
 def test_unknown_ids_return_structured_404(client):

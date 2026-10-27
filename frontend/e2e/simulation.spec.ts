@@ -1,5 +1,6 @@
 import { expect, test, type APIRequestContext, type Page } from '@playwright/test';
 import type { Snapshot } from '../src/api/simulation.types';
+import { register, write } from './helpers';
 
 async function snapshot(request: APIRequestContext): Promise<Snapshot> {
   const response = await request.get('/api/simulation');
@@ -8,7 +9,7 @@ async function snapshot(request: APIRequestContext): Promise<Snapshot> {
 }
 
 async function post(request: APIRequestContext, path: string, data: unknown) {
-  const response = await request.post(`/api/simulation${path}`, { data });
+  const response = await write(request, 'POST', `/simulation${path}`, data);
   expect(response.ok()).toBeTruthy();
   return response.json();
 }
@@ -17,21 +18,21 @@ async function overview(page: Page) {
   await page.getByRole('navigation', { name: '主导航' }).getByRole('button', { name: '家庭概览' }).click();
 }
 
-test.beforeEach(async ({ request }) => { await post(request, '/reset', {}); });
+test.beforeEach(async ({ request, page }) => { await register(request, page); await post(request, '/reset', {}); });
 
 test.afterEach(async ({ request }) => {
   // Reset intentionally preserves configuration. Clean only this suite's additions,
   // including when an assertion fails, so later tests keep their own preconditions.
   let data = await snapshot(request);
   for (const entity of data.entities.filter((e) => ['阅读灯', '书桌灯', '测试温度计'].includes(e.name))) {
-    expect((await request.delete(`/api/simulation/entities/${entity.id}`)).ok()).toBeTruthy();
+    expect((await write(request, 'DELETE', `/simulation/entities/${entity.id}`)).ok()).toBeTruthy();
   }
   data = await snapshot(request);
   for (const room of data.rooms.filter((r) => ['书房', '测试室', 'W'.repeat(40)].includes(r.name))) {
-    expect((await request.delete(`/api/simulation/rooms/${room.id}`)).ok()).toBeTruthy();
+    expect((await write(request, 'DELETE', `/simulation/rooms/${room.id}`)).ok()).toBeTruthy();
   }
   const renamed = data.rooms.find((r) => r.name === '起居室');
-  if (renamed) expect((await request.patch(`/api/simulation/rooms/${renamed.id}`, { data: { name: '客厅' } })).ok()).toBeTruthy();
+  if (renamed) expect((await write(request, 'PATCH', `/simulation/rooms/${renamed.id}`, { name: '客厅' })).ok()).toBeTruthy();
 });
 
 test('灯、空调、窗帘控制读回与温度能耗变化，传感器走模拟事件', async ({ page, request }) => {
@@ -122,7 +123,7 @@ test('配置房间、增灯、改名迁移、归档，重置保留用户配置',
   expect(reset.config_revision).toBeGreaterThan(moved.config_revision);
   // Restore the default room label for subsequent checks; preserve archived history.
   const renamed = reset.rooms.find((r) => r.name === '起居室')!;
-  expect((await request.patch(`/api/simulation/rooms/${renamed.id}`, { data: { name: '客厅' } })).ok()).toBeTruthy();
+  expect((await write(request, 'PATCH', `/simulation/rooms/${renamed.id}`, { name: '客厅' })).ok()).toBeTruthy();
 });
 
 test('主传感器删除后房间显示未知，不用其他信号冒充', async ({ page, request }) => {
@@ -130,7 +131,7 @@ test('主传感器删除后房间显示未知，不用其他信号冒充', async
   const room = data.rooms.find((r) => r.name === '测试室')!;
   data = await post(request, '/entities', { room_id: room.id, name: '测试温度计', type: 'temperature' });
   const sensor = data.entities.find((e) => e.name === '测试温度计')!;
-  expect((await request.patch(`/api/simulation/rooms/${room.id}`, { data: { primary_temperature_entity_id: sensor.id } })).ok()).toBeTruthy();
+  expect((await write(request, 'PATCH', `/simulation/rooms/${room.id}`, { primary_temperature_entity_id: sensor.id })).ok()).toBeTruthy();
   await page.goto('/');
   await expect(page.getByRole('region', { name: '测试室房间', exact: true }).getByText(/室温 27.0℃/)).toBeVisible();
   await page.getByRole('article', { name: '测试温度计', exact: true }).getByRole('button', { name: '编辑实体' }).click();
@@ -143,7 +144,7 @@ test('主传感器删除后房间显示未知，不用其他信号冒充', async
   await overview(page);
   await expect(page.getByRole('region', { name: '测试室房间', exact: true }).getByText(/室温 未知/)).toBeVisible();
   expect((await snapshot(request)).rooms.find((r) => r.id === room.id)!.primary_temperature_entity_id).toBeNull();
-  expect((await request.delete(`/api/simulation/rooms/${room.id}`)).ok()).toBeTruthy();
+  expect((await write(request, 'DELETE', `/simulation/rooms/${room.id}`)).ok()).toBeTruthy();
 });
 
 test('离线、响应丢失、延迟动作都有真实读回和明确结果', async ({ page, request }) => {

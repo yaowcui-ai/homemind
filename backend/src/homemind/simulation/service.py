@@ -39,15 +39,17 @@ from homemind.simulation.views import entity_view, observable, room_view
 
 
 class SimulationService:
-    def __init__(self):
+    def __init__(self, home_id: str = "demo-home", *, seed: bool = True):
         self._lock = RLock()
-        self._rooms, self._entities = default_home()
+        self._home_id = home_id
+        self._rooms, self._entities = default_home() if seed else ({}, {})
         self._world_id = uuid4().hex
         self._revision = 0
         self._config_revision = 0
         self._minutes = 0
         self._event_sequence = 0
         self._events = deque(maxlen=50)
+        self._new_events = []
         self._archives = []
 
     def _room(self, room_id: str) -> Room:
@@ -73,6 +75,7 @@ class SimulationService:
                 "entity_id": entity_id,
             }
         )
+        self._new_events.append(deepcopy(self._events[-1]))
 
     def _changed(self, kind: str, message: str, entity_id=None, *, config=False) -> dict:
         self._revision += 1
@@ -83,7 +86,7 @@ class SimulationService:
 
     def _snapshot(self) -> dict:
         return {
-            "home_id": "demo-home",
+            "home_id": self._home_id,
             "world_id": self._world_id,
             "revision": self._revision,
             "config_revision": self._config_revision,

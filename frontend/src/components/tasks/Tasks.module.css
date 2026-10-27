@@ -1,0 +1,23 @@
+.banner { margin: 24px 0; }
+.columns { display: grid; grid-template-columns: minmax(290px, .85fr) minmax(0, 1.2fr); gap: 20px; align-items: start; margin: 24px 0; }
+.card { background: #fffefa; padding: 23px; border: 1px solid #dfe5d6; border-radius: 13px; margin: 24px 0; min-width: 0; }
+.columns > .card, .columns > div > .card:first-child { margin-top: 0; }
+.card h2 { font-size: 21px; font-weight: 550; margin: 0 0 12px; color: #2d4e38; }
+.card h3 { font-size: 14px; font-weight: 550; color: #476240; margin: 24px 0 12px; }
+.hint { color: #849077; font-size: 12px; line-height: 1.9; overflow-wrap: anywhere; }
+.card :global(.ant-form) { margin-top: 22px; }
+.templateDescription { margin: -8px 0 24px; padding: 12px 14px; border-radius: 8px; background: #f1f5e9; color: #758568; font-size: 12px; line-height: 1.9; }
+.sectionHead { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+.sectionHead h2 { margin: 0 0 14px; }
+.taskRow { display: flex; justify-content: space-between; align-items: center; gap: 12px; width: 100%; padding: 15px 12px; margin-top: 8px; border: 1px solid #e6eadc; border-radius: 8px; background: #fffefa; color: #5d7450; font: inherit; text-align: left; cursor: pointer; }
+.taskRow strong { display: block; font-size: 13px; font-weight: 500; }
+.taskRow small { display: block; font-size: 10px; color: #9aa18c; margin-top: 5px; }
+.taskRow > span:last-child { font-size: 11px; }
+.selected { background: #edf3e5; border-color: #b9cda4; }
+.action, .condition { display: flex; gap: 10px; justify-content: space-between; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid #edf0e4; }
+.action > div, .condition > div { min-width: 0; }
+.action strong, .condition strong { font-size: 13px; font-weight: 500; color: #536d48; overflow-wrap: anywhere; }
+.action small, .condition small { display: block; font-size: 11px; color: #8d967f; line-height: 1.9; margin-top: 5px; overflow-wrap: anywhere; }
+.preferences { max-width: 650px; }
+@media (max-width: 1100px) { .columns { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 620px) { .card { padding: 19px; } .taskRow { padding: 13px 10px; } .card h2 { font-size: 19px; } }

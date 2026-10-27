@@ -12,5 +12,6 @@ coverage/
 test-results/
 playwright-report/
 output/
+.local/
 *.log
 .DS_Store

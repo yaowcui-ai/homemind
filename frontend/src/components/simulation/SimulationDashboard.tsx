@@ -11,11 +11,11 @@ import FaultPanel from './FaultPanel';
 import type { Operation } from './labels';
 import styles from './Simulation.module.css';
 
-interface Props { view: 'overview' | 'configuration' }
+interface Props { view: 'overview' | 'configuration'; homeId: string; debugEnabled: boolean }
 
-export default function SimulationDashboard({ view }: Props) {
+export default function SimulationDashboard({ view, homeId, debugEnabled }: Props) {
   const query = useQuery({
-    queryKey: ['simulation'], queryFn: simulationApi.getSnapshot,
+    queryKey: ['simulation', homeId], queryFn: simulationApi.getSnapshot,
     networkMode: 'always', retry: false, refetchOnWindowFocus: false, refetchOnReconnect: false,
   });
   const [notice, setNotice] = useState<{ type: 'success' | 'warning' | 'error'; text: string } | null>(null);
@@ -51,7 +51,7 @@ export default function SimulationDashboard({ view }: Props) {
   const pending = mutation.isPending || query.isFetching || query.isError;
   const faultEntity = snapshot.entities.find((e) => e.id === faultId);
   return <>
-    <Alert className={styles.banner} type="info" showIcon title="本地内存仿真 · 重启后恢复默认配置" description="当前修改仅保存在本次进程，重启后恢复默认家庭。设备状态、温度和能耗均为仿真数据。" />
+    <Alert className={styles.banner} type="info" showIcon title="个人家庭 · 配置与状态持续保存" description={`当前账号拥有独立家庭。设备状态、温度和能耗均为仿真数据。${debugEnabled ? '演示控制已开启，可模拟环境变化与设备故障。' : ''}`} />
     {notice && <Alert type={notice.type} showIcon title={notice.text} closable onClose={() => setNotice(null)} />}
     {query.isError && <Alert type="warning" title="当前展示上一次状态，暂时禁止操作" description={query.error.message} />}
 
@@ -65,11 +65,11 @@ export default function SimulationDashboard({ view }: Props) {
     <section className={styles.toolbar} aria-label="仿真时间控制">
       <div><span className={styles.clockLabel}>仿真时钟 · 室外参数 {snapshot.outdoor_temperature_c}℃</span><strong className={styles.clockValue}>t + {snapshot.simulated_minutes}<small>分钟</small></strong></div>
       <div className={styles.toolbarActions}>
-        {[1, 5, 20].map((minutes) => <Button key={minutes} disabled={pending} onClick={() => { void run(() => simulationApi.advance(minutes), `已推进 ${minutes} 分钟`); }}>推进 {minutes} 分钟</Button>)}
+        {debugEnabled && [1, 5, 20].map((minutes) => <Button key={minutes} disabled={pending} onClick={() => { void run(() => simulationApi.advance(minutes), `已推进 ${minutes} 分钟`); }}>推进 {minutes} 分钟</Button>)}
         <Button aria-label="读取状态" icon={<ReloadOutlined />} loading={query.isFetching} disabled={mutation.isPending} onClick={() => { void query.refetch(); }}>读取状态</Button>
-        <Popconfirm title="重置本次仿真运行？" description="保留房间、实体与配置；清除运行状态、故障和延迟动作，生成新的环境实例。" okText="确认重置" cancelText="取消" onConfirm={() => { void run(() => simulationApi.reset(), '运行状态已重置，用户配置保持不变'); }}>
+        {debugEnabled && <Popconfirm title="重置本次仿真运行？" description="保留房间、实体与配置；清除运行状态、故障和延迟动作，生成新的环境实例。" okText="确认重置" cancelText="取消" onConfirm={() => { void run(() => simulationApi.reset(), '运行状态已重置，用户配置保持不变'); }}>
           <Button aria-label="重置运行" icon={<UndoOutlined />} disabled={pending}>重置运行</Button>
-        </Popconfirm>
+        </Popconfirm>}
       </div>
     </section>
 
@@ -90,7 +90,7 @@ export default function SimulationDashboard({ view }: Props) {
           </div>
           <div className={styles.entityGrid}>
             {snapshot.entities.filter((e) => e.room_id === room.id).map((entity) => <EntityCard
-              key={`${entity.id}:${entity.version}`} entity={entity} worldId={snapshot.world_id} run={run} pending={pending}
+              key={`${entity.id}:${entity.version}`} entity={entity} worldId={snapshot.world_id} run={run} pending={pending} debugEnabled={debugEnabled}
               onEdit={(e) => setEntityEditor({ entity: e })} onFault={(e) => setFaultId(e.id)}
             />)}
           </div>
@@ -99,12 +99,12 @@ export default function SimulationDashboard({ view }: Props) {
       </>}
 
     <section className={styles.eventList} aria-label="最近仿真事件">
-      <h2>最近变化 <small>· 进程内记录</small></h2>
+      <h2>最近变化 <small>· 本家庭记录</small></h2>
       {snapshot.recent_events.length === 0 && <p>还没有变更。试着打开一盏灯，或推进仿真时间。</p>}
       {[...snapshot.recent_events].reverse().slice(0, 8).map((event) => <p key={event.sequence}><time>t+{event.at_minutes}m</time><span>{event.message}</span></p>)}
     </section>
     {roomEditor && <RoomModal key={roomEditor.room?.id ?? 'new-room'} {...roomEditor} snapshot={snapshot} run={run} pending={pending} onClose={() => setRoomEditor(null)} />}
     {entityEditor && <EntityModal key={entityEditor.entity?.id ?? `new-${entityEditor.roomId ?? ''}`} {...entityEditor} snapshot={snapshot} run={run} pending={pending} onClose={() => setEntityEditor(null)} />}
-    {faultEntity && <FaultPanel key={faultEntity.id} entity={faultEntity} run={run} pending={pending} onClose={() => setFaultId(null)} />}
+    {debugEnabled && faultEntity && <FaultPanel key={faultEntity.id} entity={faultEntity} run={run} pending={pending} onClose={() => setFaultId(null)} />}
   </>;
 }

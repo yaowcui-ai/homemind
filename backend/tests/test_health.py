@@ -5,11 +5,14 @@ import asyncio
 import httpx
 
 from homemind.app import create_app
+from homemind.config import Settings
 
 
 def request(path: str) -> httpx.Response:
     async def send() -> httpx.Response:
-        transport = httpx.ASGITransport(app=create_app())
+        transport = httpx.ASGITransport(
+            app=create_app(Settings(_env_file=None, database_url=None, database_instance_id=None))
+        )
         async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
             return await client.get(path)
 
@@ -22,8 +25,8 @@ def test_health_reports_api_liveness_without_external_services() -> None:
     assert response.json() == {
         "status": "ok",
         "service": "homemind-api",
-        "version": "0.2.0",
-        "stage": "M2",
+        "version": "0.3.0",
+        "stage": "M3",
     }
 
 

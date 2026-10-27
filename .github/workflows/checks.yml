@@ -8,8 +8,26 @@ permissions:
   contents: read
 
 jobs:
-  foundation:
+  application:
     runs-on: ubuntu-latest
+    env:
+      HOMEMIND_TEST_DATABASE_URL: mysql+asyncmy://homemind_test:homemind_ci_test_only@127.0.0.1:13306/homemind_test?charset=utf8mb4
+      HOMEMIND_DATABASE_INSTANCE_ID: 00000000-0000-4000-8000-000000000003
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: homemind_test
+          MYSQL_USER: homemind_test
+          MYSQL_PASSWORD: homemind_ci_test_only
+          MYSQL_ROOT_PASSWORD: homemind_ci_root_only
+        ports:
+          - 13306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --host=127.0.0.1 --silent"
+          --health-interval=3s
+          --health-timeout=3s
+          --health-retries=40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,6 +43,11 @@ jobs:
       - name: Install locked Python dependencies
         working-directory: backend
         run: python -m uv sync --frozen
+      - name: Migrate isolated CI database
+        working-directory: backend
+        env:
+          HOMEMIND_DATABASE_URL: ${{ env.HOMEMIND_TEST_DATABASE_URL }}
+        run: python -m uv run --frozen python -m homemind.migrate --initialize-empty
       - name: Backend checks
         working-directory: backend
         run: |
@@ -33,6 +56,12 @@ jobs:
           python -m uv run --frozen ruff format --check .
           python -m uv run --frozen python scripts/check_compatibility.py
           python -m uv pip check --python .venv/bin/python
+      - name: Local resource safety checks
+        run: |
+          python -m uv run --project backend --frozen pytest scripts/tests -q
+          python -m uv run --project backend --frozen ruff check --config backend/pyproject.toml scripts
+          python -m uv run --project backend --frozen ruff format --config backend/pyproject.toml --check scripts
+          python scripts/verify_m3.py --restart-only
       - name: Install locked frontend dependencies
         working-directory: frontend
         run: npm ci

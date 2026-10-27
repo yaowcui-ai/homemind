@@ -33,7 +33,7 @@ export default defineConfig({
   },
   webServer: [
     {
-      command: `"${python}" -m homemind`,
+      command: `"${python}" ../scripts/serve_e2e.py`,
       cwd: backendRoot,
       url: 'http://127.0.0.1:8100/health',
       env: { HOMEMIND_API_HOST: '127.0.0.1', HOMEMIND_API_PORT: '8100', HOMEMIND_ENVIRONMENT: 'test' },

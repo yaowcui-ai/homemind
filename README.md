@@ -1,33 +1,38 @@
 # HomeMind
 
-智能家居多 Agent 协同调度网页系统。当前完成 **M2 可配置家庭与设备仿真**：React 控制台可以管理房间和实体、控制灯光/空调/窗帘、注入传感事件、推进确定性仿真并读取故障结果。默认客厅和卧室各六个实体。
+智能家居多 Agent 协同调度网页系统，当前实现 **M3：账号隔离、MySQL 持久化与规则基线**。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家三个明确规则场景。
 
-## 项目位置与开发边界
+LangGraph 为主、LangChain 为辅的 Agent 编排从 M4 开始；现在的任务执行使用固定规则，没有模型调用或真实硬件。
 
-本目录是独立 Git 仓库，当前开发分支为 `codex/m2-simulation`。父工作区通过其本地 `.git/info/exclude` 忽略本目录；不要在父仓库中强制添加本项目，也不要把旧项目文件复制进提交。
+## 项目边界与技术栈
+
+本目录是独立 Git 仓库，当前分支 `codex/m3-accounts-persistence`。父工作区通过本地 `.git/info/exclude` 忽略本目录，旧项目不纳入本仓库。
 
 - 前端：React、TypeScript、Vite、Ant Design、TanStack Query。
-- 后端：Python 3.12、FastAPI、Pydantic Settings、Uvicorn。
-- 编排：LangGraph 为主、LangChain 为辅，本阶段只验证依赖和无模型的内存状态图。
-- 仿真：受锁保护的进程内家庭、独立快照、固定步长十进制热模型和能耗、状态与配置版本。
-- 后续：独立 MySQL、账号隔离、专业 Agent、SSE、对照评测和部署。
+- API：Python 3.12、FastAPI、Pydantic Settings、Uvicorn。
+- 数据：MySQL 8.4、SQLAlchemy async/asyncmy、Alembic；Cookie 会话、Argon2id 密码摘要、CSRF 和来源检查。
+- 仿真：沿用 M2 固定步长热模型/能耗，数据库事务内重建和保存当前家庭的独立状态。
+- 任务：动态发现设备、范围/保留/保护约束、统一执行与读回、幂等、同家庭执行占用、持久动作和事件。
 
-开始工作请读 [CURRENT_CONTEXT.md](CURRENT_CONTEXT.md) 和 [开发路线](docs/homemind-development-roadmap.md)。
+后续开发先读 [接续记录](CURRENT_CONTEXT.md) 和 [阶段路线](docs/homemind-development-roadmap.md)。接口和状态语义见 [M3 实施设计](docs/superpowers/specs/2026-10-27-m3-accounts-persistence-design.md)。
 
 ## 环境要求
 
-- Python 3.12，由 uv 按 `backend/.python-version` 创建独立环境。本次使用 3.12.14。
-- 本次验证使用 Node.js 24.14.1、npm 11.11.0；Node 要求见 `frontend/package.json`。
-- uv 0.12.5。当前 Windows 已可通过 `python -m uv` 使用。
-- 首次依赖安装需要网络。本阶段不需要 Docker、MySQL、模型密钥或购买硬件。
+- Python 3.12，由 uv 按 `backend/.python-version` 创建；本次使用 3.12.14。
+- Node.js 24.14.1 / npm 11.11.0；精确依赖在两个锁文件中。
+- uv 0.12.5，可通过 `python -m uv` 使用。
+- Docker Desktop 的 Linux 引擎已运行；初始化脚本不会自动启动 Docker。启动 Docker 引擎可能按已有重启策略恢复其他项目容器。
+- 当前不需要模型密钥或购买硬件。
 
-## Windows 启动：两个 PowerShell 终端
+## Windows 启动
 
-终端一启动 API：
+首次先打开 Docker Desktop，等待引擎就绪。终端一准备本项目数据库并启动 API：
 
 ```powershell
-Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind\backend'
-python -m uv sync --frozen
+Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind'
+python -m uv sync --project backend --frozen
+python scripts/setup_mysql.py
+Set-Location backend
 python -m uv run --frozen python -m homemind
 ```
 
@@ -39,36 +44,74 @@ npm.cmd ci
 npm.cmd run dev
 ```
 
-依赖已安装后，日常只需分别执行最后一条启动命令。
+打开 [网页](http://127.0.0.1:5174/)。首次显示登录/注册；用户名使用 3—32 位字母、数字、下划线，密码 12—128 字符。注册创建一次独立家庭，之后登录不会恢复已删除设备。
 
-打开 [网页](http://127.0.0.1:5174/)，连接卡应显示“后端已连接”；[API 文档](http://127.0.0.1:8100/docs) 可检查接口。停止时在对应终端按 `Ctrl+C`，不停止其他服务。
+依赖已安装后，日常可先在项目根目录运行 `python scripts/setup_mysql.py` 确认数据库启动与迁移，再分别运行两个启动命令。该脚本保留匹配的容器和卷，不重建已有数据。网页/API 停止时在自己的终端按 `Ctrl+C`。
 
-如端口被占用，启动会报错而不自动切换端口。不要停止其他项目。可更换本项目端口，并同步修改前端代理目标；例如将后端改到 8101 时设置 `HOMEMIND_API_PORT=8101`，前端的 `HOMEMIND_API_PROXY_TARGET` 改为 `http://127.0.0.1:8101`。前端端口可使用 `npm.cmd run dev -- --port 5175`。
+数据库只暴露 `127.0.0.1:13306`，不使用旧项目的 3306。需要停止本项目数据库时，在项目根目录执行：
 
-## 可选配置
-
-无需配置即可使用默认值。需要修改时，将各目录的 `.env.example` 复制为该目录的 `.env`，仅修改必要字段。
-
-- 后端固定读取 `backend/.env`，操作系统环境变量优先，不随终端工作目录搜索旧项目配置。
-- 前端读取 `frontend/.env` 中的代理目标；该配置供 Vite 服务器使用，没有 `VITE_` 前缀。
-- 不在前端配置中放模型、数据库或其他服务密钥。本阶段没有这些必填项。
-- 修改配置后重启对应开发服务。
-
-## 一次请求的流转
-
-`浏览器 → /api/health → Vite 开发代理 → FastAPI /health → 响应契约校验 → 页面状态`
-
-`GET /health` 返回：
-
-```json
-{"status":"ok","service":"homemind-api","version":"0.2.0","stage":"M2"}
+```powershell
+docker compose --project-name homemind --env-file .local/mysql.env --file deploy/compose.mysql.yaml stop mysql
 ```
 
-这表示 API 存活，不表示设备、数据库或模型已连接。前端会校验服务身份和返回结构，5 秒超时后显示提示；只有用户显式重新检查才会重试。其他服务返回的 HTTP 200 不会被视为 HomeMind 在线。
+这会保留卷。日常操作不需要删除卷或清空数据库。
+
+## 数据资源与配置
+
+Compose 项目 `homemind`、服务 `mysql`、卷 `homemind_mysql_data`。容器/卷带安装 UUID 标签；同名但不匹配时脚本拒绝接管。实际安装身份、镜像摘要和容器 ID 保存在忽略的 `.local/`。
+
+- `homemind_app`：应用库与专属账号，用户日常数据保存在这里。
+- `homemind_test`：独立测试库与账号，集成/浏览器/重启检查使用它，避免混入用户家庭。
+- `.local/mysql.env`：脚本生成的随机数据库凭据及测试目标；不提交、不打印。
+- `backend/.env`：本项目应用库连接与安装标识；脚本不会覆盖已有不同数据库目标。
+- `backend/.env.example`：字段说明。**不要用模板覆盖已生成的 `.env`。** 前端不配置数据库或模型密钥。
+
+迁移历史为 `0001_m3` → `0002_m3`，当前 head `0002_m3`。首次只对确认空的本项目库允许显式初始化；非本项目表或安装标记不匹配时拒绝迁移。0002 将任务幂等键列明确设为二进制排序规则，避免数据库默认排序规则忽略键的大小写。
+
+应用启动核对安装标记和迁移版本，业务请求再次检查。数据库缺失或不可用时返回中文 503，不能退回一个新的临时家庭。开发仅运行单个 API 执行进程。
+
+后端固定读取 `backend/.env`，普通应用配置的操作系统环境变量优先。数据库初始化所用的 Compose 变量则由本项目已验证配置明确覆盖终端遗留值，避免随机凭据与实际容器不一致。
+
+前端默认 5174、API 8100。端口被占用时不会自动切换或停止其他服务。改变 API 端口需同时修改前端的 `HOMEMIND_API_PROXY_TARGET`；改变网页地址/端口还需把准确 Origin 加入后端 `HOMEMIND_ALLOWED_ORIGINS` JSON 数组。修改后重启相应开发服务。
+
+`HOMEMIND_SIMULATION_DEBUG_ENABLED` 默认 false。初始化脚本为当前本地演示显式写 true，显示环境事件、故障、时间推进和 reset；关闭后这些调试写入口不可用，普通家庭配置/读取/控制仍需登录。生产 Cookie 使用 Secure，当前 HTTP 本机开发使用 development 配置，完整发布留到 M10。
+
+## 一次操作如何流转
+
+`注册/登录 → HttpOnly Cookie + 内存 CSRF → 当前家庭事务 → 规则/能力检查 → 私有仿真引擎 → 独立读回 → 保存状态、任务、动作和事件`
+
+前端使用同源 `/api` 代理；认证上下文决定 home_id，客户端不能指定其他家庭扩大权限。跨家庭房间、实体、任务及保留/保护引用返回 404；退出会撤销当前会话。切换账号清理查询和待提交状态，迟到响应按会话代次丢弃。标签页通过不含凭据的通知同步身份，恢复焦点也重新核对；同账号核对保留表单和未确认提交的幂等键。
+
+```json
+{"status":"ok","service":"homemind-api","version":"0.3.0","stage":"M3"}
+```
+
+`GET /health` 只说明 API 进程存活；数据库状态通过实际认证/业务请求确认。其他服务返回 HTTP 200 不会被视为 HomeMind 在线。
+
+## 演示步骤
+
+1. 注册账号 A，查看客厅/卧室各六实体。打开一盏灯并改名一个房间；退出后注册 B，查看独立 ID 和初始状态；重新登录 A，原配置仍在。
+2. 在家庭配置中增加书房和阅读灯、迁移或归档实体。移除房间前先清空实体；主温度/占用移除后显示未知，不能把缺失值当作无人/关窗/0℃。
+3. 在偏好中保存回家/睡眠温度、风速和准备时间。新任务使用当前默认值，过去任务保留原偏好和快照。
+4. 在规则任务选择模板、房间、保留设备和保护房间。回家：开灯、合帘、制冷；睡眠：关灯、合帘、制冷；离家：关闭所选灯/空调、合帘。所有动作明确展示，保留设备和保护房间不产生动作；作用目标按当前配置发现。
+5. 验证一个可达的未来目标：默认客厅 28℃，回家目标设 28℃、准备时间 1 分钟。提交后为等待核验；到概览推进 1 分钟，再回任务选择原记录、点击“核验目标”。核验不会再发设备动作。
+6. 试开窗或把窗户读数设为未知，再运行需要制冷的模板，查看未执行原因和部分完成；有人信号不代表有人睡觉，窗户传感器没有关窗能力。
+7. 注入响应丢失或延迟，观察响应与实际读回分别记录；对未完成/未知条件可显式再次核验。请求结果不明时先读列表，同内容重试保留幂等键，不能把网络错误当作“服务端一定未执行”。
+8. 停止并重启 API，重新读取原家庭、偏好和历史；已归档设备不因登录、初始化或运行 reset 复活。
+
+## 时间、结果与保存边界
+
+数据库保存账号、会话、房间、实体配置和环境、偏好版本、任务、动作和事件。读取不推进仿真时间。reset 保留当前用户清单/配置/ID，换 world_id 并清空本次运行状态、能耗、故障和延迟；历史保留原环境和当时名称。
+
+任务有“动作已核验”与“环境目标已达到”两个层次。回家目标需要目标时刻的读数：M3 不后台采样，须在该仿真分钟显式核验。第一次到更晚时刻才核验，没有当时证据会保留未知/部分，不能用晚达到的温度宣称按时完成。首次目标时刻证据保存后不因同分钟修改读数而改写；已成功任务再核验也保留完成历史。睡眠没有回家 deadline，可在降温后继续核验。
+
+同家庭最多一个正在执行的规则任务，其他提交说明忙碌；等待核验释放占用。任务幂等键按家庭隔离且区分大小写，同键同内容返回原任务，异内容 409。当前规则执行是纯仿真数据库事务，没有外部设备原子提交、分布式队列或 exactly-once 承诺。
+
+模型 `m2-decimal-minute-v1` 仍采用室外 32℃、每分钟步长、内部 Decimal 温度 0.001℃、公开读数 0.1℃。窗户换热、占用、窗帘、空调和灯功率都是透明假设；能耗为 Wh，不能外推真实舒适度或节电收益。离线/未知不自动关闭内部物理设备。全部公式见 [M2 设计](docs/superpowers/specs/2026-10-26-m2-simulation-design.md) 和 [仿真实现约定](backend/src/homemind/simulation/README.md)。
 
 ## 验证
 
-在后端目录运行：
+后端目录运行快速单元/API 测试（显式注入 SQLite，不能据此声称 MySQL 通过）：
 
 ```powershell
 python -m uv run --frozen pytest -q
@@ -78,7 +121,17 @@ python -m uv run --frozen python scripts/check_compatibility.py
 python -m uv pip check --python .venv/Scripts/python.exe
 ```
 
-在前端目录运行：
+没有测试库变量时，三个 MySQL 用例会明确 skip。独立 MySQL 和真实 API 进程重启在项目根目录检查：
+
+```powershell
+python scripts/setup_mysql.py
+python scripts/verify_m3.py
+python -m uv run --project backend --frozen pytest scripts/tests -q
+```
+
+重启检查使用独立测试库、临时 18100 API，只停止通过随机 nonce/PID 核实的本轮进程。它核对会话、配置/环境、归档、偏好、历史和重放结果；不会重建用户应用库。测试库会保留受控测试账号与记录供检查。
+
+前端目录运行：
 
 ```powershell
 npm.cmd test -- --run
@@ -88,35 +141,10 @@ npx.cmd playwright install chromium
 npm.cmd run test:e2e
 ```
 
-浏览器测试会自行启动并关闭临时 API 与 Vite，两个默认端口需空闲。它不会复用或停止用户已经运行的服务。Chromium 只需在首次缺少浏览器时安装；可通过 `HOMEMIND_BROWSER_CHANNEL` 显式选择已安装的兼容浏览器。
+浏览器验收自行启动/关闭临时 API 和 Vite，不复用已有服务；后端明确接独立测试库，两个默认端口需空闲。测试进程仅为自身补充本机 NO_PROXY，保留已有设置。`npm.cmd run preview` 预览构建文件仍需 API，不能当作生产部署。
 
-浏览器测试进程会在自身的代理绕过列表中加入本机地址，保留已有规则，避免系统代理转发本地就绪检查；它不修改系统设置或当前 PowerShell 的代理配置。
-
-`npm.cmd run preview` 可预览已构建文件；当前 Vite 配置下它会沿用 `/api` 代理，仍需单独运行后端。它用于本机预览，不能作为生产部署验收。本阶段日常使用 `npm.cmd run dev`，生产部署和统一入口安排在 M10。
-
-测试截图和原始运行输出位于被 Git 忽略的 `output/`。实际结果见 [M2 验证记录](docs/verification/m2-simulation.md)，历史基础检查见 [M1 验证记录](docs/verification/m1-foundation.md)。
-
-## 五分钟演示
-
-1. 打开家庭概览，查看默认两房十二实体。给客厅主灯设置亮度并点击“应用设置”，读回卡片的实际状态。
-2. 将客厅空调模式设为制冷、目标 24℃，应用后推进 20 分钟，观察室温和累计 Wh。时间只在点击推进时流动。
-3. 点击有人/窗户卡片的“模拟有人”“模拟开窗”。这些是环境事件，传感器没有设备控制权限。
-4. 进入家庭配置，新增书房与阅读灯，修改名称或所属房间；移除实体会归档。房间必须先清空才能移除。房间设置可显式选择主温度/占用传感器，移除主传感器后显示未知。
-5. 在设备故障设置中选择离线、执行前失败、响应丢失、指令无效果或延迟。响应丢失返回未知，读回可观察实际状态；延迟通过推进仿真时间生效。
-6. “重置运行”会要求确认：保留用户房间、实体、ID、启用状态、主传感器与保存配置，清空本次运行时间、能耗、故障和待执行动作。已归档实体不会复活。
-
-## 保存与模型边界
-
-**目前是未鉴权的本机单家庭演示，数据只保存在当前后端进程。** 重启后恢复默认模板；不要用多个 Uvicorn worker 运行内存演示。`production` 环境不挂载 `/simulation` 路由。注册、家庭归属隔离和数据库保存安排在 M3。
-
-- 模型版本 `m2-decimal-minute-v1`，每分钟更新一次，室外恒定 32℃；室温内部保留 0.001℃，公开显示 0.1℃。单次可推进 1—1440 分钟，读取不会推进时间。
-- 关窗/开窗换热系数 0.02/0.10，加上窗帘开度与占用热增益；制冷 auto/low 最多 0.22/0.15℃每分钟，功率为 850/550W，达到目标后按 12/8W 待机。
-- 灯功率为 `2 + round(10 × 亮度/100)` W；窗帘实际改变位置耗能 0.05Wh。总能耗包含本次运行中已归档设备先前耗能，重置时归零。它们都是功能验证假设，不能代表真实耗电或节电收益。
-- 物理环境和公开观察分开：离线或未知不会自动关掉运行中的设备；公开读数保留 null，不能当作无人、关窗或 0℃。主温度/占用严格读所选实体，没有绑定也显示未知。
-- 故障持续到清除；每个实体最多一个延迟动作，在到期分钟开始时应用。配置修改、停用、迁移、归档、故障更改及 reset 会取消相关待执行动作。reset 换 world_id，可拒绝旧环境的控制请求。
-
-完整参数和 API 请求契约见 [M2 实施设计](docs/superpowers/specs/2026-10-26-m2-simulation-design.md)，计算顺序和观察规则见 [仿真实现约定](backend/src/homemind/simulation/README.md)。接口流转为 `浏览器 /api/simulation → Vite → FastAPI /simulation → 仿真服务 → 独立读回快照`；业务错误包含中文说明，不展示堆栈。
+原始失败/通过日志、重启证明和截图位于忽略的 `output/`。阶段证据见 [M3 验证记录](docs/verification/m3-accounts-persistence.md)，历史记录见 [M2](docs/verification/m2-simulation.md)、[M1](docs/verification/m1-foundation.md)。GitHub Actions 已配置相同迁移和测试，只有实际远端运行后才可声称远端 CI 通过。
 
 ## 下一阶段
 
-M3 接入账号隔离、业务持久化与规则基线。当前没有注册登录、业务数据库、Agent 编排、真实模型调用或物理设备接入；按阶段完成后停止，由用户启动下一步。
+M4 接入 LangGraph 单 Agent 自然语言闭环，继续共用当前约束与执行边界。本阶段没有真实模型、Agent、SSE、后台时钟、重规划/取消或检查点恢复，也没有真实设备和公网部署；按阶段交付，等待用户启动下一步。

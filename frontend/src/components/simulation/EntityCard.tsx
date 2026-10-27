@@ -12,11 +12,12 @@ export interface EntityCardProps {
   worldId: string;
   run: Operation;
   pending: boolean;
+  debugEnabled?: boolean;
   onEdit: (entity: EntityView) => void;
   onFault: (entity: EntityView) => void;
 }
 
-export default function EntityCard({ entity, worldId, run, pending, onEdit, onFault }: EntityCardProps) {
+export default function EntityCard({ entity, worldId, run, pending, onEdit, onFault, debugEnabled = false }: EntityCardProps) {
   const [lightOn, setLightOn] = useState(entity.state.power === true);
   const [brightness, setBrightness] = useState(Number(entity.state.brightness_pct) || Number(entity.config.default_brightness_pct) || 60);
   const [mode, setMode] = useState(entity.state.mode === 'cool' ? 'cool' : 'off');
@@ -74,7 +75,7 @@ export default function EntityCard({ entity, worldId, run, pending, onEdit, onFa
         {entity.type === 'cover' && <label className={styles.positionLabel}>目标开度 <InputNumber aria-label={`${entity.name}开度`} min={0} max={100} precision={0} value={position} onChange={(v) => setPosition(v ?? 0)} disabled={!writable} suffix="%" /></label>}
         <Button block type="primary" onClick={apply} disabled={!writable}>应用设置</Button>
       </div>}
-      {sensor && <div className={styles.sensorControls}>
+      {sensor && debugEnabled && <div className={styles.sensorControls}>
         <span className={styles.controlHint}>模拟事件 · 不属于设备控制</span>
         {entity.type === 'temperature' && <div className={styles.controlRow}>
           <InputNumber aria-label={`${entity.name}模拟温度`} min={0} max={50} step={0.1} value={sensorTemperature} onChange={(v) => setSensorTemperature(v ?? 27)} disabled={pending || !entity.enabled} />
@@ -91,7 +92,7 @@ export default function EntityCard({ entity, worldId, run, pending, onEdit, onFa
       </div>}
       <div className={styles.entityActions}>
         <Button type="text" size="small" aria-label="编辑实体" icon={<EditOutlined />} disabled={pending} onClick={() => onEdit(entity)}>编辑</Button>
-        <Button type="text" size="small" aria-label="故障设置" icon={<ControlOutlined />} disabled={pending} onClick={() => onFault(entity)}>故障设置</Button>
+        {debugEnabled && <Button type="text" size="small" aria-label="故障设置" icon={<ControlOutlined />} disabled={pending} onClick={() => onFault(entity)}>故障设置</Button>}
       </div>
     </article>
   );

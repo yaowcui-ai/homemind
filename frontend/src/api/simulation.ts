@@ -2,6 +2,7 @@ import type {
   ControlInput, ControlResult, EntityInput, EntityPatch, EntityView, FaultMode,
   RoomPatch, RoomView, SensorEvent, Snapshot,
 } from './simulation.types';
+import { apiRequest, ApiError } from './client';
 
 class SimulationError extends Error {}
 const invalidData = '服务返回了无法识别的家庭数据。';
@@ -31,7 +32,7 @@ function isEntity(v: unknown): v is EntityView {
     && number(v.fault.delay_minutes) && maybeNumber(v.pending_until_minutes);
 }
 
-function isSnapshot(v: unknown): v is Snapshot {
+export function isSnapshot(v: unknown): v is Snapshot {
   return object(v) && text(v.home_id) && text(v.world_id)
     && number(v.revision) && number(v.config_revision) && number(v.simulated_minutes)
     && text(v.model_version) && number(v.outdoor_temperature_c) && number(v.energy_wh)
@@ -43,28 +44,12 @@ function isSnapshot(v: unknown): v is Snapshot {
 }
 
 async function request(path: string, method = 'GET', body?: unknown): Promise<unknown> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8000);
   try {
-    const response = await fetch(`/api/simulation${path}`, {
-      method, signal: controller.signal, credentials: 'same-origin', cache: 'no-store',
-      headers: { Accept: 'application/json', ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
-      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
-    });
-    let data: unknown;
-    try { data = await response.json(); } catch { throw new SimulationError(invalidData); }
-    if (!response.ok) {
-      if (object(data) && object(data.detail) && text(data.detail.message)) {
-        throw new SimulationError(data.detail.message.slice(0, 240));
-      }
-      throw new SimulationError(response.status === 422 ? '参数不符合要求，请检查输入。' : '操作未完成，请刷新家庭状态后重试。');
-    }
-    return data;
+    return await apiRequest(`/simulation${path}`, method, body);
   } catch (error) {
-    if (controller.signal.aborted) throw new SimulationError('操作请求超时，请先刷新状态，确认是否已生效。');
-    if (error instanceof SimulationError) throw error;
-    throw new SimulationError('无法连接仿真服务，请检查后端并重试。');
-  } finally { clearTimeout(timer); }
+    if (error instanceof ApiError && error.code === 'network') throw new SimulationError('无法连接仿真服务，请检查后端并重试。');
+    throw error;
+  }
 }
 
 async function snapshot(path: string, method = 'GET', body?: unknown): Promise<Snapshot> {
