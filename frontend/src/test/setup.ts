@@ -4,6 +4,13 @@ import { afterEach } from 'vitest';
 
 afterEach(cleanup);
 
+// jsdom has no layout observer. These tests assert behavior; Playwright checks layout.
+globalThis.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   value: (query: string) => ({

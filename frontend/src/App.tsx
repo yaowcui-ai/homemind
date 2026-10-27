@@ -12,8 +12,8 @@ const SimulationDashboard = lazy(() => import('./components/simulation/Simulatio
 const TasksPanel = lazy(() => import('./components/tasks/TasksPanel'));
 const PreferencesPanel = lazy(() => import('./components/tasks/PreferencesPanel'));
 type View = 'overview' | 'configuration' | 'tasks' | 'preferences';
-const viewLabels: Record<View, string> = { overview: '家庭概览', configuration: '家庭配置', tasks: '规则任务', preferences: '偏好设置' };
-const viewDescriptions: Record<View, string> = { overview: '掌握房间状态，清晰控制每一个设备。', configuration: '管理房间、实体与主读数，配置适合自己的家。', tasks: '选定范围，执行场景，逐项核验结果。', preferences: '保存舒适与习惯，为新任务提供默认设置。' };
+const viewLabels: Record<View, string> = { overview: '家庭概览', configuration: '家庭配置', tasks: '任务助手', preferences: '偏好设置' };
+const viewDescriptions: Record<View, string> = { overview: '掌握房间状态，清晰控制每一个设备。', configuration: '管理房间、实体与主读数，配置适合自己的家。', tasks: '表达生活需求或选择规则，确认范围，逐项核验结果。', preferences: '保存舒适与习惯，为新任务提供默认设置。' };
 
 export default function App() {
   return <ConfigProvider locale={zhCN} theme={{ token: {
@@ -30,7 +30,7 @@ export default function App() {
 function Workspace() {
   const { session, logout } = useSession();
   const [view, setView] = useState<View>('overview');
-  const [submission] = useState(() => new TaskSubmission());
+  const [submission] = useState(() => new TaskSubmission(session.user.home_id));
   return (
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
@@ -42,14 +42,14 @@ function Workspace() {
         <nav className={styles.navigation} aria-label="主导航">
           <button aria-label="家庭概览" className={view === 'overview' ? styles.activeNav : ''} onClick={() => setView('overview')}><HomeOutlined /> 家庭概览</button>
           <button aria-label="家庭配置" className={view === 'configuration' ? styles.activeNav : ''} onClick={() => setView('configuration')}><ApartmentOutlined /> 家庭配置</button>
-          <button aria-label="规则任务" className={view === 'tasks' ? styles.activeNav : ''} onClick={() => setView('tasks')}><MessageOutlined /> 规则任务</button>
+          <button aria-label="任务助手" className={view === 'tasks' ? styles.activeNav : ''} onClick={() => setView('tasks')}><MessageOutlined /> 任务助手</button>
           <button aria-label="偏好设置" className={view === 'preferences' ? styles.activeNav : ''} onClick={() => setView('preferences')}><SettingOutlined /> 偏好设置</button>
         </nav>
         <div className={styles.sidebarNote}>
           <span className={styles.noteMark}><HomeOutlined /></span><strong>属于你自己的家</strong>
           <p>独立的家庭与偏好，<br />持续保存的每一次变化。</p>
         </div>
-        <div className={styles.sidebarFoot}>M3 · 设备仿真</div>
+        <div className={styles.sidebarFoot}>M4 · 设备仿真</div>
       </aside>
       <main className={styles.main}>
         <header className={styles.topbar}>
@@ -65,10 +65,10 @@ function Workspace() {
         </div>
         <Suspense fallback={<p role="status">正在加载家庭控制台…</p>}>
           {view === 'overview' || view === 'configuration' ? <SimulationDashboard view={view} homeId={session.user.home_id} debugEnabled={session.simulation_debug_enabled} />
-            : view === 'tasks' ? <TasksPanel homeId={session.user.home_id} submission={submission} /> : <PreferencesPanel homeId={session.user.home_id} />}
+            : view === 'tasks' ? <TasksPanel homeId={session.user.home_id} submission={submission} debugEnabled={session.simulation_debug_enabled} /> : <PreferencesPanel homeId={session.user.home_id} />}
         </Suspense>
         <div className={styles.healthFooter}><ConnectionCard /></div>
-        <footer className={styles.footer}><span>HomeMind / 仿真参数用于功能验证，不能代替真实硬件测量</span><span>M3 · PERSONAL HOME</span></footer>
+        <footer className={styles.footer}><span>HomeMind / 仿真参数用于功能验证，不能代替真实硬件测量</span><span>M4 · PERSONAL HOME</span></footer>
       </main>
     </div>
   );

@@ -53,14 +53,14 @@ export const isObject = (v: unknown): v is Record<string, unknown> => typeof v =
 export const isText = (v: unknown): v is string => typeof v === 'string' && v.length > 0;
 export const isNumber = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 
-export async function apiRequest(path: string, method = 'GET', body?: unknown, extraHeaders: Record<string, string> = {}): Promise<unknown> {
+export async function apiRequest(path: string, method = 'GET', body?: unknown, extraHeaders: Record<string, string> = {}, timeoutMs = 8000): Promise<unknown> {
   const writing = !['GET', 'HEAD'].includes(method);
   if (writing && !csrfToken) throw new ApiError(0, 'csrf_missing', '登录会话尚未就绪，请重新读取登录状态。');
   const epoch = sessionEpoch;
   const controller = new AbortController();
   active.add(controller);
   let timedOut = false;
-  const timer = setTimeout(() => { timedOut = true; controller.abort(); }, 8000);
+  const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
   try {
     const response = await fetch(`/api${path}`, {
       method, signal: controller.signal, credentials: 'same-origin', cache: 'no-store',

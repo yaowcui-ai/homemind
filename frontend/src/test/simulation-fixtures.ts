@@ -26,11 +26,12 @@ export function makeSnapshot(): Snapshot {
 
 export function makeTask(patch: Partial<TaskDetail> = {}): TaskDetail {
   return {
-    id: 'task-1', scenario: 'away', status: 'partial', created_at: 1, updated_at: 1,
+    id: 'task-1', mode: 'rule', scenario: 'away', status: 'partial', created_at: 1, updated_at: 1,
     world_id: 'world-test', message: '部分条件未知', request: { scenario: 'away', room_ids: ['room-1'] },
     preferences_snapshot: { version: 1, comfort_temperature_c: 26, sleep_temperature_c: 27, fan_mode: 'low', arrival_lead_minutes: 20 },
     initial_snapshot: makeSnapshot(), final_snapshot: makeSnapshot(), actions: [],
+    plan: { actions: [], constraints: [], temperatures: [], due_at_minutes: null }, agent_run: null,
     verification: { due_at_minutes: null, checked_at_minutes: 0, conditions: [{ label: '灯状态', outcome: 'unknown', message: '读数尚未知' }] },
     ...patch,
-  };
+  } as TaskDetail;
 }

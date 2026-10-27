@@ -15,7 +15,7 @@ test('未登录先显示账号入口，HttpOnly会话注册后才可读取家庭
   await page.goto('/');
   await expect(page.getByRole('heading', { name: '欢迎回家' })).toBeVisible();
   await expect(page.getByTestId('entity-count')).toHaveCount(0);
-  await page.screenshot({ path: path.resolve('../output/figma-sync-login.png'), fullPage: true });
+  await page.screenshot({ path: path.resolve('../output/product-b-regression-login.png'), fullPage: true });
   await credentials(page, username(), true);
   const cookies = await page.context().cookies();
   expect(cookies.find((cookie) => cookie.name === 'homemind_session')?.httpOnly).toBe(true);

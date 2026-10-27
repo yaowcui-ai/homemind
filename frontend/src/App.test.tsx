@@ -48,7 +48,7 @@ describe('工程基础控制台', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json(health)));
     renderApp();
     await screen.findByText('后端已连接');
-    expect(screen.getByText('当前为本地仿真，尚未接入真实设备或 Agent。')).toBeInTheDocument();
+    expect(screen.getByText('设备与时间为本地仿真，尚未接入真实硬件；自然语言能力以模型配置和任务结果为准。')).toBeInTheDocument();
   });
 
   it('浏览器报告离线后，手动检查仍会发起本地请求而不保留假在线', async () => {

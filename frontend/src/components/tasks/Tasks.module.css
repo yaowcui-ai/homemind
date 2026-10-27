@@ -1,4 +1,16 @@
 .banner { margin: 0 0 24px; border: 0; background: var(--hm-primary-soft); }
+.modeSwitch, .taskActions, .optionList { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.modeSwitch :global(.ant-btn), .taskActions :global(.ant-btn), .optionList :global(.ant-btn) { max-width: 100%; height: auto; min-height: 38px; white-space: normal; }
+.recovery { margin-top: 20px; }
+.agentForm { display: grid; gap: 12px; margin-top: 18px; }
+.agentForm label, .continueForm label { display: block; font-size: 13px; margin: 10px 0 8px; }
+.agentForm :global(.ant-select) { width: 100%; }
+.plan { background: var(--hm-primary-soft); border-radius: 8px; padding: 1px 16px 8px; margin-top: 18px; }
+.plan p, .records p, .requestText, .continueForm p { font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; white-space: pre-wrap; }
+.records { margin-top: 20px; font-size: 12px; color: var(--hm-muted); }
+.records summary { cursor: pointer; color: var(--hm-primary); line-height: 1.7; }
+.continueForm { margin-top: 16px; }
+.continueForm > :global(.ant-btn) { margin-top: 12px; }
 .columns { display: grid; grid-template-columns: minmax(300px, .85fr) minmax(0, 1.35fr); gap: 24px; align-items: start; margin: 24px 0; }
 .columns > div { min-width: 0; }
 .card { background: var(--hm-surface); padding: 22px; border: 1px solid var(--hm-border); border-radius: 12px; margin: 24px 0; min-width: 0; }

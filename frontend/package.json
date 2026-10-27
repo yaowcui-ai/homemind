@@ -1,7 +1,7 @@
 {
   "name": "homemind-web",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "engines": {
     "node": ">=24.14.1 <25"
@@ -12,7 +12,8 @@
     "preview": "vite preview --host 127.0.0.1 --port 5174 --strictPort",
     "lint": "eslint .",
     "test": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:agent": "playwright test --config playwright.agent.config.ts"
   },
   "dependencies": {
     "@ant-design/icons": "6.3.4",

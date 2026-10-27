@@ -24,7 +24,7 @@ export default function ConnectionCard() {
       </p>
       <div className={styles.connectionMeta}><span>HomeMind API</span><span>{connected ? `v${health.data.version}` : '等待响应'}</span></div>
       <Button block icon={<ReloadOutlined spin={checking} />} disabled={checking} onClick={() => { void health.refetch(); }}>重新检查</Button>
-      <p className={styles.connectionHint}>当前为本地仿真，尚未接入真实设备或 Agent。</p>
+      <p className={styles.connectionHint}>设备与时间为本地仿真，尚未接入真实硬件；自然语言能力以模型配置和任务结果为准。</p>
     </section>
   );
 }
