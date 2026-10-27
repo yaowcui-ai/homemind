@@ -52,11 +52,14 @@ export default function TaskComposer({ snapshot, preferences, onCreated, disable
       <Form.Item label="作用房间" name="room_ids" rules={[{ required: true, message: '至少选择一个房间' }, { validator: async (_, value: string[]) => {
         if (scenario !== 'away' && value?.length !== 1) throw new Error('回家或睡眠方案请选择一个房间');
       } }]}><Select mode="multiple" options={roomOptions} placeholder="选择当前家庭的房间" /></Form.Item>
-      {scenario !== 'away' && <Form.Item label="目标温度（℃）" name="target_temperature_c" rules={[{ required: true }]}><InputNumber min={16} max={30} precision={0} /></Form.Item>}
-      {scenario === 'homecoming' && <Form.Item label="准备时间（仿真分钟）" name="ready_in_minutes" rules={[{ required: true }]}><InputNumber min={1} max={1440} precision={0} /></Form.Item>}
+      <div className={styles.fieldPair}>
+        {scenario !== 'away' && <Form.Item label="目标温度（℃）" name="target_temperature_c" rules={[{ required: true }]}><InputNumber min={16} max={30} precision={0} /></Form.Item>}
+        {scenario === 'homecoming' && <Form.Item label="准备时间（仿真分钟）" name="ready_in_minutes" rules={[{ required: true }]}><InputNumber min={1} max={1440} precision={0} /></Form.Item>}
+      </div>
       <Form.Item label="保留设备（不改变）" name="keep_entity_ids"><Select mode="multiple" allowClear options={snapshot.entities.filter((e) => e.enabled && ['light', 'climate', 'cover'].includes(e.type)).map((e) => ({ value: e.id, label: `${snapshot.rooms.find((r) => r.id === e.room_id)?.name} · ${e.name}` }))} /></Form.Item>
       <Form.Item label="保护房间（不执行动作）" name="protected_room_ids"><Select mode="multiple" allowClear options={roomOptions} /></Form.Item>
-      <Button aria-label="执行规则任务" type="primary" htmlType="submit" loading={pending} disabled={disabled || snapshot.rooms.length === 0}>执行规则任务</Button>
+      <Button block aria-label="执行规则任务" type="primary" htmlType="submit" loading={pending} disabled={disabled || snapshot.rooms.length === 0}>执行规则任务</Button>
     </Form>
+    <p className={styles.hint}>请求结果不明时先读取任务；同内容重试保留幂等键。</p>
   </section>;
 }

@@ -23,6 +23,8 @@
 
 当前状态：M3 账号隔离、MySQL 持久化与规则基线已完成；用户已发起 M4，[M4 细化设计](superpowers/specs/2026-10-27-m4-single-agent-design.md)待审阅，尚未实现。实际启动和演示见 [项目说明](../README.md)，接续与检查见 [当前记录](../CURRENT_CONTEXT.md)、[M3 验证](verification/m3-accounts-persistence.md)。当前已有多账号独立家庭和三个规则场景，没有模型/Agent、SSE 或真实硬件；后续逐阶段细化。
 
+用户在 M4 前插入的 Figma 浅色改版与 React 同步已完成：实际可编辑画稿、桌面/手机页面、30 单元与 21 浏览器回归及窄屏补查均有记录。Figma 原稿因 Starter 工具额度未回写的排版问题已在代码修正，用户已批准此差异。见 [设计与验证](verification/figma-redesign.md)。该改版不等同于 M4 Agent 完成。
+
 ## 如何让助手逐步开发
 
 用户说“开始第 N 步”即授权助手完成对应阶段的实现、必要测试与修复。助手先读取本文件、系统设计和该项目最新接续记录，再检查实际代码状态，不从记忆假定上一阶段已完成。

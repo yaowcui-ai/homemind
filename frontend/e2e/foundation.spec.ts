@@ -16,13 +16,13 @@ test('网页通过真实代理确认 HomeMind API 在线', async ({ page, reques
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
   await expect(page.getByText('后端已连接', { exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('让家，按你的节奏运转。');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('家庭概览');
   await expect(page.getByTestId('entity-count')).toHaveText('12个');
   await expect(page.getByRole('button', { name: /重新检查/ })).toBeEnabled();
   expect(errors).toEqual([]);
   await mkdir(outputDirectory, { recursive: true });
-  await page.screenshot({ path: path.join(outputDirectory, 'm3-desktop.png'), fullPage: true });
-  await page.screenshot({ path: path.join(outputDirectory, 'm3-desktop-overview.png') });
+  await page.screenshot({ path: path.join(outputDirectory, 'figma-sync-desktop.png'), fullPage: true });
+  await page.screenshot({ path: path.join(outputDirectory, 'figma-sync-desktop-overview.png') });
 });
 
 test('浏览器离线后显示失败，恢复网络并显式重试可连接', async ({ page, context }) => {
@@ -58,7 +58,7 @@ test('390px 手机视口可操作且没有横向溢出', async ({ page }) => {
   }));
   expect(geometry.page).toBeLessThanOrEqual(geometry.viewport);
   await mkdir(outputDirectory, { recursive: true });
-  await page.screenshot({ path: path.join(outputDirectory, 'm3-mobile.png'), fullPage: true });
+  await page.screenshot({ path: path.join(outputDirectory, 'figma-sync-mobile.png'), fullPage: true });
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: path.join(outputDirectory, 'm3-mobile-overview.png') });
+  await page.screenshot({ path: path.join(outputDirectory, 'figma-sync-mobile-overview.png') });
 });

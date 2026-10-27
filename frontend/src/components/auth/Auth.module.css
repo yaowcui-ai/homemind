@@ -1,13 +1,24 @@
-.page { display: grid; place-items: center; min-height: 100vh; padding: 24px; background: radial-gradient(ellipse at top left, #e4edde, transparent 65%), #f7f7ef; }
-.card { width: min(100%, 440px); padding: 35px; border: 1px solid #dce4d4; border-radius: 18px; background: #fffefa; box-shadow: 0 18px 65px #1e463312; }
-.brand { display: flex; align-items: center; gap: 13px; color: #234d3d; font-size: 26px; font-weight: 650; }
-.brand > :global(.anticon) { padding: 9px; border: 1px solid #b5c8a9; border-radius: 11px; }
-.brand small { display: block; margin-top: 4px; font-size: 10px; font-weight: 400; letter-spacing: 1px; color: #849477; }
-.eyebrow { margin-top: 38px; color: #82996d; font-size: 9px; letter-spacing: 2px; }
-.card h1 { margin: 12px 0; color: #284a37; font-size: 27px; font-weight: 550; }
-.description, .foot { font-size: 12px; line-height: 1.9; color: #819078; }
-.tabs { display: flex; gap: 9px; margin: 23px 0; }
+.page { display: grid; place-items: center; min-height: 100vh; padding: 32px; background: var(--hm-canvas); }
+.card { width: min(100%, 460px); padding: 36px; border: 1px solid var(--hm-border); border-radius: 16px; background: var(--hm-surface); box-shadow: 0 12px 50px #172b4d08; }
+.authLayout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: min(100%, 1040px); background: var(--hm-surface); border: 1px solid var(--hm-border); border-radius: 20px; overflow: hidden; box-shadow: 0 16px 60px #172b4d08; }
+.authLayout .card { width: 100%; max-width: none; border: 0; border-radius: 0; box-shadow: none; padding: 44px; }
+.brandPanel { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; padding: 36px; background: linear-gradient(145deg, #EFF6FF, #E8F0FE 70%, #F0FDFA); }
+.panelLogo { display: flex; align-items: center; gap: 10px; color: var(--hm-text); font-size: 24px; font-weight: 600; }
+.panelLogo :global(.anticon) { color: var(--hm-primary); font-size: 30px; }
+.panelContent { padding: 40px 0; }
+.homeIllustration { display: grid; place-items: center; width: 100px; height: 100px; margin-bottom: 24px; border-radius: 24px; background: var(--hm-surface); color: var(--hm-primary); font-size: 64px; box-shadow: 0 10px 30px #2563eb0c; }
+.panelContent h2 { margin: 0 0 18px; font-size: 31px; line-height: 1.5; color: var(--hm-text); }
+.panelContent p { color: var(--hm-muted); font-size: 14px; line-height: 1.9; }
+.panelFoot { margin-bottom: 0; font-size: 12px; color: var(--hm-muted); line-height: 1.7; }
+.brand { display: flex; align-items: center; gap: 11px; color: var(--hm-text); font-size: 24px; font-weight: 600; margin-bottom: 28px; }
+.brand > :global(.anticon) { color: var(--hm-primary); font-size: 30px; }
+.brand small { display: block; margin-top: 4px; font-size: 11px; font-weight: 400; color: var(--hm-muted); }
+.card h1 { margin: 12px 0; color: var(--hm-text); font-size: 27px; font-weight: 650; line-height: 1.5; }
+.description, .foot { font-size: 13px; line-height: 1.8; color: var(--hm-muted); }
+.tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 24px 0; padding: 5px; border-radius: 10px; background: var(--hm-canvas); }
+.tabs :global(.ant-btn) { box-shadow: none; }
 .card :global(.ant-alert) { margin-bottom: 18px; }
 .card :global(.ant-form) { margin-top: 22px; }
-.foot { margin: 22px 0 0; font-size: 10px; }
-@media (max-width: 480px) { .page { padding: 20px; } .card { padding: 27px 23px; } .card h1 { font-size: 25px; } }
+.foot { margin: 24px 0 0; font-size: 11px; }
+@media (max-width: 760px) { .authLayout { grid-template-columns: minmax(0, 1fr); max-width: 460px; } .brandPanel { display: none; } .authLayout .card { padding: 32px; } }
+@media (max-width: 480px) { .page { padding: 20px 16px; } .card, .authLayout .card { padding: 27px 23px; } .card h1 { font-size: 25px; } }

@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { BulbOutlined, ControlOutlined, EditOutlined, ExperimentOutlined } from '@ant-design/icons';
+import { BorderOutlined, BulbOutlined, CloudOutlined, ControlOutlined, DashboardOutlined, EditOutlined, TeamOutlined, WindowsOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Select, Switch, Tag } from 'antd';
 import { simulationApi } from '../../api/simulation';
 import type { ControlInput, EntityView } from '../../api/simulation.types';
 import type { Operation } from './labels';
 import { entityLabels, isSensor } from './labels';
 import styles from './Simulation.module.css';
+
+const entityIcons = { light: BulbOutlined, climate: CloudOutlined, cover: BorderOutlined, temperature: DashboardOutlined, occupancy: TeamOutlined, window: WindowsOutlined };
 
 export interface EntityCardProps {
   entity: EntityView;
@@ -26,6 +28,7 @@ export default function EntityCard({ entity, worldId, run, pending, onEdit, onFa
   const [position, setPosition] = useState(typeof entity.state.position_pct === 'number' ? entity.state.position_pct : 100);
   const [sensorTemperature, setSensorTemperature] = useState(typeof entity.state.temperature_c === 'number' ? entity.state.temperature_c : 27);
   const sensor = isSensor(entity.type);
+  const Icon = entityIcons[entity.type];
   const observed = entity.enabled && entity.available && entity.known;
   const writable = !pending && entity.enabled && entity.available && entity.pending_until_minutes === null;
   let value = '未知';
@@ -47,30 +50,30 @@ export default function EntityCard({ entity, worldId, run, pending, onEdit, onFa
   }
 
   return (
-    <article className={styles.entityCard} aria-label={entity.name}>
+    <article className={`${styles.entityCard} ${sensor ? styles.sensorCard : ''}`} aria-label={entity.name}>
       <div className={styles.entityHead}>
-        <span className={styles.entityIcon}>{sensor ? <ExperimentOutlined /> : <BulbOutlined />}</span>
+        <span className={styles.entityIcon}><Icon /></span>
         <div className={styles.entityIdentity}><h3>{entity.name}</h3><span>{entityLabels[entity.type]}</span></div>
-        <Tag color={!entity.enabled ? 'default' : !entity.available ? 'orange' : 'green'}>{!entity.enabled ? '停用' : entity.available ? '在线' : '离线'}</Tag>
+        <Tag color={!entity.enabled ? 'default' : !entity.available || !entity.known ? 'orange' : 'cyan'}>{!entity.enabled ? '停用' : !entity.available ? '离线' : !entity.known ? '读数未知' : '在线'}</Tag>
       </div>
       <div className={styles.entityValue} aria-live="polite">{value}</div>
       <div className={styles.entityMeta}>
-        <span>{sensor ? '只读传感' : '可控设备'}</span>
+        <span>{sensor ? '只读传感' : '当前状态 · 独立读回'}</span>
         <span>{sensor ? `第 ${entity.observed_at_minutes} 分钟读数` : `${entity.energy_wh.toFixed(3)} Wh`}</span>
       </div>
       {entity.pending_until_minutes !== null && <p className={styles.pendingNote}>待第 {entity.pending_until_minutes} 分钟生效</p>}
       {!sensor && <div className={styles.controlForm}>
         <span className={styles.controlHint}>目标设置 · 点击应用后生效</span>
-        {entity.type === 'light' && <div className={styles.controlRow}>
-          <Switch checked={lightOn} onChange={setLightOn} checkedChildren="开" unCheckedChildren="关" aria-label={`${entity.name}目标开关`} disabled={!writable} />
-          <label>亮度 <InputNumber aria-label={`${entity.name}亮度`} min={0} max={100} precision={0} value={brightness} onChange={(v) => setBrightness(v ?? 0)} disabled={!writable} suffix="%" /></label>
+        {entity.type === 'light' && <div className={styles.lightControls}>
+          <label className={styles.switchLabel}>电源<Switch checked={lightOn} onChange={setLightOn} checkedChildren="开" unCheckedChildren="关" aria-label={`${entity.name}目标开关`} disabled={!writable} /></label>
+          <label className={styles.fieldLabel}>亮度（%）<InputNumber aria-label={`${entity.name}亮度`} min={0} max={100} precision={0} value={brightness} onChange={(v) => setBrightness(v ?? 0)} disabled={!writable} suffix="%" /></label>
         </div>}
         {entity.type === 'climate' && <>
           <div className={styles.controlRow}>
-            <Select aria-label={`${entity.name}模式`} value={mode} onChange={setMode} disabled={!writable} options={[{ value: 'off', label: '关闭' }, { value: 'cool', label: '制冷' }]} />
-            <InputNumber aria-label={`${entity.name}目标温度`} min={16} max={30} precision={0} value={temperature} onChange={(v) => setTemperature(v ?? 26)} disabled={!writable} suffix="℃" />
+            <label className={styles.fieldLabel}>模式<Select aria-label={`${entity.name}模式`} value={mode} onChange={setMode} disabled={!writable} options={[{ value: 'off', label: '关闭' }, { value: 'cool', label: '制冷' }]} /></label>
+            <label className={styles.fieldLabel}>温度（℃）<InputNumber aria-label={`${entity.name}目标温度`} min={16} max={30} precision={0} value={temperature} onChange={(v) => setTemperature(v ?? 26)} disabled={!writable} suffix="℃" /></label>
           </div>
-          <Select aria-label={`${entity.name}风速`} value={fan} onChange={setFan} disabled={!writable} options={[{ value: 'auto', label: '自动风速' }, { value: 'low', label: '低速风' }]} />
+          <label className={styles.fieldLabel}>风速<Select aria-label={`${entity.name}风速`} value={fan} onChange={setFan} disabled={!writable} options={[{ value: 'auto', label: '自动风速' }, { value: 'low', label: '低速风' }]} /></label>
         </>}
         {entity.type === 'cover' && <label className={styles.positionLabel}>目标开度 <InputNumber aria-label={`${entity.name}开度`} min={0} max={100} precision={0} value={position} onChange={(v) => setPosition(v ?? 0)} disabled={!writable} suffix="%" /></label>}
         <Button block type="primary" onClick={apply} disabled={!writable}>应用设置</Button>

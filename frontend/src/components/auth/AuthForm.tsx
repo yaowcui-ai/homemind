@@ -19,9 +19,14 @@ export default function AuthForm({ onSession }: { onSession: (session: AuthSessi
     finally { submitting.current = false; setPending(false); }
   }
   return <main className={styles.page}>
+    <div className={styles.authLayout}>
+    <aside className={styles.brandPanel} aria-label="HomeMind 简介">
+      <div className={styles.panelLogo}><HomeOutlined /> HomeMind</div>
+      <div className={styles.panelContent}><HomeOutlined className={styles.homeIllustration} /><h2>清晰掌握，<br />家的每一次变化。</h2><p>连接房间、设备与生活习惯。<br />从可读取的状态开始，管理属于自己的家。</p></div>
+      <p className={styles.panelFoot}>个人家庭 · 配置持续保存 · 仿真控制台</p>
+    </aside>
     <section className={styles.card} aria-label="账号入口">
-      <div className={styles.brand}><HomeOutlined /><span>HomeMind<small>你的家，有自己的节奏</small></span></div>
-      <p className={styles.eyebrow}>A MORE THOUGHTFUL HOME</p>
+      <div className={styles.brand}><HomeOutlined /><span>HomeMind<small>智能家居控制台</small></span></div>
       <h1>{mode === 'login' ? '欢迎回家' : '从你的第一个家开始'}</h1>
       <p className={styles.description}>{mode === 'login' ? '登录后继续管理你的房间、设备与任务。' : '注册后获得独立的两房十二实体模板，随时可以修改。'}</p>
       <div className={styles.tabs}>
@@ -40,5 +45,6 @@ export default function AuthForm({ onSession }: { onSession: (session: AuthSessi
       </Form>
       <p className={styles.foot}>每个账号拥有独立家庭。当前设备与温度为仿真数据。</p>
     </section>
+    </div>
   </main>;
 }

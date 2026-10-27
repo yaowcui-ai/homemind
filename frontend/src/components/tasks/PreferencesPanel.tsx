@@ -29,9 +29,15 @@ function Editor({ data, refresh }: { data: Preferences; refresh: () => Promise<u
 }
 export default function PreferencesPanel({ homeId }: { homeId: string }) {
   const query = useQuery({ queryKey: ['preferences', homeId], queryFn: preferencesApi.get, networkMode: 'always', retry: false, refetchOnWindowFocus: false, refetchOnReconnect: false });
-  return <section className={`${styles.card} ${styles.preferences}`} aria-label="家庭偏好">
+  return <div className={styles.preferenceLayout}><section className={`${styles.card} ${styles.preferences}`} aria-label="家庭偏好">
     <h2>舒适与习惯</h2><p className={styles.hint}>作为新规则任务的默认值，任务中仍可明确指定温度。修改不会改写过去的任务。</p>
     {query.isError && <Alert type="error" title={query.error.message} action={<Button onClick={() => { void query.refetch(); }}>重试读取</Button>} />}
     {!query.data ? <Spin /> : <Editor data={query.data} refresh={() => query.refetch()} />}
-  </section>;
+  </section><aside className={styles.preferenceInfo}>
+    <h2>让任务沿用你的习惯</h2>
+    <p>回家与睡眠场景会带入相应的目标温度。风速和准备时间也会作为新任务的默认值。</p>
+    <div><strong>随时调整</strong><p>创建任务时仍可明确指定温度与作用房间。</p></div>
+    <div><strong>历史保持原样</strong><p>保存只影响之后的新任务，不会改写已保存的任务或立即控制设备。</p></div>
+    <small>温度与准备时间用于当前仿真环境。</small>
+  </aside></div>;
 }

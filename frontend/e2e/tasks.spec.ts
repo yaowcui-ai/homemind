@@ -27,7 +27,7 @@ test('离家任务实际执行并保留历史，刷新不会重发任务', async
   await expect(page.getByRole('region', { name: '任务详情' }).getByText('全部条件已核验', { exact: true })).toBeVisible();
   const after: Snapshot = await (await request.get('/api/simulation')).json();
   expect(after.entities.find((e) => e.id === lamp.id)!.state.power).toBe(false);
-  await page.getByRole('region', { name: '任务详情' }).screenshot({ path: path.resolve('../output/m3-task-result.png') });
+  await page.getByRole('region', { name: '任务详情' }).screenshot({ path: path.resolve('../output/figma-sync-task-result.png') });
   await page.reload(); await navigate(page);
   await page.getByRole('region', { name: '任务列表' }).getByRole('button', { name: /离家模式/ }).first().click();
   await expect(page.getByText(`任务编号 ${task.id}`, { exact: true })).toBeVisible();
@@ -73,7 +73,7 @@ test('偏好保存后新任务使用新默认值，390px任务表单无横向溢
   await navigate(page);
   await expect(page.getByLabel('目标温度（℃）', { exact: true })).toHaveValue('25');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-  await page.getByRole('region', { name: '规则任务表单' }).screenshot({ path: path.resolve('../output/m3-task-mobile.png') });
+  await page.getByRole('region', { name: '规则任务表单' }).screenshot({ path: path.resolve('../output/figma-sync-task-mobile.png') });
 });
 
 test('已提交但响应丢失后，切换概览再重试相同任务仍复用幂等键', async ({ page, request }) => {

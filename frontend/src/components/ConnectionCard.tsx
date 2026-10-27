@@ -13,7 +13,6 @@ export default function ConnectionCard() {
   const connected = health.isSuccess && !health.isError && !checking;
   return (
     <section className={styles.connection} aria-label="后端连接">
-      <div className={styles.cardHeader}><span className={styles.sectionLabel}>服务连接</span><CloudServerOutlined /></div>
       <div className={`${styles.statusIcon} ${checking ? styles.pending : connected ? styles.online : styles.offline}`}>
         {connected ? <CheckCircleFilled /> : <CloudServerOutlined />}
       </div>

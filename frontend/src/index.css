@@ -1,6 +1,22 @@
-:root { font-family: Inter, "Microsoft YaHei", "PingFang SC", sans-serif; color: #2d4434; background: #f8f8f1; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+:root {
+  --hm-canvas: #F5F7FB;
+  --hm-surface: #FFFFFF;
+  --hm-text: #172B4D;
+  --hm-muted: #5E6C84;
+  --hm-border: #DFE5EF;
+  --hm-primary: #2563EB;
+  --hm-primary-soft: #EFF6FF;
+  --hm-teal: #0F766E;
+  --hm-teal-soft: #F0FDFA;
+  --hm-warning: #92400E;
+  --hm-danger: #B91C1C;
+  font-family: Inter, "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  color: var(--hm-text); background: var(--hm-canvas);
+  font-synthesis: none; text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+}
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
 button, a { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, a:focus-visible { outline: 2px solid #92ad76; outline-offset: 4px; }
-::selection { background: #dbe5c6; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--hm-primary); outline-offset: 4px; }
+::selection { background: #DBEAFE; }

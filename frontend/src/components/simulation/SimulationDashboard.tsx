@@ -8,7 +8,7 @@ import EntityCard from './EntityCard';
 import FamilyConfiguration from './FamilyConfiguration';
 import { EntityModal, RoomModal } from './ConfigurationForms';
 import FaultPanel from './FaultPanel';
-import type { Operation } from './labels';
+import { isSensor, type Operation } from './labels';
 import styles from './Simulation.module.css';
 
 interface Props { view: 'overview' | 'configuration'; homeId: string; debugEnabled: boolean }
@@ -51,7 +51,7 @@ export default function SimulationDashboard({ view, homeId, debugEnabled }: Prop
   const pending = mutation.isPending || query.isFetching || query.isError;
   const faultEntity = snapshot.entities.find((e) => e.id === faultId);
   return <>
-    <Alert className={styles.banner} type="info" showIcon title="个人家庭 · 配置与状态持续保存" description={`当前账号拥有独立家庭。设备状态、温度和能耗均为仿真数据。${debugEnabled ? '演示控制已开启，可模拟环境变化与设备故障。' : ''}`} />
+    <p className={styles.banner}>个人家庭 · 配置与状态持续保存。设备状态、温度和能耗均为仿真数据。{debugEnabled && '演示控制已开启。'}</p>
     {notice && <Alert type={notice.type} showIcon title={notice.text} closable onClose={() => setNotice(null)} />}
     {query.isError && <Alert type="warning" title="当前展示上一次状态，暂时禁止操作" description={query.error.message} />}
 
@@ -71,6 +71,7 @@ export default function SimulationDashboard({ view, homeId, debugEnabled }: Prop
           <Button aria-label="重置运行" icon={<UndoOutlined />} disabled={pending}>重置运行</Button>
         </Popconfirm>}
       </div>
+      <p className={styles.clockHint}>{debugEnabled ? '演示控制 · 时间只随显式推进变化；重置保留家庭配置。' : '时间只随显式推进变化；当前仅显示仿真状态。'}</p>
     </section>
 
     {view === 'configuration' ? <FamilyConfiguration snapshot={snapshot} run={run} pending={pending} onRoom={(room) => setRoomEditor({ room })} onEntity={(entity, roomId) => setEntityEditor({ entity, roomId })} />
@@ -88,8 +89,17 @@ export default function SimulationDashboard({ view, homeId, debugEnabled }: Prop
               <Button icon={<PlusOutlined />} disabled={pending} onClick={() => setEntityEditor({ roomId: room.id })}>新增实体</Button>
             </div>
           </div>
+          <h3 className={styles.groupTitle}>房间感知 <span>只读观测</span></h3>
+          <div className={styles.sensorGrid}>
+            {snapshot.entities.filter((e) => e.room_id === room.id && isSensor(e.type)).map((entity) => <EntityCard
+              key={`${entity.id}:${entity.version}`} entity={entity} worldId={snapshot.world_id} run={run} pending={pending} debugEnabled={debugEnabled}
+              onEdit={(e) => setEntityEditor({ entity: e })} onFault={(e) => setFaultId(e.id)}
+            />)}
+          </div>
+          {!snapshot.entities.some((e) => e.room_id === room.id && isSensor(e.type)) && <p className={styles.formHint}>尚未配置感知实体，房间读数可能为未知。</p>}
+          <h3 className={styles.groupTitle}>设备控制 <span>目标设置需应用后生效</span></h3>
           <div className={styles.entityGrid}>
-            {snapshot.entities.filter((e) => e.room_id === room.id).map((entity) => <EntityCard
+            {snapshot.entities.filter((e) => e.room_id === room.id && !isSensor(e.type)).map((entity) => <EntityCard
               key={`${entity.id}:${entity.version}`} entity={entity} worldId={snapshot.world_id} run={run} pending={pending} debugEnabled={debugEnabled}
               onEdit={(e) => setEntityEditor({ entity: e })} onFault={(e) => setFaultId(e.id)}
             />)}

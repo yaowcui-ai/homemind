@@ -13,11 +13,15 @@ const TasksPanel = lazy(() => import('./components/tasks/TasksPanel'));
 const PreferencesPanel = lazy(() => import('./components/tasks/PreferencesPanel'));
 type View = 'overview' | 'configuration' | 'tasks' | 'preferences';
 const viewLabels: Record<View, string> = { overview: '家庭概览', configuration: '家庭配置', tasks: '规则任务', preferences: '偏好设置' };
+const viewDescriptions: Record<View, string> = { overview: '掌握房间状态，清晰控制每一个设备。', configuration: '管理房间、实体与主读数，配置适合自己的家。', tasks: '选定范围，执行场景，逐项核验结果。', preferences: '保存舒适与习惯，为新任务提供默认设置。' };
 
 export default function App() {
   return <ConfigProvider locale={zhCN} theme={{ token: {
-    colorPrimary: '#285b47', borderRadius: 10,
-    fontFamily: 'Inter, "Microsoft YaHei", "PingFang SC", sans-serif',
+    colorPrimary: '#2563EB', colorInfo: '#2563EB', colorSuccess: '#0F766E',
+    colorWarning: '#92400E', colorError: '#B91C1C', colorText: '#172B4D',
+    colorTextSecondary: '#5E6C84', colorBorder: '#DFE5EF', colorBgContainer: '#FFFFFF',
+    borderRadius: 8, controlHeight: 38,
+    fontFamily: 'Inter, "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif',
   } }}>
     <AuthGate><Workspace /></AuthGate>
   </ConfigProvider>;
@@ -32,7 +36,7 @@ function Workspace() {
       <aside className={styles.sidebar}>
         <a href="/" className={styles.brand} aria-label="HomeMind 首页">
           <span className={styles.brandIcon}><HomeOutlined /></span>
-          <span>HomeMind<span className={styles.brandCaption}>智能家居协同控制台</span></span>
+          <span>HomeMind<span className={styles.brandCaption}>智能家居控制台</span></span>
         </a>
         <div className={styles.navLabel}>工作空间</div>
         <nav className={styles.navigation} aria-label="主导航">
@@ -42,10 +46,10 @@ function Workspace() {
           <button aria-label="偏好设置" className={view === 'preferences' ? styles.activeNav : ''} onClick={() => setView('preferences')}><SettingOutlined /> 偏好设置</button>
         </nav>
         <div className={styles.sidebarNote}>
-          <span className={styles.noteMark}>M3</span><strong>属于你自己的家</strong>
+          <span className={styles.noteMark}><HomeOutlined /></span><strong>属于你自己的家</strong>
           <p>独立的家庭与偏好，<br />持续保存的每一次变化。</p>
         </div>
-        <div className={styles.sidebarFoot}>HOME, THOUGHTFULLY CONNECTED</div>
+        <div className={styles.sidebarFoot}>M3 · 设备仿真</div>
       </aside>
       <main className={styles.main}>
         <header className={styles.topbar}>
@@ -53,9 +57,8 @@ function Workspace() {
           <div className={styles.accountActions}><span className={styles.stageBadge}><span /> 设备仿真</span><span title={session.user.username}>{session.user.username}</span><button onClick={() => { void logout(); }}>退出登录</button></div>
         </header>
         <section className={styles.hero}>
-          <p className={styles.eyebrow}><span /> A MORE THOUGHTFUL HOME</p>
-          <h1>让家，按你的节奏运转<span>。</span></h1>
-          <p className={styles.heroText}>从开灯到调温，从窗户开合到人员进出，<br className={styles.mobileBreak} />每一次变化，都有可读取的状态。</p>
+          <h1>{viewLabels[view]}</h1>
+          <p className={styles.heroText}>{viewDescriptions[view]}</p>
         </section>
         <div className={styles.mobileTabs} aria-label="视图切换">
           {(Object.entries(viewLabels) as [View, string][]).map(([key, label]) => <button key={key} className={view === key ? styles.selectedTab : ''} onClick={() => setView(key)}>{label}</button>)}

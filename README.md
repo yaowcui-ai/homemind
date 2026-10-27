@@ -16,7 +16,7 @@ LangGraph 为主、LangChain 为辅的 Agent 编排从 M4 开始；现在的任�
 
 后续开发先读 [接续记录](CURRENT_CONTEXT.md) 和 [阶段路线](docs/homemind-development-roadmap.md)。接口和状态语义见 [M3 实施设计](docs/superpowers/specs/2026-10-27-m3-accounts-persistence-design.md)。
 
-前端改版进行中：[Figma 浅色控制台初稿](https://www.figma.com/design/Bo7Jqfnh4NNRQiMwNvXc2O)。已生成桌面/手机可编辑页面，尚未同步当前 React；Figma 工具额度耗尽前发现的排版问题及检查范围见 [设计记录](docs/verification/figma-redesign.md)。
+前端已按用户批准的 [Figma 浅色控制台设计](https://www.figma.com/design/Bo7Jqfnh4NNRQiMwNvXc2O) 同步：浅色侧栏、紧凑页标题、房间感知/设备控制分组、规则任务、家庭配置、偏好与登录/注册，适配桌面和 360/390px 手机。开关和时钟排版已在 React 修复；Figma 稿因 Starter 工具额度限制尚未回写修正。实际检查、截图及差异见 [设计记录](docs/verification/figma-redesign.md)。
 
 ## 环境要求
 
@@ -64,6 +64,8 @@ npm.cmd run dev
 ```
 
 看到 Vite 输出本地地址后，打开 [网页](http://127.0.0.1:5174/)。首次显示登录/注册；用户名使用 3—32 位字母、数字、下划线，密码 12—128 字符。注册创建一次独立家庭，之后登录不会恢复已删除设备。
+
+这次界面改版未变更依赖或启动命令，已安装依赖时无需重新执行 `npm ci`。开发服务已运行时刷新网页即可查看；关闭后按上面两个终端步骤重新启动。
 
 数据库准备脚本保留匹配的容器和卷，不重建已有数据。网页/API 停止时在各自终端按 `Ctrl+C`。
 
