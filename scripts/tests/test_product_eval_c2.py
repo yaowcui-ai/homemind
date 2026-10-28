@@ -70,9 +70,11 @@ def test_retest_only_selects_recorded_failures_not_successes_or_unrun_cases():
             m.select_retests(cases, records, requested)
 
 
-@pytest.mark.parametrize("foreign_reply", [False, True])
+@pytest.mark.parametrize(
+    "foreign_reply,bad_options", [(False, False), (True, False), (False, True)]
+)
 def test_free_answer_continues_same_task_and_keeps_predeclared_metrics(
-    tmp_path, monkeypatch, foreign_reply
+    tmp_path, monkeypatch, foreign_reply, bad_options
 ):
     m = module()
     sys.path.insert(0, str(SCRIPT.parents[1] / "backend/src"))
@@ -91,13 +93,21 @@ def test_free_answer_continues_same_task_and_keeps_predeclared_metrics(
                     ],
                 )
             self.rounds += 1
+            home = json.loads(reads[-1].content)
             if self.rounds == 1:
                 return AIMessage(
                     content=json.dumps(
-                        {"kind": "clarify", "question": "选择开灯还是关灯？", "options": []}
+                        {
+                            "kind": "clarify",
+                            "question": "选择开灯还是关灯？",
+                            "options": [
+                                {"kind": "room", "id": home["rooms"][0]["id"], "label": "客厅"}
+                            ]
+                            if bad_options
+                            else [],
+                        }
                     )
                 )
-            home = json.loads(reads[-1].content)
             lamp = next(e for e in home["entities"] if e["name"] == "客厅主灯")
             return AIMessage(
                 content=json.dumps(
@@ -135,10 +145,11 @@ def test_free_answer_continues_same_task_and_keeps_predeclared_metrics(
         monkeypatch.setattr(m.base, "checked", changed_id)
     with m.base.official_http_only():
         result = m.base.run_case(case, Controlled(), tmp_path / "free-answer.db")
-    assert result["score"]["case_pass"] is (not foreign_reply)
-    assert result["score"]["same_task_after_reply"] is (not foreign_reply)
-    assert result["score"]["goal_completed"] and result["score"]["exception_correct"]
-    assert result["final_task"]["agent_run"]["model_calls"] == 4
+    assert result["score"]["case_pass"] is (not foreign_reply and not bad_options)
+    assert result["score"]["same_task_after_reply"] is (not foreign_reply and not bad_options)
+    assert result["score"]["goal_completed"] is (not bad_options)
+    assert result["score"]["exception_correct"] is (not bad_options)
+    assert result["final_task"]["agent_run"]["model_calls"] == (2 if bad_options else 4)
 
 
 def test_authorized_batch_directory_is_fixed(tmp_path):

@@ -421,6 +421,7 @@ def run_case(case, model, path):
         initial_score = score_case(case, task, bindings)
         clarification_correct = initial_score.get("exception_correct")
         has_reply = bool(case.get("reply_selector") or case.get("reply_text"))
+        did_reply = False
         if has_reply and initial_score["case_pass"]:
             reply = (
                 bindings[case["reply_selector"]]
@@ -434,6 +435,7 @@ def run_case(case, model, path):
                     headers={"Idempotency-Key": "reply-" + uuid4().hex},
                 )
             )
+            did_reply = True
             expected_case = {**case, "expected": case["expected"]["followup"]}
         else:
             expected_case = case
@@ -458,7 +460,8 @@ def run_case(case, model, path):
         if has_reply:
             score["initial_clarification_correct"] = clarification_correct
             score["exception_correct"] = clarification_correct
-            score["same_task_after_reply"] = first["id"] == task["id"]
+            score["reply_submitted"] = did_reply
+            score["same_task_after_reply"] = did_reply and first["id"] == task["id"]
             score["case_pass"] = (
                 score["case_pass"]
                 and bool(clarification_correct)
