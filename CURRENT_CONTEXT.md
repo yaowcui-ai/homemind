@@ -4,6 +4,20 @@
 
 ## 当前授权与进度
 
+**最新为D1设计交付，以下C2/C1/B是历史。** 用户要求同时面向AI全栈和AI产品、评测调优不能少；“继续”延续本轮D1。当前分支`codex/product-d1-design`，基于C2 e95e0be；应用仍0.4.0/M4、迁移仍0004_product_c。本轮无业务代码/依赖/迁移更改、0真实模型请求，无新常驻服务，只本地保存不推送/合并/发布。
+
+交付：[D1全栈规格](docs/superpowers/specs/2026-10-28-product-d1-design.md)、[分步交付与需求映射](docs/product/product-d-delivery-plan.md)、[评测调优契约](docs/product/product-d-evaluation-design.md)、[核对记录](docs/verification/product-d1-design.md)。主对照S1为增强单Agent，同样获得预测资料；实验M为舒适/节能并行建议+协调，所有角色只读、程序统一执行/独立核验。当前三角色/预测工具都未实现；有限候选最优不能包装成多Agent必要性。
+
+现有引擎离线4重放：20min低风26.8/auto26.0；60min均26.0，低风550.050Wh/auto850.050Wh，首次达标41/17分钟。只针对默认初态、帘合/其他负载off的仿真；新复现脚本与原JSON一致，[证据](evaluation/results/product-d1-tradeoff-20261028.json)。不能外推真实节电、用户收益或多Agent效果。
+
+独立技术/方法审阅通过仅限设计，重点补入：verify/TaskDetail零动作multi保护，创建重放/回合兼容，完整物理输入/多空调窗帘边界、CPU/线程取消与实际worker结束才释放并发槽。S1/M共享原文/GoalContract/预测，不能程序偷换模型原选；固定能耗scope、初态达标0、等价解。D1口径冻结，候选实现和新验收样本还未冻结。
+
+**下一次继续：D2隔离预测+增强S1，先写具体实施计划/关键业务RED，再实现；不一口气做D3—D5。** 上限16房间/256实体（含归档）/4候选5760步需实测，不是已实现承诺。D3做专家+React/JSON持久化/旧历史；D4实际开发调优，D5新集验收/重复。44例仍全为开发集；无独立集/真人研究/多Agent收益/硬件。Figma在线新状态连线继续待额度，不重试绕过。
+
+当前没有D真实请求授权。预算文档的开发72硬止资金池、正式12×2×12=288和重复3×2×2×12=144均是未来建议上界（合504），不能自动发请求或承诺用满。使用前另列最小批次并获授权；C2余2已停止、C1额度用满，均不可转用。启动仍README的Docker→setup_mysql→API8110/网页5174。
+
+## C第二轮历史（最新D1以上方为准）
+
 **最新为C第二轮交付，以下C首轮/B是历史。** 用户“开始”授权C遗留P1清理，另明确本轮最多32真实请求。当前分支`codex/product-c2-stabilization`，版本仍0.4.0/M4，head迁移仍0004_product_c；无新依赖/迁移，仅本地提交，未推送/合并/发布。[C2报告](docs/product/product-c2-evaluation.md)、[44例案例库](docs/product/product-c-cases.md)。
 
 C2实现有限agent_run.diagnostic（阶段/输出类型/code/path/引用类型/当前家庭可定位），不存无效ID、被拒问题/label/raw输出，不查询别家庭；校验与执行安全不放宽。页面首屏解释无效引用/读数缺口/重复选项和下一步，诊断折叠、旧task兼容。重复(kind,id)拒绝为duplicate_option；互斥硬要求问用户放宽哪条，非对象取舍用options=[]+自由回答。

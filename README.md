@@ -6,9 +6,11 @@ LangGraph为主、LangChain为辅；规划Agent只读、程序校验后统一执
 
 后续按用户确认的产品阶段 A—E 推进，优先形成完整任务体验与真实效果证据，再验证按需多 Agent 的收益。阶段 A 产品定义材料：[PRD](docs/product/prd.md)、[需求证据与验证计划](docs/product/validation-plan.md)、[产品决策与迭代](docs/product/decision-iteration-log.md)。材料中的规划与假设不代表已实现或已验证。
 
+D1已完成[全栈方案与分阶段交付](docs/product/product-d-delivery-plan.md)、[单/多Agent评测及调优契约](docs/product/product-d-evaluation-design.md)。先做相同预测资料的增强单Agent，再研究舒适/节能/协调分工；当前尚未实现多Agent或预测工具。本轮仅现有引擎离线重放与设计核对，0真实模型请求，[记录与复现](docs/verification/product-d1-design.md)。无需新增依赖或迁移，启动步骤不变。
+
 ## 项目边界与技术栈
 
-本目录是独立Git仓库，当前分支`codex/product-c2-stabilization`。父工作区通过本地`.git/info/exclude`忽略本目录，旧项目不纳入本仓库。
+本目录是独立Git仓库，当前分支`codex/product-d1-design`。父工作区通过本地`.git/info/exclude`忽略本目录，旧项目不纳入本仓库。
 
 - 前端：React、TypeScript、Vite、Ant Design、TanStack Query。
 - API：Python 3.12、FastAPI、Pydantic Settings、Uvicorn。

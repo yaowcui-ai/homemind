@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-28 Asia/Shanghai",
+  "source": "existing_simulation_engine_only",
+  "real_model_requests": 0,
+  "new_forecast_tool_implemented": false,
+  "initial_facts": {
+    "living_temperature_c": 28.0,
+    "bedroom_temperature_c": 27.0,
+    "windows": "known_closed",
+    "occupancy": false,
+    "lights": "off",
+    "all_climate_initial_modes": "off",
+    "cover_target_pct": 0,
+    "target_temperature_c": 26
+  },
+  "model_version": "m2-decimal-minute-v1",
+  "physics_source_sha256": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+  "observations": [
+    {
+      "horizon_minutes": 20,
+      "fan_mode": "low",
+      "final_temperature_c": 26.8,
+      "first_observed_goal_minute": null,
+      "energy_wh": 183.383,
+      "deadline_met": false
+    },
+    {
+      "horizon_minutes": 20,
+      "fan_mode": "auto",
+      "final_temperature_c": 26.0,
+      "first_observed_goal_minute": 17,
+      "energy_wh": 283.383,
+      "deadline_met": true
+    },
+    {
+      "horizon_minutes": 60,
+      "fan_mode": "low",
+      "final_temperature_c": 26.0,
+      "first_observed_goal_minute": 41,
+      "energy_wh": 550.05,
+      "deadline_met": true
+    },
+    {
+      "horizon_minutes": 60,
+      "fan_mode": "auto",
+      "final_temperature_c": 26.0,
+      "first_observed_goal_minute": 17,
+      "energy_wh": 850.05,
+      "deadline_met": true
+    }
+  ]
+}
