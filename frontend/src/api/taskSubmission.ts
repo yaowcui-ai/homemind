@@ -123,8 +123,9 @@ export class TaskSubmission {
       this.update({ pending: null, ...(this.selectionVersion === selectedVersion ? { selectedId: task.id } : {}) });
       return task;
     } catch (error) {
-      // An explicit rejection has a known result. Transport/invalid-response failures remain unknown.
-      if (error instanceof ApiError && error.status >= 400 && error.status < 500) this.update({ pending: null });
+      // Busy rejects this attempt while an earlier same-key request may still commit.
+      // Keep that request's locator; other explicit rejections have a known result.
+      if (error instanceof ApiError && error.status >= 400 && error.status < 500 && error.code !== 'home_busy') this.update({ pending: null });
       throw error;
     } finally { this.update({ busy: false }); }
   }

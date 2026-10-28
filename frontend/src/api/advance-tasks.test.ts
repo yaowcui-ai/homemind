@@ -42,3 +42,31 @@ it('刷新只有匹配原key和body公开记录才释放推进pending，不因�
   expect(refreshed.getSnapshot().pending).toBeNull();
   expect(fetch.mock.calls.slice(1).every((call) => call[1].method === 'GET')).toBe(true);
 });
+
+it.each(['读取已提交记录', '同键再次重试'])('未知推进刷新后retry仍home_busy保留原意图，再刷新%s', async (finish) => {
+  const fetch = vi.fn().mockRejectedValueOnce(new Error('original response lost'));
+  vi.stubGlobal('fetch', fetch);
+  const original = new TaskSubmission('home-c');
+  await expect(original.advance('task-1', body)).rejects.toThrow();
+  const pending = original.getSnapshot().pending!;
+  const refreshed = new TaskSubmission('home-c');
+  fetch.mockResolvedValueOnce(Response.json(makeTask()));
+  await refreshed.recover();
+  fetch.mockResolvedValueOnce(Response.json({ detail: { code: 'home_busy', message: '原任务仍在处理' } }, { status: 409 }));
+  await expect(refreshed.retryPending()).rejects.toThrow('原任务仍在处理');
+  expect(refreshed.getSnapshot().pending).toEqual(pending);
+  const again = new TaskSubmission('home-c');
+  expect(again.getSnapshot().pending).toEqual(pending);
+  const committed = { ...makeTask(), advance_records: [{ key: pending.key, request: body, advanced_to_minutes: 10 }] };
+  fetch.mockResolvedValueOnce(Response.json(committed));
+  if (finish === '读取已提交记录') {
+    await again.recover();
+    expect(fetch.mock.calls[3][1].method).toBe('GET');
+  } else {
+    await again.retryPending();
+    expect(fetch.mock.calls[3][1].headers['Idempotency-Key']).toBe(pending.key);
+    expect(JSON.parse(fetch.mock.calls[3][1].body)).toEqual(body);
+  }
+  expect(fetch.mock.calls[2][1].headers['Idempotency-Key']).toBe(pending.key);
+  expect(again.getSnapshot().pending).toBeNull();
+});
