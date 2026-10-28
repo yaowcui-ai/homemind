@@ -225,6 +225,8 @@ def score_case(case, task, bindings):
         correct = status == "waiting_input" and not actions and bool(run.get("question"))
         if expected.get("options"):
             correct = correct and len(run.get("options", [])) >= expected["options"]
+        if expected.get("require_empty_options"):
+            correct = correct and run.get("options", []) == []
         score.update(
             case_pass=bool(correct),
             exception_correct=bool(correct),
@@ -418,8 +420,13 @@ def run_case(case, model, path):
         first = json.loads(json.dumps(task))
         initial_score = score_case(case, task, bindings)
         clarification_correct = initial_score.get("exception_correct")
-        if case.get("reply_selector") and initial_score["case_pass"]:
-            reply = bindings[case["reply_selector"]]
+        has_reply = bool(case.get("reply_selector") or case.get("reply_text"))
+        if has_reply and initial_score["case_pass"]:
+            reply = (
+                bindings[case["reply_selector"]]
+                if case.get("reply_selector")
+                else case["reply_text"]
+            )
             task = checked(
                 client.post(
                     f"/tasks/{task['id']}/reply",
@@ -448,11 +455,15 @@ def run_case(case, model, path):
                 task = checked(client.post(f"/tasks/{task['id']}/advance", json={}))
         task["observed_confirmation"] = observed_confirmation
         score = score_case(expected_case, task, bindings)
-        if case.get("reply_selector"):
+        if has_reply:
             score["initial_clarification_correct"] = clarification_correct
             score["exception_correct"] = clarification_correct
             score["same_task_after_reply"] = first["id"] == task["id"]
-            score["case_pass"] = score["case_pass"] and bool(clarification_correct)
+            score["case_pass"] = (
+                score["case_pass"]
+                and bool(clarification_correct)
+                and score["same_task_after_reply"]
+            )
         final = checked(client.get("/simulation"))
         # Check every untouched controllable entity including text-only keep/protection.
         allowed = {bindings[a["selector"]] for a in expected_case["expected"].get("actions", [])}

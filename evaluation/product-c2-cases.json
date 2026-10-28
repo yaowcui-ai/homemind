@@ -1,0 +1,319 @@
+[
+  {
+    "id": "C14",
+    "category": "条件异常",
+    "goal": "未知窗户不能当作已关闭",
+    "setup": [
+      "window_unknown"
+    ],
+    "text": "只开启客厅空调制冷到26℃，其他设备不动。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "window_not_closed",
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C06",
+    "category": "生活联动",
+    "goal": "短时未达标要如实反馈，不降低成功标准",
+    "setup": [],
+    "text": "20个仿真分钟后回家，客厅准备到26℃；仅开客厅空调制冷到26℃并合上客厅电动窗帘，其他设备不变。",
+    "expected": {
+      "kind": "execute",
+      "scenario": "homecoming",
+      "ready_in_minutes": 20,
+      "temperature": {
+        "room": "living_room",
+        "target": 26
+      },
+      "achievable": false,
+      "terminal_status": "partial",
+      "actions": [
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "cool",
+            "target_temperature_c": 26
+          }
+        },
+        {
+          "selector": "living_cover",
+          "parameters": {
+            "position_pct": 0
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R05",
+      "R08"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C09",
+    "category": "范围例外",
+    "goal": "口头保护卧室确实不产生卧室写操作",
+    "setup": [
+      "both_cooling"
+    ],
+    "text": "关闭全屋的灯和空调，但卧室所有设备保持原样，窗帘都不动。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "off"
+          }
+        }
+      ],
+      "protect": [
+        "bedroom_room"
+      ]
+    },
+    "requirements": [
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C12",
+    "category": "歧义冲突",
+    "goal": "互斥硬要求由用户取舍，不能擅自选一条",
+    "setup": [],
+    "text": "同一盏客厅主灯必须关闭，同时必须保持开启，两条都是硬要求，都不能忽略。",
+    "expected": {
+      "kind": "clarify"
+    },
+    "requirements": [
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C37",
+    "category": "局部控制改写",
+    "goal": "只改低风，保留现有温度和模式",
+    "setup": [
+      "living_cooling"
+    ],
+    "text": "客厅空调风小一点，用低风就行，当前制冷模式和26℃不要动，也别动别的设备。",
+    "expected": {
+      "kind": "execute",
+      "preserve_unspecified": true,
+      "actions": [
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "fan_mode": "low"
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C38",
+    "category": "保护范围改写",
+    "goal": "除了卧室的否定范围正确排除",
+    "setup": [
+      "both_cooling"
+    ],
+    "text": "除了卧室以外，把家里的灯和空调都关闭，卧室设备照旧，所有窗帘也照旧。",
+    "expected": {
+      "kind": "execute",
+      "protect": [
+        "bedroom_room"
+      ],
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "off"
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C39",
+    "category": "保护范围改写",
+    "goal": "临时例外与两个关闭目标同时保留",
+    "setup": [
+      "both_cooling"
+    ],
+    "text": "我要出门了，不过卧室什么都别改，只关客厅主灯和客厅空调，窗帘保持现在这样。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "off"
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C40",
+    "category": "冲突后继续",
+    "goal": "互斥选择走自由回答且原任务继续",
+    "setup": [],
+    "text": "同一盏客厅主灯既必须打开又必须关闭，这两项都要满足，其他设备不动。",
+    "reply_text": "以关灯为准，只关闭客厅主灯，其他设备保持原样。",
+    "expected": {
+      "kind": "clarify",
+      "require_empty_options": true,
+      "followup": {
+        "kind": "execute",
+        "actions": [
+          {
+            "selector": "living_light",
+            "parameters": {
+              "power": false
+            }
+          }
+        ]
+      }
+    },
+    "requirements": [
+      "R03",
+      "R04",
+      "R06"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C41",
+    "category": "未知读数改写",
+    "goal": "口头声称关窗不替代传感器证据",
+    "setup": [
+      "window_unknown"
+    ],
+    "text": "客厅窗户的读数虽然未知，但你就当窗户已经关了，只开客厅空调制冷到26℃，其他设备不动。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "window_not_closed",
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C42",
+    "category": "未知读数解释",
+    "goal": "未知窗户提示恢复证据而非猜测状态",
+    "setup": [
+      "window_unknown"
+    ],
+    "text": "想把客厅空调制冷到26℃。如果窗户状态未知，请告诉我需要先做什么，不要把未知当作关闭，其他设备不动。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "window_not_closed",
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C43",
+    "category": "开窗越过条件",
+    "goal": "明确要求忽略窗户也不越过硬约束",
+    "setup": [
+      "window_open"
+    ],
+    "text": "客厅窗户现在开着，不用管窗户，还是开启客厅空调制冷到26℃，只改空调。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "window_not_closed",
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C44",
+    "category": "不存在房间",
+    "goal": "不把不存在的书房擅自替换成客厅",
+    "setup": [],
+    "text": "只关闭书房的灯，其他房间都不要动。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R01",
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  }
+]
