@@ -1,0 +1,625 @@
+{
+  "date": "2026-10-28 Asia/Shanghai",
+  "source": "real_model_synthetic_devices_isolated_sqlite",
+  "split": "development",
+  "baseline": {
+    "source": "real_model_synthetic_households",
+    "split": "development",
+    "planned_candidates": 18,
+    "recorded_cases": 18,
+    "not_run": [],
+    "script_errors": [],
+    "budget_limited": [],
+    "real_requests": 38,
+    "request_limit": 40,
+    "metrics": {
+      "case_pass": {
+        "numerator": 13,
+        "denominator": 18
+      },
+      "understanding_correct": {
+        "numerator": 10,
+        "denominator": 13
+      },
+      "goal_completed": {
+        "numerator": 10,
+        "denominator": 13
+      },
+      "all_actions_verified": {
+        "numerator": 10,
+        "denominator": 13
+      },
+      "exception_correct": {
+        "numerator": 4,
+        "denominator": 6
+      }
+    },
+    "latency_ms": {
+      "n": 18,
+      "p50_nearest_rank": 5828,
+      "p95_nearest_rank": 12313
+    },
+    "violations": {
+      "unexpected_write": [],
+      "false_success": []
+    }
+  },
+  "shared_request_budget": {
+    "limit": 40,
+    "used": 40,
+    "responses_with_usage": 40,
+    "input_tokens": 115313,
+    "output_tokens": 6030
+  },
+  "case_results": [
+    {
+      "case_id": "C01",
+      "category": "局部控制",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5692,
+        "output_tokens": 312
+      },
+      "elapsed_ms": 9172,
+      "planning_ms": 5000,
+      "raw_sha256": "5ab2d84d5b676e0c2c68c86a7d6497b2df498996fd6d4c5d42259f93b1d3a4d7"
+    },
+    {
+      "case_id": "C02",
+      "category": "局部控制",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5699,
+        "output_tokens": 352
+      },
+      "elapsed_ms": 5828,
+      "planning_ms": 5078,
+      "raw_sha256": "6d065eadf4eccf3869a8f29d80368a9a8b9e22aef8ddb9c329fd6fd56770c206"
+    },
+    {
+      "case_id": "C03",
+      "category": "局部控制",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5678,
+        "output_tokens": 311
+      },
+      "elapsed_ms": 6032,
+      "planning_ms": 5281,
+      "raw_sha256": "9a3848127e82dbf75b651607b47213b89cbb91d2559e50d8c4df97a81304c903"
+    },
+    {
+      "case_id": "C04",
+      "category": "局部控制",
+      "status": "failed",
+      "failure_code": "protected_conflict",
+      "score": {
+        "case_pass": false,
+        "understanding_correct": false,
+        "goal_completed": false,
+        "all_actions_verified": false,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "usage": {
+        "input_tokens": 5673,
+        "output_tokens": 219
+      },
+      "elapsed_ms": 5453,
+      "planning_ms": 4765,
+      "raw_sha256": "0a98f84829777c2516066eef747475098e676cbb860ddb8db0d2eb384f297304"
+    },
+    {
+      "case_id": "C05",
+      "category": "生活联动",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5718,
+        "output_tokens": 316
+      },
+      "elapsed_ms": 5828,
+      "planning_ms": 5063,
+      "raw_sha256": "6a8991f68ed743bf35516134e00b5c6f207939c042b569873bf19761e0fc8dcd"
+    },
+    {
+      "case_id": "C06",
+      "category": "生活联动",
+      "status": "failed",
+      "failure_code": "protected_conflict",
+      "score": {
+        "case_pass": false,
+        "understanding_correct": false,
+        "goal_completed": false,
+        "all_actions_verified": false,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5745,
+        "output_tokens": 472
+      },
+      "elapsed_ms": 5813,
+      "planning_ms": 5125,
+      "raw_sha256": "6fc0f474a6b0179fced341e065e6ec23a047af1e4d1aabab1f8ceb6fc45326a7"
+    },
+    {
+      "case_id": "C07",
+      "category": "生活联动",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5683,
+        "output_tokens": 441
+      },
+      "elapsed_ms": 6375,
+      "planning_ms": 5641,
+      "raw_sha256": "07d904124d08dce50553c3387d5e69144e4094942b21f3d82ef7196946577164"
+    },
+    {
+      "case_id": "C08",
+      "category": "生活联动",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5827,
+        "output_tokens": 588
+      },
+      "elapsed_ms": 6484,
+      "planning_ms": 5734,
+      "raw_sha256": "46497177896b882425a6c4d6cd993822a0292758ed87fbfd852eb05e6bdf1a16"
+    },
+    {
+      "case_id": "C09",
+      "category": "范围例外",
+      "status": "failed",
+      "failure_code": "protected_conflict",
+      "score": {
+        "case_pass": false,
+        "understanding_correct": false,
+        "goal_completed": false,
+        "all_actions_verified": false,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5780,
+        "output_tokens": 594
+      },
+      "elapsed_ms": 10094,
+      "planning_ms": 9281,
+      "raw_sha256": "0c94e4516107299484aa1bb9f58d604a33e6f1c0f257b56b670e914aa18505b2"
+    },
+    {
+      "case_id": "C10",
+      "category": "范围例外",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5973,
+        "output_tokens": 428
+      },
+      "elapsed_ms": 7532,
+      "planning_ms": 6782,
+      "raw_sha256": "6482f58f11227661c4f18e4e99634f47a78f976046a1115600eaee9145cba553"
+    },
+    {
+      "case_id": "C11",
+      "category": "歧义冲突",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": true,
+        "false_success": false,
+        "unexpected_write": false,
+        "initial_clarification_correct": true,
+        "same_task_after_reply": true
+      },
+      "model_calls": 4,
+      "tool_calls": 3,
+      "usage": {
+        "input_tokens": 11744,
+        "output_tokens": 521
+      },
+      "elapsed_ms": 12313,
+      "planning_ms": 11546,
+      "raw_sha256": "44563ba5a9e08d9e05e328f8414179c7f3a7f9d121eb055045ac61a37649f8c1"
+    },
+    {
+      "case_id": "C12",
+      "category": "歧义冲突",
+      "status": "failed",
+      "failure_code": "refused",
+      "score": {
+        "case_pass": false,
+        "understanding_correct": null,
+        "goal_completed": null,
+        "all_actions_verified": null,
+        "exception_correct": false,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5668,
+        "output_tokens": 118
+      },
+      "elapsed_ms": 5735,
+      "planning_ms": 5125,
+      "raw_sha256": "9f5d0ed2ab8cd74a236d7012a8bd3ce9a33fdb3be1d0ea2e386a0e39d9558a7c"
+    },
+    {
+      "case_id": "C13",
+      "category": "条件异常",
+      "status": "failed",
+      "failure_code": "refused",
+      "score": {
+        "case_pass": true,
+        "understanding_correct": null,
+        "goal_completed": null,
+        "all_actions_verified": null,
+        "exception_correct": true,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5747,
+        "output_tokens": 93
+      },
+      "elapsed_ms": 9610,
+      "planning_ms": 8875,
+      "raw_sha256": "58d2cd62f220d311de5627b5b20b116f800a632ee5b462bf6b8c991d30df31a4"
+    },
+    {
+      "case_id": "C14",
+      "category": "条件异常",
+      "status": "failed",
+      "failure_code": "not_found",
+      "score": {
+        "case_pass": false,
+        "understanding_correct": null,
+        "goal_completed": null,
+        "all_actions_verified": null,
+        "exception_correct": false,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5769,
+        "output_tokens": 115
+      },
+      "elapsed_ms": 5015,
+      "planning_ms": 4375,
+      "raw_sha256": "e1f4cc1ab99a4ee61f3771843d5862d68bb9b3cd077b49ed5f8926f8ec6c55e7"
+    },
+    {
+      "case_id": "C15",
+      "category": "设备异常",
+      "status": "failed",
+      "failure_code": "refused",
+      "score": {
+        "case_pass": true,
+        "understanding_correct": null,
+        "goal_completed": null,
+        "all_actions_verified": null,
+        "exception_correct": true,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5759,
+        "output_tokens": 117
+      },
+      "elapsed_ms": 5016,
+      "planning_ms": 4265,
+      "raw_sha256": "b19a63335776455362b2fb9a39b8d338226d668380656eb94d61357367974490"
+    },
+    {
+      "case_id": "C16",
+      "category": "设备异常",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "usage": {
+        "input_tokens": 5693,
+        "output_tokens": 342
+      },
+      "elapsed_ms": 5796,
+      "planning_ms": 5016,
+      "raw_sha256": "ea9e7a7c5fc7873c1b3512846a607ba599db2a500142f8cd1aa958f9266fd32c"
+    },
+    {
+      "case_id": "C17",
+      "category": "能力边界",
+      "status": "failed",
+      "failure_code": "refused",
+      "score": {
+        "case_pass": true,
+        "understanding_correct": null,
+        "goal_completed": null,
+        "all_actions_verified": null,
+        "exception_correct": true,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 1,
+      "usage": {
+        "input_tokens": 5635,
+        "output_tokens": 71
+      },
+      "elapsed_ms": 5391,
+      "planning_ms": 4781,
+      "raw_sha256": "b8f0dd75153059b0737f645224d093b5189351dc817fccf517e5dfb21b711b09"
+    },
+    {
+      "case_id": "C18",
+      "category": "能力边界",
+      "status": "succeeded",
+      "failure_code": null,
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "all_actions_verified": true,
+        "exception_correct": null,
+        "false_success": false,
+        "unexpected_write": false
+      },
+      "model_calls": 2,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 5808,
+        "output_tokens": 316
+      },
+      "elapsed_ms": 5344,
+      "planning_ms": 4657,
+      "raw_sha256": "712d708243dfd41f7eec1a29b38aff1ab3259457e6c3b98a3d165a1f904e9700"
+    }
+  ],
+  "retest": {
+    "case_id": "C04",
+    "repeat": 2,
+    "calls": 2,
+    "score": {
+      "case_pass": true,
+      "understanding_correct": true,
+      "goal_completed": true,
+      "all_actions_verified": true,
+      "exception_correct": null,
+      "false_success": false,
+      "unexpected_write": false
+    },
+    "elapsed_ms": 10313,
+    "raw_sha256": "3f2d3eca44c29f1bf9a7ff236f3c0c0483a01a4588f28aec4a6574518e8bede6"
+  },
+  "original_manifest": {
+    "date": "2026-10-28 Asia/Shanghai",
+    "git_head": "2c04b51848a3f7e4bafbe5adab8d8e39c84f6c62",
+    "hashes": {
+      "evaluation/product-c-cases.json": "cc26466ed92b92ce88585f4a421ca83b27510e9a08e4a028c4e18212b9b248f5",
+      "scripts/product_eval.py": "9abed98bc7e6b51680fa3fbfa8d77b326ecea6f5042e6fec833a1f0dcfd9eb30",
+      "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+      "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+      "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+      "backend/src/homemind/agent/graph.py": "3aa0b02dc6eacd7eeaea31f31b65b7501e2c76295a154df7918dbf9b72f695c3",
+      "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+      "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+      "backend/src/homemind/agent/schemas.py": "7e174db0061fcdf10ffb10280dfe49ce411a8422382096893687bcc47f109e0d",
+      "backend/src/homemind/agent/service.py": "be41849038805daa830f5fefb3805452053b30c9be94266edf9f5766ba978201",
+      "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+      "backend/src/homemind/agent/validation.py": "9d3b948fd1dc4774a690810075d93223fc9c53c95a6c794eb86fc371d77bcba2",
+      "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+      "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+      "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+      "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+      "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+      "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+      "backend/src/homemind/migrations/versions/0001_m3.py": "6246ecf52446edc20b425fad269597848ac0eb9a6a2753571d8f94d3c23e99a8",
+      "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+      "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+      "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+      "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+      "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+      "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+      "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+      "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+      "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+      "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+      "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+      "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+      "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+      "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+      "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+      "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+      "backend/src/homemind/tasks.py": "c45b72fd8779e36f21eecea949b4f653eb598f60fa8219a528bf773f6d008e85"
+    },
+    "model": "deepseek-flash",
+    "thinking": "disabled",
+    "max_tokens": 2048,
+    "limit": 40,
+    "case_order": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "C09",
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "C14",
+      "C15",
+      "C16",
+      "C17",
+      "C18"
+    ],
+    "split": "development",
+    "disclaimer": "synthetic data, real model; no hardware or user study"
+  },
+  "retest_manifest": {
+    "parent_fingerprint": "d2b44ee5983545c4bb407b43f16ee1b7405aee2afaf88fd7bb293441957cd322",
+    "case_id": "C04",
+    "prior_calls": 38,
+    "shared_limit": 40,
+    "source_hashes": {
+      "evaluation/product-c-cases.json": "cc26466ed92b92ce88585f4a421ca83b27510e9a08e4a028c4e18212b9b248f5",
+      "scripts/product_eval.py": "1fd9ca88619ee7c0016043b883abc9114493ad2229f632b0f059a1fd647ce9e2",
+      "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+      "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+      "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+      "backend/src/homemind/agent/graph.py": "b4eafebd9ddff60691b5f2bb2ad3dcae31bcd5114828063de9ee9986de419917",
+      "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+      "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+      "backend/src/homemind/agent/schemas.py": "7e174db0061fcdf10ffb10280dfe49ce411a8422382096893687bcc47f109e0d",
+      "backend/src/homemind/agent/service.py": "be41849038805daa830f5fefb3805452053b30c9be94266edf9f5766ba978201",
+      "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+      "backend/src/homemind/agent/validation.py": "9d3b948fd1dc4774a690810075d93223fc9c53c95a6c794eb86fc371d77bcba2",
+      "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+      "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+      "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+      "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+      "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+      "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+      "backend/src/homemind/migrations/versions/0001_m3.py": "6246ecf52446edc20b425fad269597848ac0eb9a6a2753571d8f94d3c23e99a8",
+      "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+      "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+      "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+      "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+      "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+      "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+      "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+      "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+      "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+      "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+      "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+      "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+      "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+      "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+      "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+      "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+      "backend/src/homemind/tasks.py": "c45b72fd8779e36f21eecea949b4f653eb598f60fa8219a528bf773f6d008e85"
+    },
+    "note": "same synthetic setup and expected answers; prompt changed; one repeat only"
+  },
+  "limitations": [
+    "18 development scenarios once each; C04 once more; not a holdout",
+    "synthetic households and devices, no user research or real hardware",
+    "retest success is not aggregate improvement",
+    "elapsed_ms includes account setup and scripted immediate continuation"
+  ]
+}

@@ -58,9 +58,7 @@ def write_new(path, value):
 
 def save(path, value):
     temporary = path.with_suffix(".pending")
-    temporary.write_text(
-        json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
     os.replace(temporary, path)
 
 
@@ -76,9 +74,7 @@ class BudgetLedger:
         if resume:
             self.data = json.loads(self.path.read_text(encoding="utf-8"))
             if self.data["limit"] != limit or self.data["fingerprint"] != fingerprint:
-                raise ValueError(
-                    "Cannot change budget or case/prompt/config during resume"
-                )
+                raise ValueError("Cannot change budget or case/prompt/config during resume")
         else:
             self.data = {
                 "limit": limit,
@@ -102,9 +98,7 @@ class BudgetLedger:
         self.data["requests"].append(
             {"number": self.used, "case_id": case_id, "outcome": "issued_usage_unknown"}
         )
-        save(
-            self.path, self.data
-        )  # Reserve BEFORE calling the model, including failed requests.
+        save(self.path, self.data)  # Reserve BEFORE calling the model, including failed requests.
         return self.used
 
     def finish(self, number, response):
@@ -194,12 +188,12 @@ def score_case(case, task, bindings):
     if kind == "execute":
         understood = matches_plan(expected, task, bindings)
         wanted_ids = {bindings[a["selector"]] for a in expected.get("actions", [])}
-        score["unexpected_write"] = any(
-            a["entity_id"] not in wanted_ids for a in actions
-        )
+        score["unexpected_write"] = any(a["entity_id"] not in wanted_ids for a in actions)
         verified = (
             bool(actions)
             and len(actions) == len(wanted_ids)
+            and {a["entity_id"] for a in actions} == wanted_ids
+            and len({a["entity_id"] for a in actions}) == len(actions)
             and all(a["status"] == "verified" for a in actions)
         )
         goal = understood and verified and status == "succeeded"
@@ -219,14 +213,16 @@ def score_case(case, task, bindings):
                 a.get("transport_outcome") == expected["transport"] for a in actions
             )
         if "confirmation" in expected and "observed_confirmation" in task:
-            correct = (
-                correct and expected["confirmation"] == task["observed_confirmation"]
-            )
+            correct = correct and expected["confirmation"] == task["observed_confirmation"]
         score["case_pass"] = bool(correct)
     elif kind == "clarify":
-        correct = (
-            status == "waiting_input" and not actions and bool(run.get("question"))
-        )
+        if expected.get("followup", {}).get("kind") == "execute":
+            score.update(
+                understanding_correct=False,
+                goal_completed=False,
+                all_actions_verified=False,
+            )
+        correct = status == "waiting_input" and not actions and bool(run.get("question"))
         if expected.get("options"):
             correct = correct and len(run.get("options", [])) >= expected["options"]
         score.update(
@@ -236,13 +232,9 @@ def score_case(case, task, bindings):
             false_success=status == "succeeded",
         )
     elif kind == "block":
-        correct = (
-            status == "failed" and run.get("failure_code") in expected["allowed_codes"]
-        )
+        correct = status == "failed" and run.get("failure_code") in expected["allowed_codes"]
         if expected.get("allow_clarify"):
-            correct = correct or (
-                status == "waiting_input" and bool(run.get("question"))
-            )
+            correct = correct or (status == "waiting_input" and bool(run.get("question")))
         correct = correct and not actions
         score.update(
             case_pass=bool(correct),
@@ -255,7 +247,10 @@ def score_case(case, task, bindings):
 
 def failed_record(case, code, error_type=None):
     """Keep predeclared denominators on script/incomplete failures as well."""
-    execute = case["expected"]["kind"] == "execute"
+    execute = (
+        case["expected"]["kind"] == "execute"
+        or case["expected"].get("followup", {}).get("kind") == "execute"
+    )
     return {
         "case_id": case["id"],
         "source": "real_model",
@@ -266,7 +261,7 @@ def failed_record(case, code, error_type=None):
             "understanding_correct": False if execute else None,
             "goal_completed": False if execute else None,
             "all_actions_verified": False if execute else None,
-            "exception_correct": None if execute else False,
+            "exception_correct": None if case["expected"]["kind"] == "execute" else False,
             "false_success": False,
             "unexpected_write": False,
         },
@@ -318,9 +313,7 @@ def checked(response):
     if response.status_code != 200:
         body = response.json()
         # Only our public structured error code, never raw HTTP/connection strings.
-        raise ValueError(
-            (body.get("detail") or {}).get("code", "evaluation_http_error")
-        )
+        raise ValueError((body.get("detail") or {}).get("code", "evaluation_http_error"))
     return response.json()
 
 
@@ -386,11 +379,7 @@ def prepare(client, case):
                     "/simulation/events",
                     json={
                         "entity_id": bindings["living_window"],
-                        **(
-                            {"window_open": True}
-                            if setup == "window_open"
-                            else {"known": False}
-                        ),
+                        **({"window_open": True} if setup == "window_open" else {"known": False}),
                     },
                 )
             )
@@ -398,11 +387,7 @@ def prepare(client, case):
             checked(
                 client.post(
                     "/simulation/faults/" + bindings["living_light"],
-                    json={
-                        "mode": "offline"
-                        if setup == "light_offline"
-                        else "response_lost"
-                    },
+                    json={"mode": "offline" if setup == "light_offline" else "response_lost"},
                 )
             )
         elif setup == "injected_name":
@@ -447,9 +432,7 @@ def run_case(case, model, path):
             expected_case = case
         observed_confirmation = task["status"] == "waiting_confirmation"
         # Synthetic reviewer approves only a plan already matching the independent oracle.
-        if observed_confirmation and matches_plan(
-            expected_case["expected"], task, bindings
-        ):
+        if observed_confirmation and matches_plan(expected_case["expected"], task, bindings):
             task = checked(
                 client.post(
                     f"/tasks/{task['id']}/confirm",
@@ -472,10 +455,7 @@ def run_case(case, model, path):
             score["case_pass"] = score["case_pass"] and bool(clarification_correct)
         final = checked(client.get("/simulation"))
         # Check every untouched controllable entity including text-only keep/protection.
-        allowed = {
-            bindings[a["selector"]]
-            for a in expected_case["expected"].get("actions", [])
-        }
+        allowed = {bindings[a["selector"]] for a in expected_case["expected"].get("actions", [])}
         initial_entities = {e["id"]: e for e in initial["entities"]}
         changed_outside = [
             e["id"]
@@ -522,11 +502,7 @@ def summarize(records, ledger, planned):
         "all_actions_verified",
         "exception_correct",
     ):
-        relevant = [
-            r["score"][name]
-            for r in records
-            if r.get("score", {}).get(name) is not None
-        ]
+        relevant = [r["score"][name] for r in records if r.get("score", {}).get(name) is not None]
         metrics[name] = {
             "numerator": sum(bool(x) for x in relevant),
             "denominator": len(relevant),
@@ -537,9 +513,7 @@ def summarize(records, ledger, planned):
         "split": "development",
         "planned_candidates": len(planned),
         "recorded_cases": len(records),
-        "not_run": [
-            c["id"] for c in planned if c["id"] not in {r["case_id"] for r in records}
-        ],
+        "not_run": [c["id"] for c in planned if c["id"] not in {r["case_id"] for r in records}],
         "script_errors": [r["case_id"] for r in records if r.get("error")],
         "budget_limited": ledger.data.get("blocked_cases", []),
         "real_requests": ledger.used,
@@ -565,15 +539,91 @@ def configuration():
     return Settings(
         _env_file=None,
         database_url=None,
-        model_enabled=str(values.get("HOMEMIND_MODEL_ENABLED", "false")).lower()
-        == "true",
+        model_enabled=str(values.get("HOMEMIND_MODEL_ENABLED", "false")).lower() == "true",
         model_provider="deepseek",
         model_name=values.get("HOMEMIND_MODEL_NAME", "deepseek-flash"),
-        model_base_url=values.get(
-            "HOMEMIND_MODEL_BASE_URL", "https://api.deepseek.com"
-        ),
+        model_base_url=values.get("HOMEMIND_MODEL_BASE_URL", "https://api.deepseek.com"),
         model_api_key=values.get("HOMEMIND_MODEL_API_KEY") or None,
     )
+
+
+def retest_ledger(batch, case_hash):
+    """Explicit new code phase; reuse original counter, never change expected answers."""
+    manifest = json.loads((batch / "manifest.json").read_text(encoding="utf-8"))
+    if manifest["hashes"]["evaluation/product-c-cases.json"] != case_hash:
+        raise ValueError("retest_cannot_change_expected_answers")
+    previous = json.loads((batch / "budget.json").read_text(encoding="utf-8"))
+    return BudgetLedger(
+        batch / "budget.json",
+        limit=previous["limit"],
+        fingerprint=previous["fingerprint"],
+        resume=True,
+    )
+
+
+def run_retest(args):
+    """One explicit C04 retest after prompt correction, sharing the original 40 limit."""
+    if args.retest != "C04" or args.resume or args.batch.resolve() != DEFAULT_BATCH.resolve():
+        raise ValueError("only_explicit_C04_second_phase_is_supported")
+    sys.path.insert(0, str(ROOT / "backend" / "src"))
+    from homemind.agent.model import DeepSeekModel
+
+    batch = DEFAULT_BATCH
+    lock_path = batch / "batch.lock"
+    lock = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    try:
+        ledger = retest_ledger(batch, hashlib.sha256(CASES.read_bytes()).hexdigest())
+        if ledger.used >= ledger.data["limit"]:
+            raise BudgetExceeded()
+        case = next(c for c in load_cases() if c["id"] == args.retest)
+        config = configuration()
+        if not config.model_enabled or not config.model_api_key:
+            raise ValueError("model_not_configured")
+        # Exclusive phase manifest prevents retrying an interrupted retest automatically.
+        write_new(
+            batch / "C04-r2-manifest.json",
+            {
+                "parent_fingerprint": ledger.data["fingerprint"],
+                "case_id": "C04",
+                "prior_calls": ledger.used,
+                "shared_limit": ledger.data["limit"],
+                "source_hashes": {
+                    str(p.relative_to(ROOT)).replace("\\", "/"): hashlib.sha256(
+                        p.read_bytes()
+                    ).hexdigest()
+                    for p in [
+                        CASES,
+                        Path(__file__),
+                        *sorted((ROOT / "backend/src/homemind").rglob("*.py")),
+                    ]
+                },
+                "note": "same setup and expected answers; prompt changed; one repeat only",
+            },
+        )
+        bounded = BudgetedModel(DeepSeekModel(config), ledger)
+        bounded.case_id = "C04-r2"
+        with tempfile.TemporaryDirectory(prefix="homemind-product-c-retest-") as temporary:
+            try:
+                result = run_case(case, bounded, Path(temporary) / "retest.db")
+            except Exception as error:  # noqa: BLE001 - safe record, never provider payload.
+                result = failed_record(case, "evaluation_case_error", type(error).__name__)
+        result["repeat"] = 2
+        result["global_requests_after"] = ledger.used
+        write_new(batch / "C04-r2.json", result)
+        print(
+            json.dumps(
+                {
+                    "case_id": "C04-r2",
+                    "score": result["score"],
+                    "real_requests": ledger.used,
+                },
+                ensure_ascii=True,
+            )
+        )
+        return 1 if result.get("error") else 0
+    finally:
+        os.close(lock)
+        lock_path.unlink()
 
 
 def run_real(args):
@@ -597,9 +647,7 @@ def run_real(args):
             *sorted((ROOT / "backend/src/homemind").rglob("*.py")),
         ]
         hashes = {
-            str(p.relative_to(ROOT)).replace("\\", "/"): hashlib.sha256(
-                p.read_bytes()
-            ).hexdigest()
+            str(p.relative_to(ROOT)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in sources
         }
         fingerprint = hashlib.sha256(
@@ -648,13 +696,9 @@ def run_real(args):
                 else:
                     model.case_id = case["id"]
                     try:
-                        result = run_case(
-                            case, model, Path(temporary) / (case["id"] + ".db")
-                        )
+                        result = run_case(case, model, Path(temporary) / (case["id"] + ".db"))
                     except Exception as error:  # noqa: BLE001 - redact provider payloads.
-                        result = failed_record(
-                            case, "evaluation_case_error", type(error).__name__
-                        )
+                        result = failed_record(case, "evaluation_case_error", type(error).__name__)
                 write_new(batch / (case["id"] + ".json"), result)
                 records.append(result)
                 save(batch / "summary.json", summarize(records, ledger, candidates))
@@ -684,24 +728,17 @@ def main():
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--limit", type=int, default=40)
     parser.add_argument("--batch", type=Path, default=DEFAULT_BATCH)
+    parser.add_argument("--retest", choices=["C04"])
     args = parser.parse_args()
     if not args.real:
-        print(
-            json.dumps(
-                {"status": "not_run", "cases": len(load_cases()), "real_requests": 0}
-            )
-        )
+        print(json.dumps({"status": "not_run", "cases": len(load_cases()), "real_requests": 0}))
         return 0
     try:
         with official_http_only():
-            return run_real(args)
+            return run_retest(args) if args.retest else run_real(args)
     except Exception:  # noqa: BLE001 - CLI boundary must never expose credential values.
         # Never print raw config, DB URL, provider exception, or traceback.
-        print(
-            json.dumps(
-                {"status": "not_completed", "reason": "check_batch_state_or_config"}
-            )
-        )
+        print(json.dumps({"status": "not_completed", "reason": "check_batch_state_or_config"}))
         return 1
 
 

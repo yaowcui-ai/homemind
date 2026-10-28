@@ -135,13 +135,9 @@ def test_unknown_readback_is_not_goal_or_joint_action_success():
 def test_all_product_cases_have_traceable_requirements_and_expected_behavior():
     cases = module().load_cases()
     assert len(cases) >= 36 and len({case["id"] for case in cases}) == len(cases)
-    assert all(
-        case["goal"] and case["requirements"] and case["expected"] for case in cases
-    )
+    assert all(case["goal"] and case["requirements"] and case["expected"] for case in cases)
     assert sum(case["source"] == "real_candidate" for case in cases) >= 16
-    assert all(
-        case.get("evidence_test") for case in cases if case["source"] == "regression"
-    )
+    assert all(case.get("evidence_test") for case in cases if case["source"] == "regression")
 
 
 def test_official_network_guard_rejects_trace_and_other_domains():
@@ -226,9 +222,7 @@ def test_sparse_fan_cannot_change_temperature_even_when_task_reports_success():
                 }
             ]
         },
-        "initial_snapshot": {
-            "entities": [{"id": "c1", "state": {"target_temperature_c": 26}}]
-        },
+        "initial_snapshot": {"entities": [{"id": "c1", "state": {"target_temperature_c": 26}}]},
     }
     assert not m.matches_plan(expected, task, {"climate": "c1"})
 
@@ -249,3 +243,57 @@ def test_script_error_keeps_denominators_and_is_separate_from_model_failure(tmp_
     assert summary["metrics"]["goal_completed"] == {"numerator": 0, "denominator": 1}
     assert summary["metrics"]["exception_correct"] == {"numerator": 0, "denominator": 1}
     assert summary["script_errors"] == ["C01", "C13"]
+
+
+def test_duplicate_actual_actions_cannot_hide_a_missing_device():
+    m = module()
+    case = {
+        "expected": {
+            "kind": "execute",
+            "actions": [
+                {"selector": "a", "parameters": {"power": False}},
+                {"selector": "b", "parameters": {"power": False}},
+            ],
+        }
+    }
+    task = {
+        "status": "succeeded",
+        "plan": {
+            "actions": [
+                {"entity_id": "a1", "parameters": {"power": False}},
+                {"entity_id": "b1", "parameters": {"power": False}},
+            ]
+        },
+        "actions": [
+            {"entity_id": "a1", "status": "verified"},
+            {"entity_id": "a1", "status": "verified"},
+        ],
+    }
+    score = m.score_case(case, task, {"a": "a1", "b": "b1"})
+    assert not score["case_pass"] and not score["goal_completed"]
+    assert not score["all_actions_verified"] and score["false_success"]
+
+
+def test_failed_clarification_keeps_predeclared_followup_goal_denominators():
+    m = module()
+    case = next(c for c in m.load_cases() if c["id"] == "C11")
+    task = {"status": "failed", "actions": [], "agent_run": {"failure_code": "refused"}}
+    score = m.score_case(case, task, {})
+    assert score["understanding_correct"] is False
+    assert score["goal_completed"] is False and score["all_actions_verified"] is False
+    assert m.failed_record(case, "script_error")["score"]["goal_completed"] is False
+    assert m.failed_record(case, "script_error")["score"]["exception_correct"] is False
+
+
+def test_retest_uses_remaining_original_budget_and_frozen_cases(tmp_path):
+    m = module()
+    m.BudgetLedger(tmp_path / "budget.json", limit=2, fingerprint="old").reserve("C01")
+    manifest = {"hashes": {"evaluation/product-c-cases.json": "frozen"}}
+    write = tmp_path / "manifest.json"
+    write.write_text(json.dumps(manifest), encoding="utf-8")
+    resumed = m.retest_ledger(tmp_path, "frozen")
+    assert resumed.used == 1 and resumed.reserve("C01-r2") == 2
+    with pytest.raises(m.BudgetExceeded):
+        resumed.reserve("C01-r2")
+    with pytest.raises(ValueError):
+        m.retest_ledger(tmp_path, "changed_expected_answers")

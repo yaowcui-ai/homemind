@@ -1,10 +1,26 @@
 # HomeMind 当前接续
 
-更新日期：2026-10-27（Asia/Shanghai）。
+更新日期：2026-10-28（Asia/Shanghai）。
 
 ## 当前授权与进度
 
-**最新委托：用户在 A 交付后“继续下一步”，授权产品 B；核心代码与旅程已实现、验证并交付。** 本轮不自动进入 C—E。方案：[B 设计](docs/superpowers/specs/2026-10-27-product-b-design.md)、[计划](docs/superpowers/plans/2026-10-27-product-b-single-agent.md)、[验证记录](docs/verification/product-b-single-agent.md)。用户下次“继续下一步”默认进入 C，无需重问已确认定位、模型服务或浅色视觉。
+用户“继续，注意这次我要往产品稍微靠一下，所以案例应多点”授权C首轮；另明确允许最多40次真实请求。已完成[36案例](docs/product/product-c-cases.md)、[C评测与Bad Case报告](docs/product/product-c-evaluation.md)、推进持久恢复、busy保原键、范围prompt及失败反馈的有限优化。保留原架构，版本仍0.4.0/M4。分支`codex/product-c-validation`，仅本地提交，不推送/合并/发布。
+
+真实首批C01—18在新建临时SQLite合成家庭运行，真实DeepSeek/实际API和图，设备/时间仿真；初批38请求，13/18符合验收，C04/C06/C09范围/保留冲突、C12拒绝代澄清、C14未知窗户not_found共5失败。优化后原输入/初始条件/期望的C04一次复测通过，另2请求。**共40/40已用满，不能再调用真实模型；不能换目录/删账本/重跑旧check_model绕过预算。** C06/C09/C12/C14尚未真实复测，不称全部已解决，不将C04一次通过外推总体提升。实际输入115313/output6030 token；无费用推算、用户研究或单多Agent对照。
+
+证据：`output/product-c-real-20261028`原baseline/18案例/C04-r2/manifest/40次budget均保留；审阅修评分ID集合与C11固定分母后另存scores-v2，原评分不覆盖，汇总不变。可移植摘要`evaluation/results/product-c-20261028.json`有源码及原件hash，不能将受控程序通过数转为模型准确率。默认`scripts/product_eval.py`只列案例不加载密钥/联网；显式真实入口固定本次授权账本，耗尽停止。
+
+推进新契约：POST body世界ID+预期当前分钟+Idempotency-Key，nullable Task.advance_records+0004_product_c；同键同体返回原证据、不推进，异键旧时刻409；记录/时钟同事务，reset后原键历史只读。React sessionStorage冻结advance，刷新GET按key/body记录确认，未决可原键重试；home_busy保键。legacy空体无key仍兼容且无此保护。没有取消在途/后台时钟/自动重规划/图恢复。
+
+检查：后端完整214passed/4当时MySQL skip；收集后只新增测试，最终推进6passed；prompt后Agent图/API56passed。真实MySQL迁移后5passed（含0004新连接和reset原键）。前端完整66passed，随后busy修复25项、反馈18项定向过，lint/TS/Vite过；新增受控browser2项过，root目视推进截图。独立规格及质量审阅批准，home_busy与评分原始RED留存。未再次声称全量浏览器重跑。
+
+本轮Docker最初未运行，用户再次回复启动后，`setup_mysql.py`保留数据将本项目app/test迁0004。API本地8110、网页5174；受控18110/5176验收进程已退出，MySQL保留。8100其他项目容器不停止/接管。完整启动见README，先Docker→setup_mysql→API→前端；密钥不打印/提交/复制前端。
+
+**下一次继续：先清理C遗留P1并稳定单Agent基线，再进入D的按需多Agent/公平对照。** 首选定位C14（现公开记录未保存被拒计划，不能推断具体引用）、复测C06/C09/C12/C14及更多改写。新请求先明确新预算；36例均为开发集，正式保留集须另建冻结。Figma在线新增状态/连线仍受额度未补，未重试或绕过；第三方观察仍无，U01仅本人自述“有少量设备，偶尔使用”。本轮不自动做D/E。
+
+## B交付历史（以下保留当时事实，最新状态以上方C为准）
+
+**当时委托：用户在 A 交付后“继续下一步”，授权产品 B；核心代码与旅程已实现、验证并交付。** 方案：[B 设计](docs/superpowers/specs/2026-10-27-product-b-design.md)、[计划](docs/superpowers/plans/2026-10-27-product-b-single-agent.md)、[验证记录](docs/verification/product-b-single-agent.md)。
 
 B 最终：后端209passed/4 MySQL条件skip，Agent56passed；真实MySQL最新4passed/4.52s；前端64passed，lint/TS/Vite通过。完整受控Agent浏览器10项、真实MySQL原21项通过；最后状态竞态修复后又定向复验Agent关键5项、规则任务6项通过。root已目视桌面与360px截图，360/390px几何/点击均过。独立后端规格/质量、前端规格/质量、根脚本审阅均批准。selectionVersion/writeEpoch、一次性restore、controller跨页忙锁、exact cancelQueries和取消await后代次复查均有真实RED/GREEN，不再有已知未修复质量阻塞。
 
@@ -54,7 +70,7 @@ B 最终：后端209passed/4 MySQL条件skip，Agent56passed；真实MySQL最新
 
 M3阶段历史：当时启动Docker引擎触发既有容器按原策略自动恢复，环境副作用已记录。本次B由用户自行打开引擎，助手只启动匹配安装标记的HomeMind MySQL并解决本项目端口冲突。
 
-## 下一步
+## B交付时记录的下一步（现已启动并交付C首轮）
 
 下一阶段 **C：体验与可靠性**，由用户发起后基于B的真实Bad Case与现有已知限制细化；优先验证真实模型场景表现/失败解释、推进未知结果恢复、任务中断反馈与必要确认/取消等最小需求，不自动铺开全部旧M6/M7模块。Figma新状态/连线仍待额度可用后在既有文件补齐。访谈和完整模型对照仍未开展，不能伪造；真实调用需先明确数量/预算和可核验条件。
 
