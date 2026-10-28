@@ -48,7 +48,15 @@ async def run_planner(model, snapshot, preferences, conversation):
         "Ask clarify for missing scope or ambiguous names; never choose the first same-name item. "
         "If requested outcomes are mutually exclusive but the user can choose between them, "
         "return clarify asking for that choice, so the user can answer within this task; "
-        "do not refuse such a resolvable conflict. "
+        "do not refuse such a resolvable conflict, "
+        "even if the user calls both requirements mandatory. "
+        "Ask which requirement to relax; never choose or relax one yourself. "
+        "Clarify options identify distinct actual household objects only, with unique (kind,id). "
+        "For on/off, whether a window is closed, or which requirement to relax, use options=[] "
+        "and put the possible answers in question. Never encode two states or choices using the "
+        "same entity ID with different labels. Example: "
+        '{"kind":"clarify",'
+        '"question":"主灯开启与保持关闭互斥，请选择放宽哪一条要求？","options":[]} '
         "Cooling requires confirmed closed windows. Refuse unsupported requests. "
         "Return exactly one JSON object matching this discriminated schema, with no markdown, "
         "extra fields or private reasoning. Temperature targets are <= goals, not promises. "

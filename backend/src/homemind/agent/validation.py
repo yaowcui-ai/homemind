@@ -11,11 +11,16 @@ def fail(code, message, path, reference_kind=None, in_current_home=None):
 
 
 def validate_options(engine, output):
-    result = []
+    result, seen = [], set()
     for index, option in enumerate(output["options"]):
         item = reference(
             engine, option["kind"], option["id"], f"$.options[{index}].id", output_kind="clarify"
         )
+        key = (option["kind"], option["id"])
+        if key in seen:
+            with validation_field("clarify", f"$.options[{index}].id", option["kind"], True):
+                raise SimulationError(422, "duplicate_option", "模型澄清选项重复，无法区分选择")
+        seen.add(key)
         result.append({**option, "label": item.name})
     return result
 

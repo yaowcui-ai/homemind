@@ -84,6 +84,18 @@ it('窗户未知给出读数下一步，不能用口头已关闭绕过', () => {
   expect(screen.getByText(/确认.*实际窗户读数.*口头.*开始新任务/)).toBeVisible();
 });
 
+it('重复选项说明不能区分取舍并提供新建出口，诊断保持折叠', () => {
+  const task = makeAgentTask({ status: 'failed', message: '模型澄清选项重复' });
+  Object.assign(task.agent_run!, { failure_code: 'duplicate_option', diagnostic: {
+    phase: 'validation', output_kind: 'clarify', code: 'duplicate_option', field_path: '$.options[1].id',
+    reference_kind: 'entity', reference_in_current_home: true,
+  } });
+  render(<TaskDetail task={task} pending={false} onVerify={vi.fn()} onReply={vi.fn()} />);
+  expect(screen.getByText(/当前方案未执行.*重复选项.*不能区分.*开始新任务.*取舍/)).toBeVisible();
+  expect(screen.getByText(/\$\.options\[1\]\.id/)).not.toBeVisible();
+  expect(screen.queryByRole('button', { name: '提交补充回答' })).not.toBeInTheDocument();
+});
+
 it('有动作的失败任务继续展示独立证据，不声称当前方案未执行', () => {
   const task = makeAgentTask({ status: 'failed', actions: [{ id: 'action-1', entity_id: 'entity-1',
     entity_name: '主灯', room_name: '客厅', action: 'set_light', parameters: { power: true },

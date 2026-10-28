@@ -34,6 +34,9 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
     {unexecuted && unavailableReference && <p className={styles.hint}>
       当前方案未执行：方案引用的房间或设备在当前家庭中不可用。请查看当前家庭的房间与设备，调整需求后点击“开始新任务”重新提交。
     </p>}
+    {unexecuted && run?.failure_code === 'duplicate_option' && <p className={styles.hint}>
+      当前方案未执行：模型给出了重复选项，不能区分你的选择。请点击“开始新任务”，明确希望保留和放宽的要求或取舍后重新提交。
+    </p>}
     {unexecuted && run?.failure_code === 'window_not_closed' && <p className={styles.hint}>
       当前方案未执行：请先确认实际窗户读数，关闭打开的窗户或恢复未知读数。仅口头说“已经关窗”不能代替读数；确认后点击“开始新任务”重新提交。
     </p>}
@@ -104,7 +107,7 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
       {run.diagnostic && <div aria-label="校验诊断">
         <p>校验阶段：{run.diagnostic.phase} · 输出类型：{run.diagnostic.output_kind}</p>
         <p>错误字段：{run.diagnostic.field_path} · 分类：{run.diagnostic.code}</p>
-        {run.diagnostic.reference_kind && <p>引用类型：{run.diagnostic.reference_kind === 'room' ? '房间' : '实体'} · 当前家庭可用：{run.diagnostic.reference_in_current_home === null ? '不适用' : run.diagnostic.reference_in_current_home ? '是' : '否'}</p>}
+        {run.diagnostic.reference_kind && <p>引用类型：{run.diagnostic.reference_kind === 'room' ? '房间' : '实体'} · 当前家庭中可定位：{run.diagnostic.reference_in_current_home === null ? '不适用' : run.diagnostic.reference_in_current_home ? '是' : '否'}</p>}
       </div>}
       {run.records.map((record, index) => <p key={index}>{record.message}{record.duration_ms !== undefined ? ` · ${record.duration_ms} ms` : record.elapsed_ms !== undefined ? ` · ${record.elapsed_ms} ms` : ''}</p>)}
       <h3>公开对话</h3>{run.conversation.map((message, index) => <p key={index}>{message.role === 'user' ? '你' : '助手'}：{message.text}</p>)}
