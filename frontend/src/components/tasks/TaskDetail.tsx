@@ -29,6 +29,12 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
   return <section className={styles.card} aria-label="任务详情">
     <div className={styles.sectionHead}><h2>{scenarioLabels[task.scenario]}</h2><div><Tag>{modeLabels[task.mode ?? 'rule']}</Tag><Tag color={task.status === 'succeeded' ? 'green' : task.status === 'failed' ? 'red' : 'gold'}>{statusLabels[task.status]}</Tag></div></div>
     <Alert type={task.status === 'succeeded' ? 'success' : task.status === 'failed' ? 'error' : 'info'} title={task.message} />
+    {task.status === 'failed' && task.actions.length === 0 && run?.failure_code === 'protected_conflict' && <p className={styles.hint}>
+      方案把操作对象与保留或保护范围设为冲突，未发送设备动作。请点击“开始新任务”，明确要操作和保持不变的对象后重新提交。
+    </p>}
+    {task.status === 'failed' && task.actions.length === 0 && run?.failure_code === 'refused' && <p className={styles.hint}>
+      此任务已结束，未发送设备动作。请点击“开始新任务”，说明你的取舍或调整需求后重新提交。
+    </p>}
     <p className={styles.hint}>任务编号 {task.id}</p>
     {task.mode === 'single_agent' && <p className={styles.requestText}>你的需求：{task.request.text}</p>}
     {(proposed || task.mode === 'rule') && <div className={styles.plan} aria-label="实际任务方案">

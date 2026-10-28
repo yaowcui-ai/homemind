@@ -53,3 +53,12 @@ it('目标未到可在同页推进；错过目标不能补造历史证据', () =
   expect(screen.queryByRole('button', { name: /推进至/ })).not.toBeInTheDocument();
   expect(screen.getByText(/不能补造历史证据/)).toBeVisible();
 });
+
+it.each(['protected_conflict', 'refused'])('零动作的%s说明未执行与重新提交出口，不提供无法继续的回答或核验', (code) => {
+  const task = makeAgentTask({ status: 'failed' });
+  task.agent_run!.failure_code = code;
+  render(<TaskDetail task={task} pending={false} onVerify={vi.fn()} onReply={vi.fn()} />);
+  expect(screen.getByText(/未发送设备动作.*开始新任务/)).toBeVisible();
+  expect(screen.queryByRole('button', { name: '提交补充回答' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: '核验目标' })).not.toBeInTheDocument();
+});
