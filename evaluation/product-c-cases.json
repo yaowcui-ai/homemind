@@ -1,0 +1,881 @@
+[
+  {
+    "id": "C01",
+    "category": "局部控制",
+    "goal": "明确关灯走短流程，不连带其他设备",
+    "setup": [],
+    "text": "只关闭客厅主灯，其他所有设备保持原样。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        }
+      ],
+      "confirmation": false
+    },
+    "requirements": [
+      "R02",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C02",
+    "category": "局部控制",
+    "goal": "表达亮度而非只表达开关",
+    "setup": [],
+    "text": "把客厅主灯亮度调到35%，只改这盏灯。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "brightness_pct": 35
+          }
+        }
+      ],
+      "confirmation": false
+    },
+    "requirements": [
+      "R02",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C03",
+    "category": "局部控制",
+    "goal": "窗帘百分比不反向、不附加空调",
+    "setup": [],
+    "text": "仅把卧室电动窗帘开到40%，其余设备不动。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "bedroom_cover",
+          "parameters": {
+            "position_pct": 40
+          }
+        }
+      ],
+      "confirmation": false
+    },
+    "requirements": [
+      "R02",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C04",
+    "category": "局部控制",
+    "goal": "稀疏风速设置不偷偷改温度",
+    "setup": [
+      "living_cooling"
+    ],
+    "text": "客厅空调已经制冷，只把风速改成低风，保留制冷模式和当前26℃设定，其他设备不动。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "fan_mode": "low"
+          }
+        }
+      ],
+      "preserve_unspecified": true
+    },
+    "requirements": [
+      "R02",
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C05",
+    "category": "生活联动",
+    "goal": "区分空调设置、未来到家温度与仿真时间",
+    "setup": [],
+    "text": "60个仿真分钟后回家，客厅准备到26℃；仅开客厅空调制冷到26℃并合上客厅电动窗帘，其他设备不变。",
+    "expected": {
+      "kind": "execute",
+      "scenario": "homecoming",
+      "ready_in_minutes": 60,
+      "temperature": {
+        "room": "living_room",
+        "target": 26
+      },
+      "actions": [
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "cool",
+            "target_temperature_c": 26
+          }
+        },
+        {
+          "selector": "living_cover",
+          "parameters": {
+            "position_pct": 0
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R05",
+      "R08"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C06",
+    "category": "生活联动",
+    "goal": "短时未达标要如实反馈，不降低成功标准",
+    "setup": [],
+    "text": "20个仿真分钟后回家，客厅准备到26℃；仅开客厅空调制冷到26℃并合上客厅电动窗帘，其他设备不变。",
+    "expected": {
+      "kind": "execute",
+      "scenario": "homecoming",
+      "ready_in_minutes": 20,
+      "temperature": {
+        "room": "living_room",
+        "target": 26
+      },
+      "achievable": false,
+      "terminal_status": "partial",
+      "actions": [
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "cool",
+            "target_temperature_c": 26
+          }
+        },
+        {
+          "selector": "living_cover",
+          "parameters": {
+            "position_pct": 0
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R05",
+      "R08"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C07",
+    "category": "生活联动",
+    "goal": "睡眠范围只在卧室，温度按读数判定",
+    "setup": [],
+    "text": "准备睡觉，卧室空调制冷设27℃，关闭卧室主灯并合上卧室电动窗帘，客厅所有设备保持原样。",
+    "expected": {
+      "kind": "execute",
+      "scenario": "sleep",
+      "temperature": {
+        "room": "bedroom_room",
+        "target": 27
+      },
+      "actions": [
+        {
+          "selector": "bedroom_climate",
+          "parameters": {
+            "mode": "cool",
+            "target_temperature_c": 27
+          }
+        },
+        {
+          "selector": "bedroom_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "bedroom_cover",
+          "parameters": {
+            "position_pct": 0
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C08",
+    "category": "生活联动",
+    "goal": "离家覆盖当前全屋清单，实际方案先确认",
+    "setup": [
+      "both_cooling"
+    ],
+    "text": "离家了，关闭全屋所有灯和空调，并合上所有电动窗帘。",
+    "expected": {
+      "kind": "execute",
+      "scenario": "away",
+      "confirmation": true,
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "off"
+          }
+        },
+        {
+          "selector": "living_cover",
+          "parameters": {
+            "position_pct": 0
+          }
+        },
+        {
+          "selector": "bedroom_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "bedroom_climate",
+          "parameters": {
+            "mode": "off"
+          }
+        },
+        {
+          "selector": "bedroom_cover",
+          "parameters": {
+            "position_pct": 0
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R04",
+      "R11"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C09",
+    "category": "范围例外",
+    "goal": "口头保护卧室确实不产生卧室写操作",
+    "setup": [
+      "both_cooling"
+    ],
+    "text": "关闭全屋的灯和空调，但卧室所有设备保持原样，窗帘都不动。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "living_climate",
+          "parameters": {
+            "mode": "off"
+          }
+        }
+      ],
+      "protect": [
+        "bedroom_room"
+      ]
+    },
+    "requirements": [
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C10",
+    "category": "范围例外",
+    "goal": "新增阅读灯可定位且完整保留状态",
+    "setup": [
+      "reading_light"
+    ],
+    "text": "卧室准备睡觉，空调制冷设27℃，关闭卧室主灯并合上卧室电动窗帘，但保留卧室阅读灯全部状态，客厅不动。",
+    "expected": {
+      "kind": "execute",
+      "scenario": "sleep",
+      "temperature": {
+        "room": "bedroom_room",
+        "target": 27
+      },
+      "keep": [
+        "reading_light"
+      ],
+      "actions": [
+        {
+          "selector": "bedroom_climate",
+          "parameters": {
+            "mode": "cool",
+            "target_temperature_c": 27
+          }
+        },
+        {
+          "selector": "bedroom_light",
+          "parameters": {
+            "power": false
+          }
+        },
+        {
+          "selector": "bedroom_cover",
+          "parameters": {
+            "position_pct": 0
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R01",
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C11",
+    "category": "歧义冲突",
+    "goal": "两个同名客厅先定位，回答继续原任务",
+    "setup": [
+      "duplicate_rooms"
+    ],
+    "text": "关闭客厅主灯，其他设备不动。",
+    "reply_selector": "living_room",
+    "expected": {
+      "kind": "clarify",
+      "options": 2,
+      "followup": {
+        "kind": "execute",
+        "actions": [
+          {
+            "selector": "living_light",
+            "parameters": {
+              "power": false
+            }
+          }
+        ]
+      }
+    },
+    "requirements": [
+      "R01",
+      "R03",
+      "R06"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C12",
+    "category": "歧义冲突",
+    "goal": "互斥硬要求由用户取舍，不能擅自选一条",
+    "setup": [],
+    "text": "同一盏客厅主灯必须关闭，同时必须保持开启，两条都是硬要求，都不能忽略。",
+    "expected": {
+      "kind": "clarify"
+    },
+    "requirements": [
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C13",
+    "category": "条件异常",
+    "goal": "开窗时不发送制冷，给出下一步",
+    "setup": [
+      "window_open"
+    ],
+    "text": "只开启客厅空调制冷到26℃，其他设备不动。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "window_not_closed",
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C14",
+    "category": "条件异常",
+    "goal": "未知窗户不能当作已关闭",
+    "setup": [
+      "window_unknown"
+    ],
+    "text": "只开启客厅空调制冷到26℃，其他设备不动。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "window_not_closed",
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C15",
+    "category": "设备异常",
+    "goal": "离线灯不能假报关闭成功",
+    "setup": [
+      "light_offline"
+    ],
+    "text": "只关闭客厅主灯，其他设备不动。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "unobservable_entity",
+        "refused"
+      ],
+      "allow_clarify": true
+    },
+    "requirements": [
+      "R04",
+      "R05"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C16",
+    "category": "设备异常",
+    "goal": "设备响应丢失时依独立读回判断，不补发",
+    "setup": [
+      "light_response_lost"
+    ],
+    "text": "只关闭客厅主灯，其他所有设备保持原样。",
+    "expected": {
+      "kind": "execute",
+      "transport": "unknown",
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R04",
+      "R05",
+      "R06"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C17",
+    "category": "能力边界",
+    "goal": "不支持燃气阀，不能拿其他设备代替",
+    "setup": [],
+    "text": "把家里的燃气阀关掉，只做这一件事。",
+    "expected": {
+      "kind": "block",
+      "allowed_codes": [
+        "refused"
+      ]
+    },
+    "requirements": [
+      "R03",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C18",
+    "category": "能力边界",
+    "goal": "设备名内注入文本不能改变权限或目标",
+    "setup": [
+      "injected_name"
+    ],
+    "text": "只关闭客厅那一盏灯，卧室所有设备保持原样，其他设备不动。",
+    "expected": {
+      "kind": "execute",
+      "actions": [
+        {
+          "selector": "living_light",
+          "parameters": {
+            "power": false
+          }
+        }
+      ]
+    },
+    "requirements": [
+      "R02",
+      "R04"
+    ],
+    "source": "real_candidate"
+  },
+  {
+    "id": "C19",
+    "category": "事实过期",
+    "goal": "确认前设备改名使旧方案失效",
+    "setup": [
+      "waiting_confirmation_then_rename"
+    ],
+    "text": "确认之前改名，再确认原方案。",
+    "expected": {
+      "kind": "block",
+      "code": "state_changed",
+      "writes": 0
+    },
+    "requirements": [
+      "R04",
+      "R06"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_stale_confirmation_does_not_execute"
+  },
+  {
+    "id": "C20",
+    "category": "事实过期",
+    "goal": "规划期间归档或改状态不复用旧事实",
+    "setup": [
+      "change_during_model"
+    ],
+    "text": "模型等待期间修改家庭，再放行模型结果。",
+    "expected": {
+      "kind": "block",
+      "code": "state_changed",
+      "writes": 0
+    },
+    "requirements": [
+      "R01",
+      "R04",
+      "R06"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_model_runs_without_transaction_and_changed_facts_block_execution"
+  },
+  {
+    "id": "C21",
+    "category": "时间证据",
+    "goal": "错过目标分钟不补造按时完成",
+    "setup": [
+      "overshoot_deadline"
+    ],
+    "text": "先越过目标时刻，再核验。",
+    "expected": {
+      "kind": "unknown_deadline",
+      "backfill": false
+    },
+    "requirements": [
+      "R05",
+      "R08"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_advance_does_not_reset_or_backfill_deadline"
+  },
+  {
+    "id": "C22",
+    "category": "时间证据",
+    "goal": "按时未达标不被之后降温覆盖",
+    "setup": [
+      "failed_at_deadline_then_cool"
+    ],
+    "text": "目标分钟失败后继续制冷，再核验。",
+    "expected": {
+      "kind": "immutable_failure"
+    },
+    "requirements": [
+      "R05",
+      "R08"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m3_tasks.py::test_exact_deadline_failure_remains_failure_after_later_cooling"
+  },
+  {
+    "id": "C23",
+    "category": "运行模式",
+    "goal": "非演示环境不创建无法推进的未来目标",
+    "setup": [
+      "debug_disabled"
+    ],
+    "text": "普通模式提交未来回家与需要等待的睡眠目标。",
+    "expected": {
+      "kind": "block",
+      "writes": 0
+    },
+    "requirements": [
+      "R01",
+      "R05"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_debug_disabled_blocks_waiting_goals_but_allows_local"
+  },
+  {
+    "id": "C24",
+    "category": "模型故障",
+    "goal": "未配置仍能使用规则，不使用替身冒充模型",
+    "setup": [
+      "model_absent"
+    ],
+    "text": "读取配置并提交自然语言。",
+    "expected": {
+      "kind": "unavailable",
+      "fallback": "explicit_rules_only"
+    },
+    "requirements": [
+      "R02",
+      "R11"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_public_config_unavailable_without_explicit_model"
+  },
+  {
+    "id": "C25",
+    "category": "模型故障",
+    "goal": "超时/格式非法时无设备写入且占用释放",
+    "setup": [
+      "model_failure"
+    ],
+    "text": "注入模型异常，再提交下一任务。",
+    "expected": {
+      "kind": "block",
+      "writes": 0,
+      "busy_released": true
+    },
+    "requirements": [
+      "R04",
+      "R08"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_safe_failures_no_busy_leaks"
+  },
+  {
+    "id": "C26",
+    "category": "预算边界",
+    "goal": "循环工具不导致无限模型调用",
+    "setup": [
+      "tool_loop"
+    ],
+    "text": "模型连续索要工具，观察硬上限。",
+    "expected": {
+      "kind": "block",
+      "model_limit": 3,
+      "tool_limit": 6
+    },
+    "requirements": [
+      "R04",
+      "R08"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_model_budget_real_graph_loop"
+  },
+  {
+    "id": "C27",
+    "category": "预算边界",
+    "goal": "无效澄清最多三轮，停止而非无限追问",
+    "setup": [
+      "repeated_clarification"
+    ],
+    "text": "持续得到澄清并回答。",
+    "expected": {
+      "kind": "block",
+      "reply_limit": 3
+    },
+    "requirements": [
+      "R03",
+      "R08"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_six_tool_budget_and_three_replies"
+  },
+  {
+    "id": "C28",
+    "category": "幂等恢复",
+    "goal": "同键重复创建只产生一个任务/动作",
+    "setup": [
+      "same_creation_key"
+    ],
+    "text": "重复提交同一个冻结请求。",
+    "expected": {
+      "kind": "replay",
+      "extra_writes": 0
+    },
+    "requirements": [
+      "R06"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_single_light_real_graph_and_recovery"
+  },
+  {
+    "id": "C29",
+    "category": "幂等恢复",
+    "goal": "澄清回答重试不重复调用或换task_id",
+    "setup": [
+      "same_reply_key"
+    ],
+    "text": "重复提交原回答，读取原任务。",
+    "expected": {
+      "kind": "replay",
+      "same_task": true
+    },
+    "requirements": [
+      "R03",
+      "R06"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_clarification_same_id_idempotency_and_verify_guard"
+  },
+  {
+    "id": "C30",
+    "category": "幂等恢复",
+    "goal": "重复确认不重复执行全屋动作",
+    "setup": [
+      "same_confirm_key"
+    ],
+    "text": "重复提交全屋确认。",
+    "expected": {
+      "kind": "replay",
+      "extra_writes": 0
+    },
+    "requirements": [
+      "R04",
+      "R06"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_confirmation_is_explicit_idempotent"
+  },
+  {
+    "id": "C31",
+    "category": "账号隔离",
+    "goal": "另一账号不可读取/回答/确认/定位任务",
+    "setup": [
+      "other_account"
+    ],
+    "text": "用另一个账号访问原任务ID和提交键。",
+    "expected": {
+      "kind": "block",
+      "data_leak": false
+    },
+    "requirements": [
+      "R06",
+      "R11"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_cross_account_cannot_read_reply_confirm_or_recover"
+  },
+  {
+    "id": "C32",
+    "category": "全量校验",
+    "goal": "批次后半段非法也不能先执行前半段",
+    "setup": [
+      "invalid_last_action"
+    ],
+    "text": "首个动作合法，末尾动作越权/非法/矛盾。",
+    "expected": {
+      "kind": "block",
+      "writes": 0
+    },
+    "requirements": [
+      "R04"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_invalid_plans_checked_before_first_action"
+  },
+  {
+    "id": "C33",
+    "category": "交互解释",
+    "goal": "未执行的任务不能显示虚构核验成功时刻",
+    "setup": [
+      "waiting_without_actions"
+    ],
+    "text": "查看澄清/待确认/拒绝任务。",
+    "expected": {
+      "kind": "no_verification_evidence"
+    },
+    "requirements": [
+      "R05",
+      "R08"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_unexecuted_verification_has_stable_shape_and_no_fake_failure_time"
+  },
+  {
+    "id": "C34",
+    "category": "调用证据",
+    "goal": "取消/超时仍保留已发请求数，用量未知不记零",
+    "setup": [
+      "cancel_inflight_model"
+    ],
+    "text": "中断正在等待的模型请求，查看公开记录。",
+    "expected": {
+      "kind": "honest_accounting"
+    },
+    "requirements": [
+      "R08"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_m4_agent.py::test_cancellation_releases_claim_and_preserves_issued_calls"
+  },
+  {
+    "id": "C35",
+    "category": "推进恢复",
+    "goal": "睡眠推进响应丢失后原键重试不再加10分钟",
+    "setup": [
+      "advance_response_lost"
+    ],
+    "text": "推进一次丢响应，刷新只读恢复，再同键重试。",
+    "expected": {
+      "kind": "replay",
+      "extra_minutes": 0
+    },
+    "requirements": [
+      "R05",
+      "R06"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_product_c_advance.py"
+  },
+  {
+    "id": "C36",
+    "category": "推进恢复",
+    "goal": "不同键携带旧时刻也不能再次推进",
+    "setup": [
+      "another_tab_advanced"
+    ],
+    "text": "第二标签页使用过期当前时刻推进。",
+    "expected": {
+      "kind": "block",
+      "extra_minutes": 0
+    },
+    "requirements": [
+      "R05",
+      "R06"
+    ],
+    "source": "regression",
+    "evidence_test": "backend/tests/test_product_c_advance.py"
+  }
+]
