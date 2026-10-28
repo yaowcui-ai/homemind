@@ -45,6 +45,10 @@ export interface ProposedPlan {
   actions: { entity_id: string; room_id: string; action: string; parameters: Record<string, string | number | boolean> }[];
   temperatures: { room_id: string; target: number }[]; ready_in_minutes: number | null; rationale: string;
 }
+export interface AgentDiagnostic {
+  phase: 'validation'; output_kind: 'plan' | 'clarify'; code: string; field_path: string;
+  reference_kind: 'room' | 'entity' | null; reference_in_current_home: boolean | null;
+}
 export interface AgentRun {
   turn: number; max_replies: number; question: string | null; options: AgentOption[];
   proposed_plan: ProposedPlan | null; rationale: string | null;
@@ -52,6 +56,7 @@ export interface AgentRun {
   records: { stage: string; message: string; elapsed_ms?: number; duration_ms?: number }[];
   model_calls: number; tool_calls: number; usage: { input_tokens: number; output_tokens: number } | null;
   actual_model: string | null; failure_code: string | null;
+  diagnostic?: AgentDiagnostic | null;
   rounds: { turn: number; model_calls: number; tool_calls: number; usage: AgentRun['usage']; elapsed_ms: number }[];
   timings: { planning_ms: number; validation_ms: number; execution_ms: number };
 }

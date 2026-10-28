@@ -33,6 +33,32 @@ async function submit(page: Page, text: string) {
 const detailRegion = (page: Page) => page.getByRole('region', { name: '任务详情' });
 test.beforeEach(async ({ page, request }) => { await registerAgent(request, page); });
 
+test('产品C2受控模型：无效澄清选项说明未执行，诊断折叠且刷新只读', async ({ page, request }) => {
+  const before: Snapshot = await (await request.get('/api/simulation')).json();
+  await page.goto('/'); await agent(page);
+  const task = await submit(page, '受控无效选项诊断');
+  expect(task).toMatchObject({ status: 'failed', actions: [], agent_run: { failure_code: 'not_found',
+    diagnostic: { phase: 'validation', output_kind: 'clarify', field_path: '$.options[0].id',
+      reference_kind: 'entity', reference_in_current_home: false } } });
+  expect(task.agent_run?.question).toBeNull();
+  expect(JSON.stringify(task)).not.toContain('confirm_closed');
+  await expect(detailRegion(page).getByText(/当前方案未执行.*当前家庭.*开始新任务/)).toBeVisible();
+  await expect(detailRegion(page).getByText(/\$\.options\[0\]\.id/)).toBeHidden();
+  await expect(page.getByRole('button', { name: '提交补充回答' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '核验目标' })).toHaveCount(0);
+  await detailRegion(page).screenshot({ path: path.resolve('../output/product-c2-invalid-reference.png') });
+  await page.getByText('运行记录与调用用量', { exact: true }).click();
+  await expect(detailRegion(page).getByText(/\$\.options\[0\]\.id/)).toBeVisible();
+  await detailRegion(page).screenshot({ path: path.resolve('../output/product-c2-diagnostic-expanded.png') });
+  let posts = 0;
+  page.on('request', (r) => { if (r.url().includes('/api/tasks') && r.method() === 'POST') posts += 1; });
+  await page.reload(); await tasks(page);
+  await expect(page.getByText(`任务编号 ${task.id}`, { exact: true })).toBeVisible();
+  await expect(detailRegion(page).getByText(/当前方案未执行.*当前家庭.*开始新任务/)).toBeVisible();
+  expect(posts).toBe(0);
+  expect(await (await request.get('/api/simulation')).json()).toEqual(before);
+});
+
 for (const committed of [true, false]) test(`产品C：推进响应丢失刷新只读，${committed ? '已提交原键只读恢复' : '未提交保留原键重试一次'}`, async ({ page, request }) => {
   const before: Snapshot = await (await request.get('/api/simulation')).json();
   const created = await write(request, 'POST', '/tasks', { scenario: 'sleep', room_ids: [before.rooms[0].id], target_temperature_c: 18 },

@@ -24,6 +24,14 @@ function proposedPlan(v: unknown) {
     && v.actions.every((a) => isObject(a) && isText(a.entity_id) && isText(a.room_id) && isText(a.action) && parameters(a.parameters))
     && Array.isArray(v.temperatures) && v.temperatures.every(temperature) && nullableNumber(v.ready_in_minutes) && typeof v.rationale === 'string');
 }
+function diagnostic(v: unknown) {
+  return v === undefined || v === null || (isObject(v) && v.phase === 'validation'
+    && ['plan', 'clarify'].includes(String(v.output_kind)) && isText(v.code)
+    && typeof v.field_path === 'string'
+    && /^\$\.(?:options\[\d+\]\.id|(?:room_ids|keep_entity_ids|protected_room_ids)(?:\[\d+\])?|actions\[\d+\]\.(?:entity_id|room_id|action|parameters)|temperatures(?:\[\d+\]\.(?:room_id|target))?|ready_in_minutes)$/.test(v.field_path)
+    && (v.reference_kind === null || ['room', 'entity'].includes(String(v.reference_kind)))
+    && (v.reference_in_current_home === null || typeof v.reference_in_current_home === 'boolean'));
+}
 function agentRun(v: unknown): v is AgentRun {
   return isObject(v) && isNumber(v.turn) && isNumber(v.max_replies) && nullableText(v.question)
     && Array.isArray(v.options) && v.options.every(option) && proposedPlan(v.proposed_plan) && nullableText(v.rationale)
@@ -31,7 +39,7 @@ function agentRun(v: unknown): v is AgentRun {
       && typeof c.text === 'string' && (c.options === undefined || (Array.isArray(c.options) && c.options.every(option))))
     && Array.isArray(v.records) && v.records.every((r) => isObject(r) && isText(r.stage) && typeof r.message === 'string'
       && (r.elapsed_ms === undefined || isNumber(r.elapsed_ms)) && (r.duration_ms === undefined || isNumber(r.duration_ms)))
-    && isNumber(v.model_calls) && isNumber(v.tool_calls) && usage(v.usage) && (v.actual_model === undefined || nullableText(v.actual_model)) && nullableText(v.failure_code)
+    && isNumber(v.model_calls) && isNumber(v.tool_calls) && usage(v.usage) && (v.actual_model === undefined || nullableText(v.actual_model)) && nullableText(v.failure_code) && diagnostic(v.diagnostic)
     && Array.isArray(v.rounds) && v.rounds.every((r) => isObject(r) && isNumber(r.turn) && isNumber(r.model_calls) && isNumber(r.tool_calls) && usage(r.usage) && isNumber(r.elapsed_ms))
     && isObject(v.timings) && ['planning_ms', 'validation_ms', 'execution_ms'].every((key) => isNumber((v.timings as Record<string, unknown>)[key]));
 }

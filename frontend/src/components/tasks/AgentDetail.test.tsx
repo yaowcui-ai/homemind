@@ -62,3 +62,38 @@ it.each(['protected_conflict', 'refused'])('零动作的%s说明未执行与重�
   expect(screen.queryByRole('button', { name: '提交补充回答' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: '核验目标' })).not.toBeInTheDocument();
 });
+
+it('无效对象首屏解释未执行与新建出口，技术字段在折叠记录内', () => {
+  const task = makeAgentTask({ status: 'failed', message: '找不到实体，或该实体已归档' });
+  Object.assign(task.agent_run!, { failure_code: 'not_found', diagnostic: {
+    phase: 'validation', output_kind: 'clarify', code: 'not_found', field_path: '$.options[0].id',
+    reference_kind: 'entity', reference_in_current_home: false,
+  } });
+  render(<TaskDetail task={task} pending={false} onVerify={vi.fn()} />);
+  expect(screen.getByText(/当前方案未执行.*当前家庭.*开始新任务/)).toBeVisible();
+  expect(screen.getByText(/\$\.options\[0\]\.id/)).not.toBeVisible();
+  fireEvent.click(screen.getByText('运行记录与调用用量'));
+  expect(screen.getByText(/\$\.options\[0\]\.id/)).toBeVisible();
+  expect(screen.queryByRole('button', { name: '核验目标' })).not.toBeInTheDocument();
+});
+
+it('窗户未知给出读数下一步，不能用口头已关闭绕过', () => {
+  const task = makeAgentTask({ status: 'failed' });
+  task.agent_run!.failure_code = 'window_not_closed';
+  render(<TaskDetail task={task} pending={false} onVerify={vi.fn()} />);
+  expect(screen.getByText(/确认.*实际窗户读数.*口头.*开始新任务/)).toBeVisible();
+});
+
+it('有动作的失败任务继续展示独立证据，不声称当前方案未执行', () => {
+  const task = makeAgentTask({ status: 'failed', actions: [{ id: 'action-1', entity_id: 'entity-1',
+    entity_name: '主灯', room_name: '客厅', action: 'set_light', parameters: { power: true },
+    status: 'verified', transport_outcome: 'verified', message: '读回已开启' }] });
+  Object.assign(task.agent_run!, { failure_code: 'not_found', diagnostic: {
+    phase: 'validation', output_kind: 'plan', code: 'not_found', field_path: '$.room_ids[0]',
+    reference_kind: 'room', reference_in_current_home: false,
+  } });
+  render(<TaskDetail task={task} pending={false} onVerify={vi.fn()} />);
+  expect(screen.queryByText(/当前方案未执行|未发送设备动作/)).not.toBeInTheDocument();
+  expect(screen.getByText(/读回已开启/)).toBeVisible();
+  expect(screen.getByRole('button', { name: '核验目标' })).toBeVisible();
+});

@@ -26,9 +26,20 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
   const keep = proposed?.keep_entity_ids ?? task.request.keep_entity_ids ?? [];
   const protectedRooms = proposed?.protected_room_ids ?? task.request.protected_room_ids ?? [];
   const rooms = proposed?.room_ids ?? (task.mode === 'rule' ? task.request.room_ids : []);
+  const unexecuted = task.status === 'failed' && task.actions.length === 0;
+  const unavailableReference = run?.diagnostic?.reference_in_current_home === false || run?.failure_code === 'not_found';
   return <section className={styles.card} aria-label="任务详情">
     <div className={styles.sectionHead}><h2>{scenarioLabels[task.scenario]}</h2><div><Tag>{modeLabels[task.mode ?? 'rule']}</Tag><Tag color={task.status === 'succeeded' ? 'green' : task.status === 'failed' ? 'red' : 'gold'}>{statusLabels[task.status]}</Tag></div></div>
     <Alert type={task.status === 'succeeded' ? 'success' : task.status === 'failed' ? 'error' : 'info'} title={task.message} />
+    {unexecuted && unavailableReference && <p className={styles.hint}>
+      当前方案未执行：方案引用的房间或设备在当前家庭中不可用。请查看当前家庭的房间与设备，调整需求后点击“开始新任务”重新提交。
+    </p>}
+    {unexecuted && run?.failure_code === 'window_not_closed' && <p className={styles.hint}>
+      当前方案未执行：请先确认实际窗户读数，关闭打开的窗户或恢复未知读数。仅口头说“已经关窗”不能代替读数；确认后点击“开始新任务”重新提交。
+    </p>}
+    {unexecuted && run?.failure_code === 'temperature_unknown' && <p className={styles.hint}>
+      当前方案未执行：请检查当前家庭的主温度传感器，恢复可读取的真实温度后点击“开始新任务”重新提交。
+    </p>}
     {task.status === 'failed' && task.actions.length === 0 && run?.failure_code === 'protected_conflict' && <p className={styles.hint}>
       方案把操作对象与保留或保护范围设为冲突，未发送设备动作。请点击“开始新任务”，明确要操作和保持不变的对象后重新提交。
     </p>}
@@ -90,6 +101,11 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
       <p>Token 用量：{run.usage ? `输入 ${run.usage.input_tokens} / 输出 ${run.usage.output_tokens}` : '未知'}</p>
       <p>已记录耗时：规划 {run.timings.planning_ms} ms · 校验 {run.timings.validation_ms} ms · 执行 {run.timings.execution_ms} ms</p>
       {run.failure_code && <p>失败分类：{run.failure_code}</p>}
+      {run.diagnostic && <div aria-label="校验诊断">
+        <p>校验阶段：{run.diagnostic.phase} · 输出类型：{run.diagnostic.output_kind}</p>
+        <p>错误字段：{run.diagnostic.field_path} · 分类：{run.diagnostic.code}</p>
+        {run.diagnostic.reference_kind && <p>引用类型：{run.diagnostic.reference_kind === 'room' ? '房间' : '实体'} · 当前家庭可用：{run.diagnostic.reference_in_current_home === null ? '不适用' : run.diagnostic.reference_in_current_home ? '是' : '否'}</p>}
+      </div>}
       {run.records.map((record, index) => <p key={index}>{record.message}{record.duration_ms !== undefined ? ` · ${record.duration_ms} ms` : record.elapsed_ms !== undefined ? ` · ${record.elapsed_ms} ms` : ''}</p>)}
       <h3>公开对话</h3>{run.conversation.map((message, index) => <p key={index}>{message.role === 'user' ? '你' : '助手'}：{message.text}</p>)}
     </details>}

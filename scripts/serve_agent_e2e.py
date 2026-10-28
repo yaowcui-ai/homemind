@@ -35,7 +35,13 @@ class ControlledBrowserModel:
             if isinstance(message, HumanMessage)
         ]
         text = requests[-1]
-        if len(requests) == 1 and "准备一下" in text:
+        if text == "受控无效选项诊断":
+            output = {
+                "kind": "clarify",
+                "question": "先确认窗户",
+                "options": [{"id": "confirm_closed", "label": "已经关窗", "kind": "entity"}],
+            }
+        elif len(requests) == 1 and "准备一下" in text:
             output = {
                 "kind": "clarify",
                 "question": "你希望操作哪个房间？",
@@ -111,6 +117,7 @@ def main():
     assert args.controlled_sqlite
     sys.path.insert(0, str(ROOT / "backend" / "src"))
     import uvicorn
+
     from homemind.app import create_app
     from homemind.config import Settings
     from homemind.persistence.database import Database

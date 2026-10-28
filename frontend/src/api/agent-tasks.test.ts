@@ -50,6 +50,19 @@ describe('自然语言任务和刷新恢复', () => {
     await expect(tasksApi.get('task-1')).resolves.toMatchObject({ mode: 'single_agent', status: 'waiting_input' });
   });
 
+  it('兼容无诊断旧任务，并校验新增有限诊断类型', async () => {
+    const task = makeAgentTask();
+    const diagnostic = { phase: 'validation', output_kind: 'clarify', code: 'not_found',
+      field_path: '$.options[0].id', reference_kind: 'entity', reference_in_current_home: false };
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(Response.json(task))
+      .mockResolvedValueOnce(Response.json({ ...task, agent_run: { ...task.agent_run, diagnostic } }))
+      .mockResolvedValueOnce(Response.json({ ...task, agent_run: { ...task.agent_run,
+        diagnostic: { ...diagnostic, reference_in_current_home: 'false' } } })));
+    await expect(tasksApi.get('task-1')).resolves.toMatchObject({ mode: 'single_agent' });
+    await expect(tasksApi.get('task-1')).resolves.toMatchObject({ agent_run: { diagnostic } });
+    await expect(tasksApi.get('task-1')).rejects.toThrow(/无法识别/);
+  });
+
   it('自然语言配置只报告配置状态，不把缺失reason接受为合法响应', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(Response.json({ available: true, model: 'configured-model', reason: null })));
     await expect(tasksApi.agentConfig()).resolves.toEqual({ available: true, model: 'configured-model', reason: null });
