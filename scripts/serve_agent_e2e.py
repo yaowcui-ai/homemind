@@ -117,7 +117,6 @@ def main():
     assert args.controlled_sqlite
     sys.path.insert(0, str(ROOT / "backend" / "src"))
     import uvicorn
-
     from homemind.app import create_app
     from homemind.config import Settings
     from homemind.persistence.database import Database

@@ -4,6 +4,22 @@
 
 ## 当前授权与进度
 
+**最新为C第二轮交付，以下C首轮/B是历史。** 用户“开始”授权C遗留P1清理，另明确本轮最多32真实请求。当前分支`codex/product-c2-stabilization`，版本仍0.4.0/M4，head迁移仍0004_product_c；无新依赖/迁移，仅本地提交，未推送/合并/发布。[C2报告](docs/product/product-c2-evaluation.md)、[44例案例库](docs/product/product-c-cases.md)。
+
+C2实现有限agent_run.diagnostic（阶段/输出类型/code/path/引用类型/当前家庭可定位），不存无效ID、被拒问题/label/raw输出，不查询别家庭；校验与执行安全不放宽。页面首屏解释无效引用/读数缺口/重复选项和下一步，诊断折叠、旧task兼容。重复(kind,id)拒绝为duplicate_option；互斥硬要求问用户放宽哪条，非对象取舍用options=[]+自由回答。
+
+真实C2阶段1：原C14/C06/C09/C12完全原样+新8例C37—44，共12例、24请求；原判9/12，但C06是oracle假设缺陷，另2个实际交互问题C12(refused)与C40(同一实际灯的重复选项)。阶段2仅C12/C40同输入/预期/归一化初始事实各复测一次，均过：C12只证明waiting_input/空options/零动作，C40实际回答后原task关指定灯、读回成功。共30/32请求，余2未用，已停止，不自动使用余额。输入90755/output3055 token，无费用估算。
+
+重要勘误：C06未限定fan，合法auto在20min读26.0且deadline verified；受控API和独立物理重放仅改fan得到low26.8/auto26.0。热模型/成功定义/冻结案例及原评分都没改；旧C1“可达10/12”分母解释撤销，历史全部执行目标10/13保留。C2不能把9/12直接称为产品失败率，更不能用定向2/2推整体准确率提升。
+
+C14本次正确拒绝未知窗户，没复现not_found；旧输出丢失，仍不能追认具体原因。受控API证明非法clarify选项可定位$.options[0].id，但不当作旧故障证据。C40阶段1未提交回答而rawsame_task_after_reply=True仅因ID不变，现加reply_submitted门控，旧原件不覆盖。C42首次处置通过，但后续回答未测且问句措辞待改善；保留P2。
+
+证据`output/product-c2-real-20261028/{phase1,phase2}`、30次budget、风速对照、受控错误复现；可移植`evaluation/results/product-c2-20261028.json`。旧40账本SHA核对未动。本轮模型只用临时SQLite合成家庭；实际MySQL原5项回归5passed（不冒充新字段独立进程重启）。后端相关77passed、前端首阶段全74passed/末次定向26+lintbuild、受控browser新增1passed，root目视截图；独立规格/质量及数据方法审阅批准。原始RED/GREEN全保留。无新常驻API/网页，MySQL保留；启动仍README8110/5174。
+
+**下一次继续：可进入D的最小分工与公平对照设计，先冻结风速等控制参数、指标与新样本，再执行。** 44案例全是开发集，不可作保留集；没有用户访谈/上线数据/多Agent收益。模型新批次另定范围预算，不自动使用C2余额。既有Figma在线新状态/连线仍待额度，不绕过/重建文件；U01仅本人自述少量设备偶用。本轮不自动做D/E。
+
+## C首轮历史（最新C2以上方为准）
+
 用户“继续，注意这次我要往产品稍微靠一下，所以案例应多点”授权C首轮；另明确允许最多40次真实请求。已完成[36案例](docs/product/product-c-cases.md)、[C评测与Bad Case报告](docs/product/product-c-evaluation.md)、推进持久恢复、busy保原键、范围prompt及失败反馈的有限优化。保留原架构，版本仍0.4.0/M4。分支`codex/product-c-validation`，仅本地提交，不推送/合并/发布。
 
 真实首批C01—18在新建临时SQLite合成家庭运行，真实DeepSeek/实际API和图，设备/时间仿真；初批38请求，13/18符合验收，C04/C06/C09范围/保留冲突、C12拒绝代澄清、C14未知窗户not_found共5失败。优化后原输入/初始条件/期望的C04一次复测通过，另2请求。**共40/40已用满，不能再调用真实模型；不能换目录/删账本/重跑旧check_model绕过预算。** C06/C09/C12/C14尚未真实复测，不称全部已解决，不将C04一次通过外推总体提升。实际输入115313/output6030 token；无费用推算、用户研究或单多Agent对照。

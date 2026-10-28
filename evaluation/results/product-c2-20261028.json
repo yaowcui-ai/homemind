@@ -1,0 +1,630 @@
+{
+  "date": "2026-10-28 Asia/Shanghai",
+  "source": "real_model_synthetic_devices_isolated_sqlite",
+  "split": "development",
+  "cases_total": 44,
+  "batch_cases": 12,
+  "shared_budget": {
+    "limit": 32,
+    "used": 30,
+    "unused": 2,
+    "responses_with_usage": 30,
+    "input_tokens": 90755,
+    "output_tokens": 3055
+  },
+  "phase1": {
+    "summary": {
+      "source": "real_model_synthetic_households",
+      "split": "development",
+      "planned_candidates": 12,
+      "recorded_cases": 12,
+      "not_run": [],
+      "script_errors": [],
+      "budget_limited": [],
+      "real_requests": 24,
+      "request_limit": 32,
+      "metrics": {
+        "case_pass": {
+          "numerator": 9,
+          "denominator": 12
+        },
+        "understanding_correct": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "goal_completed": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "all_actions_verified": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "exception_correct": {
+          "numerator": 5,
+          "denominator": 7
+        }
+      },
+      "latency_ms": {
+        "n": 12,
+        "p50_nearest_rank": 5844,
+        "p95_nearest_rank": 13094
+      },
+      "violations": {
+        "unexpected_write": [],
+        "false_success": []
+      },
+      "phase": "phase1",
+      "phase_requests": 24,
+      "shared_requests": 24,
+      "phase_prior_calls": 0
+    },
+    "manifest": {
+      "date": "2026-10-28 Asia/Shanghai",
+      "phase": "phase1",
+      "hashes": {
+        "evaluation/product-c2-cases.json": "6331242794c2182344fca6add81ddf6ec07c2a64cf8044b05b1239583d1799ce",
+        "scripts/product_eval_c2.py": "0eef9bfec96c3c89a4feb28930f94a286d14969017c1377ed82e5d64ee878a68",
+        "scripts/product_eval.py": "7f6dc8c4cf1a590ca957f7b80b0676220bc4014b9f2eb1782f1c5a2d18b63936",
+        "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+        "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+        "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+        "backend/src/homemind/agent/diagnostics.py": "efa3fb343f24356d33456b8b8fe59df30151f73ccc308de5e8260f723dcd6c40",
+        "backend/src/homemind/agent/graph.py": "b4eafebd9ddff60691b5f2bb2ad3dcae31bcd5114828063de9ee9986de419917",
+        "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+        "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+        "backend/src/homemind/agent/schemas.py": "7e174db0061fcdf10ffb10280dfe49ce411a8422382096893687bcc47f109e0d",
+        "backend/src/homemind/agent/service.py": "32a928fcfe4bc9451779d2a9a254fc68a7b3baecad83b4aed9e771129680ac69",
+        "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+        "backend/src/homemind/agent/validation.py": "0ab9c439cf56d3852a83a02596366a71d5a0ccba09c51d58fd849c1744350787",
+        "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+        "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+        "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+        "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+        "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+        "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+        "backend/src/homemind/migrations/versions/0001_m3.py": "6246ecf52446edc20b425fad269597848ac0eb9a6a2753571d8f94d3c23e99a8",
+        "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+        "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+        "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+        "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+        "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+        "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+        "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+        "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+        "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+        "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+        "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+        "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+        "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+        "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+        "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+        "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+        "backend/src/homemind/tasks.py": "c45b72fd8779e36f21eecea949b4f653eb598f60fa8219a528bf773f6d008e85"
+      },
+      "case_order": [
+        "C14",
+        "C06",
+        "C09",
+        "C12",
+        "C37",
+        "C38",
+        "C39",
+        "C40",
+        "C41",
+        "C42",
+        "C43",
+        "C44"
+      ],
+      "prior_calls": 0,
+      "shared_limit": 32,
+      "model": "deepseek-flash",
+      "thinking": "disabled",
+      "max_tokens": 2048,
+      "git_head": "c60307f8dba8e0ac685514657040986a17e4fa42",
+      "source": "real_model_synthetic_households_isolated_sqlite",
+      "split": "development",
+      "human_wait": "scripted_immediate_answer"
+    },
+    "case_results": [
+      {
+        "case_id": "C06",
+        "status": "succeeded",
+        "score": {
+          "case_pass": false,
+          "understanding_correct": true,
+          "goal_completed": true,
+          "all_actions_verified": true,
+          "exception_correct": null,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 5991,
+          "output_tokens": 363
+        },
+        "elapsed_ms": 5985,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "f4658bdcc1a76a11dd8f368457ac804bd8c0600939d78c57645ab035589991d0"
+      },
+      {
+        "case_id": "C09",
+        "status": "succeeded",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": true,
+          "goal_completed": true,
+          "all_actions_verified": true,
+          "exception_correct": null,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6103,
+          "output_tokens": 379
+        },
+        "elapsed_ms": 6813,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "727e274336b82d6f403d04ff98182eed23567198ede04a41b3eaa70c657b4fcd"
+      },
+      {
+        "case_id": "C12",
+        "status": "failed",
+        "score": {
+          "case_pass": false,
+          "understanding_correct": null,
+          "goal_completed": null,
+          "all_actions_verified": null,
+          "exception_correct": false,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 5865,
+          "output_tokens": 98
+        },
+        "elapsed_ms": 5922,
+        "diagnostic": null,
+        "failure_code": "refused",
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "4de3453a5682c4d162e6a7ee24b23efb0310bc6061fc974ea8c62bf869bbc720"
+      },
+      {
+        "case_id": "C14",
+        "status": "failed",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": null,
+          "goal_completed": null,
+          "all_actions_verified": null,
+          "exception_correct": true,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 5985,
+          "output_tokens": 77
+        },
+        "elapsed_ms": 13094,
+        "diagnostic": null,
+        "failure_code": "refused",
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "91d188d9462f7ba9c81747df4b09b4526fe8fbcfc66b47b210da1bbf871153f6"
+      },
+      {
+        "case_id": "C37",
+        "status": "succeeded",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": true,
+          "goal_completed": true,
+          "all_actions_verified": true,
+          "exception_correct": null,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6032,
+          "output_tokens": 287
+        },
+        "elapsed_ms": 5969,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "202fc24f923c31c7da2070b63247cb0d925b7b6fd99af07dfb6f409ae3a4515e"
+      },
+      {
+        "case_id": "C38",
+        "status": "succeeded",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": true,
+          "goal_completed": true,
+          "all_actions_verified": true,
+          "exception_correct": null,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6082,
+          "output_tokens": 281
+        },
+        "elapsed_ms": 5516,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "6e880435d2d228b312993e4ce049d9465eefac264097ff9f7cf58cfe433ec558"
+      },
+      {
+        "case_id": "C39",
+        "status": "succeeded",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": true,
+          "goal_completed": true,
+          "all_actions_verified": true,
+          "exception_correct": null,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6079,
+          "output_tokens": 304
+        },
+        "elapsed_ms": 5844,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "c18cec99f895e91ef93e52c7c21a1b110ea69362d8f67ad4efcb6b41b59d1e57"
+      },
+      {
+        "case_id": "C40",
+        "status": "waiting_input",
+        "score": {
+          "case_pass": false,
+          "understanding_correct": false,
+          "goal_completed": false,
+          "all_actions_verified": false,
+          "exception_correct": false,
+          "false_success": false,
+          "unexpected_write": false,
+          "initial_clarification_correct": false,
+          "same_task_after_reply": true
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 5897,
+          "output_tokens": 155
+        },
+        "elapsed_ms": 5094,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "874d3ce81075475acf377dce2072e7e91c54ba135aec6be8f8af9d1abb36a465"
+      },
+      {
+        "case_id": "C41",
+        "status": "failed",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": null,
+          "goal_completed": null,
+          "all_actions_verified": null,
+          "exception_correct": true,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6033,
+          "output_tokens": 129
+        },
+        "elapsed_ms": 7250,
+        "diagnostic": null,
+        "failure_code": "refused",
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "8a1300c085d2bcbbf6ec89a8f2dce2a5bf1652eb09534b60e45f7644ee4d447d"
+      },
+      {
+        "case_id": "C42",
+        "status": "waiting_input",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": null,
+          "goal_completed": null,
+          "all_actions_verified": null,
+          "exception_correct": true,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6041,
+          "output_tokens": 255
+        },
+        "elapsed_ms": 5797,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "b3349f05321f4effa4b59531fc6acaee0adf25fa8b4900c109d9af9f14bf1ab9"
+      },
+      {
+        "case_id": "C43",
+        "status": "failed",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": null,
+          "goal_completed": null,
+          "all_actions_verified": null,
+          "exception_correct": true,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6046,
+          "output_tokens": 121
+        },
+        "elapsed_ms": 5437,
+        "diagnostic": null,
+        "failure_code": "refused",
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "87311b76b0f5a71733d1269b43dd5ae64ff09739b38d070371544b13f77f4256"
+      },
+      {
+        "case_id": "C44",
+        "status": "waiting_input",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": null,
+          "goal_completed": null,
+          "all_actions_verified": null,
+          "exception_correct": true,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 5860,
+          "output_tokens": 121
+        },
+        "elapsed_ms": 4625,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "02c8b38bde24310dc08caa16be0ad7bbd692a6599404d4882c9d513ea0f86423"
+      }
+    ]
+  },
+  "phase2": {
+    "summary": {
+      "source": "real_model_synthetic_households",
+      "split": "development",
+      "planned_candidates": 2,
+      "recorded_cases": 2,
+      "not_run": [],
+      "script_errors": [],
+      "budget_limited": [],
+      "real_requests": 30,
+      "request_limit": 32,
+      "metrics": {
+        "case_pass": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "understanding_correct": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "goal_completed": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "all_actions_verified": {
+          "numerator": 1,
+          "denominator": 1
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 2
+        }
+      },
+      "latency_ms": {
+        "n": 2,
+        "p50_nearest_rank": 10985,
+        "p95_nearest_rank": 14328
+      },
+      "violations": {
+        "unexpected_write": [],
+        "false_success": []
+      },
+      "phase": "phase2",
+      "phase_requests": 6,
+      "shared_requests": 30,
+      "phase_prior_calls": 24
+    },
+    "manifest": {
+      "date": "2026-10-28 Asia/Shanghai",
+      "phase": "phase2",
+      "hashes": {
+        "evaluation/product-c2-cases.json": "6331242794c2182344fca6add81ddf6ec07c2a64cf8044b05b1239583d1799ce",
+        "scripts/product_eval_c2.py": "0eef9bfec96c3c89a4feb28930f94a286d14969017c1377ed82e5d64ee878a68",
+        "scripts/product_eval.py": "3a84846e00b8dd8aa6f9029328571b13db1a704dba570c1a4d108d73d16d1c71",
+        "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+        "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+        "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+        "backend/src/homemind/agent/diagnostics.py": "efa3fb343f24356d33456b8b8fe59df30151f73ccc308de5e8260f723dcd6c40",
+        "backend/src/homemind/agent/graph.py": "a4de0cbcb55d9bbb6d1a78648e3aed6eaa12b6ada2ac8e353291002f9ca657d8",
+        "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+        "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+        "backend/src/homemind/agent/schemas.py": "7e174db0061fcdf10ffb10280dfe49ce411a8422382096893687bcc47f109e0d",
+        "backend/src/homemind/agent/service.py": "32a928fcfe4bc9451779d2a9a254fc68a7b3baecad83b4aed9e771129680ac69",
+        "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+        "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+        "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+        "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+        "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+        "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+        "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+        "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+        "backend/src/homemind/migrations/versions/0001_m3.py": "6246ecf52446edc20b425fad269597848ac0eb9a6a2753571d8f94d3c23e99a8",
+        "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+        "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+        "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+        "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+        "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+        "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+        "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+        "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+        "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+        "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+        "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+        "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+        "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+        "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+        "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+        "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+        "backend/src/homemind/tasks.py": "c45b72fd8779e36f21eecea949b4f653eb598f60fa8219a528bf773f6d008e85"
+      },
+      "case_order": [
+        "C12",
+        "C40"
+      ],
+      "prior_calls": 24,
+      "shared_limit": 32,
+      "model": "deepseek-flash",
+      "thinking": "disabled",
+      "max_tokens": 2048,
+      "git_head": "75d3725c197da7ec165aabd83928541a68cbc2eb",
+      "source": "real_model_synthetic_households_isolated_sqlite",
+      "split": "development",
+      "human_wait": "scripted_immediate_answer"
+    },
+    "case_results": [
+      {
+        "case_id": "C12",
+        "status": "waiting_input",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": null,
+          "goal_completed": null,
+          "all_actions_verified": null,
+          "exception_correct": true,
+          "false_success": false,
+          "unexpected_write": false
+        },
+        "issued_requests": 2,
+        "usage": {
+          "input_tokens": 6177,
+          "output_tokens": 117
+        },
+        "elapsed_ms": 14328,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": false,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "dceedd323519a3edbbe567ead775efba266fd49753cfdf40582124e62b9846ca"
+      },
+      {
+        "case_id": "C40",
+        "status": "succeeded",
+        "score": {
+          "case_pass": true,
+          "understanding_correct": true,
+          "goal_completed": true,
+          "all_actions_verified": true,
+          "exception_correct": true,
+          "false_success": false,
+          "unexpected_write": false,
+          "initial_clarification_correct": true,
+          "reply_submitted": true,
+          "same_task_after_reply": true
+        },
+        "issued_requests": 4,
+        "usage": {
+          "input_tokens": 12564,
+          "output_tokens": 368
+        },
+        "elapsed_ms": 10985,
+        "diagnostic": null,
+        "failure_code": null,
+        "reply_observed_in_conversation": true,
+        "actual_model": "deepseek-flash",
+        "raw_sha256": "686f456c565ca7a31d8e26930670db2260e17f6fe99381462f000b5ba7a56909"
+      }
+    ]
+  },
+  "adjudication": {
+    "phase1_frozen_counts": {
+      "passed": 9,
+      "denominator": 12
+    },
+    "categories": {
+      "meets_frozen_expectation": 9,
+      "oracle_assumption_defect": 1,
+      "product_interaction_issue": 2
+    },
+    "C06": {
+      "reason": "expected partial assumed low fan, but fan was not required; real auto reached 26.0 at minute20",
+      "original_score_preserved": true,
+      "actual_deadline_temperature_c": 26.0,
+      "physics_check": {
+        "source": "controlled_actual_simulation_api",
+        "model_requests": 0,
+        "only_changed_factor": "fan_mode",
+        "observations": [
+          {
+            "fan_mode": "low",
+            "initial_temperature_c": 28.0,
+            "minutes": 20,
+            "temperature_c": 26.8,
+            "goal_met": false
+          },
+          {
+            "fan_mode": "auto",
+            "initial_temperature_c": 28.0,
+            "minutes": 20,
+            "temperature_c": 26.0,
+            "goal_met": true
+          }
+        ]
+      }
+    },
+    "C40_phase1": {
+      "reply_sent": false,
+      "raw_same_task_after_reply": true,
+      "reason": "raw field only compared IDs; did_reply gating fixed for phase2; phase1 original not overwritten"
+    }
+  },
+  "prior_40_budget_unchanged": true,
+  "limitations": [
+    "development cases, not a holdout or user study",
+    "C14 old output absent; old cause cannot be established",
+    "C12 retest validates clarification only, C40 validates one scripted continuation",
+    "two selected failures retested once; no aggregate lift claim",
+    "C42 unclear wording about user window confirmation not tested through a reply; no claim on that continuation"
+  ]
+}

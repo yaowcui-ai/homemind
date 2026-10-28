@@ -1,14 +1,14 @@
 # HomeMind
 
-目标定位：**将生活意图转为可解释、可核验联动任务的智能家居 AI 助手（仿真验证版）**。当前 v0.4.0 / M4，产品 C 首轮场景验证与可靠性优化已交付。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家规则或自然语言任务。
+目标定位：**将生活意图转为可解释、可核验联动任务的智能家居 AI 助手（仿真验证版）**。当前v0.4.0 / M4，产品C两轮场景验证、可靠性与错误解释优化已交付。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家规则或自然语言任务。
 
-LangGraph 为主、LangChain 为辅；规划 Agent 只读事实、提出方案，程序校验后共用执行器和独立读回。已建立[36个产品案例](docs/product/product-c-cases.md)，完成[18个真实模型开发场景及一次定向复测](docs/product/product-c-evaluation.md)：初批13/18符合预设验收，5个Bad Case原样保留。设备、环境和时间仍为仿真；多Agent、正式保留集与用户研究仍待开展。
+LangGraph为主、LangChain为辅；规划Agent只读、程序校验后统一执行和读回。已有[44个开发案例](docs/product/product-c-cases.md)、[首轮真实批次](docs/product/product-c-evaluation.md)及[C2复测/勘误](docs/product/product-c2-evaluation.md)。C2新增字段级拒绝诊断和重复选项保护，互斥需求可原任务自由回答；2个实际交互问题各复测一次通过。设备/环境/时间仍为仿真，多Agent、独立保留集和用户研究待开展。
 
 后续按用户确认的产品阶段 A—E 推进，优先形成完整任务体验与真实效果证据，再验证按需多 Agent 的收益。阶段 A 产品定义材料：[PRD](docs/product/prd.md)、[需求证据与验证计划](docs/product/validation-plan.md)、[产品决策与迭代](docs/product/decision-iteration-log.md)。材料中的规划与假设不代表已实现或已验证。
 
 ## 项目边界与技术栈
 
-本目录是独立 Git 仓库，当前开发分支 `codex/product-c-validation`。父工作区通过本地 `.git/info/exclude` 忽略本目录，旧项目不纳入本仓库。
+本目录是独立Git仓库，当前分支`codex/product-c2-stabilization`。父工作区通过本地`.git/info/exclude`忽略本目录，旧项目不纳入本仓库。
 
 - 前端：React、TypeScript、Vite、Ant Design、TanStack Query。
 - API：Python 3.12、FastAPI、Pydantic Settings、Uvicorn。
@@ -69,6 +69,8 @@ npm.cmd run dev
 看到 Vite 输出本地地址后，打开 [网页](http://127.0.0.1:5174/)。首次显示登录/注册；用户名使用 3—32 位字母、数字、下划线，密码 12—128 字符。注册创建一次独立家庭，之后登录不会恢复已删除设备。
 
 B 新增了后端运行依赖，C 新增迁移 `0004_product_c` 保存推进幂等记录。更新代码后先执行上面的依赖准备与数据库步骤，再重启API与网页。已配置密钥的用户无需再次发送密钥；模型配置修改后重启后端。
+
+C2没有新增依赖或迁移，旧任务兼容；更新代码后重启API和网页即可使用新诊断与澄清处理，无需重建数据库。模型拒绝或无效方案会解释下一步，技术字段在“运行记录与调用用量”内展开。
 
 数据库准备脚本保留匹配的容器和卷，不重建已有数据。网页/API 停止时在各自终端按 `Ctrl+C`。
 
@@ -227,6 +229,8 @@ npm.cmd run test:e2e:agent
 
 ## 下一阶段
 
-C首轮已交付[案例和实际报告](docs/product/product-c-evaluation.md)。下一轮先清理C遗留P1、复测C06/C09/C12/C14并稳定单Agent基线，再做D的按需多Agent对照。当前没有SSE、后台时钟、用户取消/重规划、图检查点恢复、真实设备和公网部署；Figma在线新增状态及连线仍待补齐。
+C两轮已交付[案例](docs/product/product-c-cases.md)和[C2报告](docs/product/product-c2-evaluation.md)。下一轮可设计D的最小多Agent及公平对照，先冻结场景、风速等控制参数和新样本；当前结果不是稳定准确率。SSE、后台时钟、取消/重规划、图恢复、硬件/公网部署及Figma在线完整连线仍待做。
 
-在根目录运行 `backend/.venv/Scripts/python.exe scripts/product_eval.py` 只显示案例数，不读取模型配置或联网。本次授权的40次真实请求已用满；`--real`、`--resume`或`--retest C04`不会重置同一账本。不要删除账本、换目录或把此开发批次当未见保留集；后续真实批次需先确定新样本和预算。中断遗留的`batch.lock`会保守阻断，先核实无存活评测进程再处理锁，保留已有账本和案例原件。
+在根目录运行 `backend/.venv/Scripts/python.exe scripts/product_eval.py` 只显示案例数，不读取模型配置或联网。C首轮授权的40次真实请求已用满；`--real`、`--resume`或`--retest C04`不会重置同一账本。不要删除账本、换目录或把此开发批次当未见保留集；后续真实批次需先确定新样本和预算。中断遗留的`batch.lock`会保守阻断，先核实无存活评测进程再处理锁，保留已有账本和案例原件。
+
+C2的默认只读命令为`backend/.venv/Scripts/python.exe scripts/product_eval_c2.py`。该轮新授权32请求，实际30，余2未用，已停止；固定独立账本、跨阶段共享上限，旧40账本未动。后续模型批次另定范围/预算，不自动使用余额。C06的“20分钟必定未达标”假设已勘误：低风26.8℃、自动风26.0℃；要复现低风反例须明确输入风速，原件和原评分不覆盖。
