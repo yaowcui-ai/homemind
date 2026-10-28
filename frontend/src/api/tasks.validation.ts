@@ -55,6 +55,10 @@ export function parseDetail(data: unknown): TaskDetail {
     && (request.keep_entity_ids === undefined || textArray(request.keep_entity_ids))
     && (request.protected_room_ids === undefined || textArray(request.protected_room_ids));
   if (!validRequest || !isPreferences(v.preferences_snapshot) || !isSnapshot(v.initial_snapshot) || !isSnapshot(v.final_snapshot)
+    || (v.advance_records !== undefined && (!Array.isArray(v.advance_records) || !v.advance_records.every((r) => isObject(r)
+      && isText(r.key) && isObject(r.request) && isText(r.request.expected_world_id)
+      && Number.isSafeInteger(r.request.expected_simulated_minutes) && Number(r.request.expected_simulated_minutes) >= 0
+      && Number.isSafeInteger(r.advanced_to_minutes) && Number(r.advanced_to_minutes) >= 0)))
     || !Array.isArray(v.actions) || !v.actions.every((a) => action(a) && isObject(a) && isText(a.id)
       && ['planned', 'submitted', 'verified', 'failed', 'unknown', 'skipped'].includes(String(a.status)) && nullableText(a.transport_outcome) && typeof a.message === 'string')
     || !isObject(v.verification) || !nullableNumber(v.verification.due_at_minutes) || !isNumber(v.verification.checked_at_minutes)

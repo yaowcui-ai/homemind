@@ -1,6 +1,6 @@
 import { apiRequest, isObject, isText } from './client';
 import { parseDetail, parseSummary } from './tasks.validation';
-import type { AgentConfig, AgentRequest, ConfirmRequest, ReplyRequest, RuleRequest, TaskDetail, TaskSummary } from './tasks.types';
+import type { AdvanceRequest, AgentConfig, AgentRequest, ConfirmRequest, ReplyRequest, RuleRequest, TaskDetail, TaskSummary } from './tasks.types';
 
 async function detail(path: string, method = 'GET', body?: unknown, headers?: Record<string, string>, timeoutMs?: number): Promise<TaskDetail> {
   return parseDetail(await apiRequest(path, method, body, headers, timeoutMs));
@@ -19,7 +19,7 @@ export const tasksApi = {
   },
   get: (id: string) => detail(`/tasks/${encodeURIComponent(id)}`),
   verify: (id: string) => detail(`/tasks/${encodeURIComponent(id)}/verify`, 'POST', {}),
-  advance: (id: string) => detail(`/tasks/${encodeURIComponent(id)}/advance`, 'POST', {}),
+  advance: (id: string, body: AdvanceRequest, key: string) => detail(`/tasks/${encodeURIComponent(id)}/advance`, 'POST', body, { 'Idempotency-Key': key }),
   create: (body: RuleRequest, key: string) => detail('/tasks', 'POST', body, { 'Idempotency-Key': key }),
   createAgent: (body: AgentRequest, key: string) => detail('/tasks/agent', 'POST', body, { 'Idempotency-Key': key }, 80000),
   reply: (id: string, body: ReplyRequest, key: string) => detail(`/tasks/${encodeURIComponent(id)}/reply`, 'POST', body, { 'Idempotency-Key': key }, 80000),

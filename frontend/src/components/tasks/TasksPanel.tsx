@@ -95,7 +95,9 @@ export default function TasksPanel({ homeId, submission, debugEnabled = false }:
         </section>
         {detail.isError && <Alert type="error" title={detail.error.message} />}
         {detail.data && <TaskDetail key={detail.data.id} task={detail.data} pending={blocked || !!state.pending} debugEnabled={debugEnabled} currentSnapshot={snapshot.data}
-          onVerify={() => { void operation(() => submission.verify(detail.data.id)); }} onAdvance={() => { void operation(() => submission.advance(detail.data.id)); }}
+          onVerify={() => { void operation(() => submission.verify(detail.data.id)); }} onAdvance={() => { void operation(() => submission.advance(detail.data.id, {
+            expected_world_id: snapshot.data.world_id, expected_simulated_minutes: snapshot.data.simulated_minutes,
+          })); }}
           onReply={(text) => { if (detail.data.mode === 'single_agent') { const { id, agent_run } = detail.data; void operation(() => submission.reply(id, { text, expected_turn: agent_run.turn })); } }}
           onConfirm={() => { if (detail.data.mode === 'single_agent') { const { id, agent_run } = detail.data; void operation(() => submission.confirm(id, { expected_turn: agent_run.turn })); } }} />}
       </div>

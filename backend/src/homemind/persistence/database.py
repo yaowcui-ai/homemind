@@ -12,7 +12,7 @@ from homemind.persistence.codec import load_engine, save_engine
 from homemind.persistence.models import Base, Home, Installation
 from homemind.simulation.models import SimulationError
 
-REVISION = "0003_m4"
+REVISION = "0004_product_c"
 
 
 class Database:

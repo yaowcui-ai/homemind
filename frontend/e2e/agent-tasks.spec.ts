@@ -33,6 +33,49 @@ async function submit(page: Page, text: string) {
 const detailRegion = (page: Page) => page.getByRole('region', { name: '任务详情' });
 test.beforeEach(async ({ page, request }) => { await registerAgent(request, page); });
 
+for (const committed of [true, false]) test(`产品C：推进响应丢失刷新只读，${committed ? '已提交原键只读恢复' : '未提交保留原键重试一次'}`, async ({ page, request }) => {
+  const before: Snapshot = await (await request.get('/api/simulation')).json();
+  const created = await write(request, 'POST', '/tasks', { scenario: 'sleep', room_ids: [before.rooms[0].id], target_temperature_c: 18 },
+    { Origin: origin, 'Idempotency-Key': `c-sleep-${crypto.randomUUID()}` });
+  expect(created.ok()).toBeTruthy();
+  const task: TaskDetail = await created.json();
+  await page.goto('/'); await tasks(page);
+  await page.getByRole('region', { name: '任务列表' }).getByRole('button').filter({ hasText: '睡眠' }).click();
+  let frozenBody: unknown; let frozenKey = ''; let posts = 0;
+  page.on('request', (r) => { if (r.url().endsWith(`/tasks/${task.id}/advance`) && r.method() === 'POST') posts += 1; });
+  await page.route(`**/api/tasks/${task.id}/advance`, async (route) => {
+    frozenBody = route.request().postDataJSON(); frozenKey = route.request().headers()['idempotency-key'];
+    if (committed) expect((await route.fetch()).ok()).toBeTruthy();
+    await route.abort('failed');
+  }, { times: 1 });
+  await page.getByRole('button', { name: '推进 10 仿真分钟并核验' }).click();
+  await expect(page.getByText('原提交结果待确认', { exact: true })).toBeVisible();
+  expect(frozenKey).toBeTruthy();
+  expect(frozenBody).toEqual({ expected_world_id: before.world_id, expected_simulated_minutes: 0 });
+  await page.reload(); await tasks(page);
+  await expect(page.getByText(`任务编号 ${task.id}`, { exact: true })).toBeVisible();
+  if (committed) {
+    await expect(page.getByText('原提交结果待确认', { exact: true })).toHaveCount(0);
+    const replay = await write(request, 'POST', `/tasks/${task.id}/advance`, frozenBody, { Origin: origin, 'Idempotency-Key': frozenKey });
+    expect(replay.ok()).toBeTruthy();
+    expect(posts).toBe(1);
+  } else {
+    await expect(page.getByText('原提交结果待确认', { exact: true })).toBeVisible();
+    expect(posts).toBe(1);
+    const retried = page.waitForRequest((r) => r.url().endsWith(`/tasks/${task.id}/advance`) && r.method() === 'POST');
+    await page.getByRole('button', { name: '同键重试原始意图' }).click();
+    const sent = await retried;
+    expect(sent.headers()['idempotency-key']).toBe(frozenKey); expect(sent.postDataJSON()).toEqual(frozenBody);
+    await expect(page.getByText('原提交结果待确认', { exact: true })).toHaveCount(0);
+  }
+  const latest: Snapshot = await (await request.get('/api/simulation')).json();
+  expect(latest.simulated_minutes).toBe(10);
+  const final: TaskDetail = await (await request.get(`/api/tasks/${task.id}`)).json();
+  expect(final.actions).toEqual(task.actions);
+  expect(final.advance_records).toHaveLength(1);
+  await detailRegion(page).screenshot({ path: path.resolve(`../output/product-c-advance-${committed ? 'committed' : 'retry'}.png`) });
+});
+
 test('受控模型：明确局部关灯直接执行，刷新只定位原任务', async ({ page, request }) => {
   const before: Snapshot = await (await request.get('/api/simulation')).json();
   const lamp = before.entities.find((e) => e.type === 'light' && e.room_id === before.rooms[0].id)!;

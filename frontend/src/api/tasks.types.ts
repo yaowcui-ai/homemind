@@ -14,6 +14,8 @@ export interface AgentRequest {
 }
 export interface ReplyRequest { text: string; expected_turn: number }
 export interface ConfirmRequest { expected_turn: number }
+export interface AdvanceRequest { expected_world_id: string; expected_simulated_minutes: number }
+export interface AdvanceRecord { key: string; request: AdvanceRequest; advanced_to_minutes: number }
 export interface AgentConfig { available: boolean; model: string; reason: string | null }
 export type TaskStatus = 'queued' | 'planning' | 'running' | 'waiting_input' | 'waiting_confirmation' | 'waiting_verification' | 'succeeded' | 'partial' | 'failed' | 'cancelled';
 export interface TaskSummary {
@@ -54,6 +56,7 @@ export interface AgentRun {
   timings: { planning_ms: number; validation_ms: number; execution_ms: number };
 }
 interface DetailFields extends Omit<TaskSummary, 'mode'> {
+  advance_records?: AdvanceRecord[];
   preferences_snapshot: Preferences; initial_snapshot: Snapshot; final_snapshot: Snapshot;
   actions: ActionView[]; verification: Verification; plan: TaskPlan;
 }

@@ -1,12 +1,13 @@
 import { ApiError, isObject, isText } from './client';
 import { tasksApi } from './tasks';
-import type { AgentRequest, ConfirmRequest, ReplyRequest, RuleRequest, TaskDetail } from './tasks.types';
+import type { AdvanceRequest, AgentRequest, ConfirmRequest, ReplyRequest, RuleRequest, TaskDetail } from './tasks.types';
 
 export type PendingOperation =
   | { kind: 'rule'; key: string; body: RuleRequest }
   | { kind: 'agent'; key: string; body: AgentRequest }
   | { kind: 'reply'; key: string; taskId: string; body: ReplyRequest }
-  | { kind: 'confirm'; key: string; taskId: string; body: ConfirmRequest };
+  | { kind: 'confirm'; key: string; taskId: string; body: ConfirmRequest }
+  | { kind: 'advance'; key: string; taskId: string; body: AdvanceRequest };
 export interface AgentDraft { text: string; keep_entity_ids: string[]; protected_room_ids: string[] }
 export interface TaskSessionState {
   selectedId: string | null; pending: PendingOperation | null; busy: boolean; restorePending: boolean;
@@ -22,6 +23,7 @@ function validPending(v: unknown): v is PendingOperation {
     && Array.isArray(b.room_ids) && b.room_ids.every(isText) && ids(b.keep_entity_ids) && ids(b.protected_room_ids)
     && (b.expected_world_id === undefined || isText(b.expected_world_id));
   if (v.kind === 'agent') return isText(b.text) && b.text.length <= 2000 && isText(b.expected_world_id) && ids(b.keep_entity_ids) && ids(b.protected_room_ids);
+  if (v.kind === 'advance') return isText(v.taskId) && isText(b.expected_world_id) && Number.isSafeInteger(b.expected_simulated_minutes) && Number(b.expected_simulated_minutes) >= 0;
   if (!isText(v.taskId) || !Number.isInteger(b.expected_turn) || Number(b.expected_turn) < 0 || Number(b.expected_turn) > 3) return false;
   return v.kind === 'confirm' || (v.kind === 'reply' && isText(b.text) && b.text.length <= 2000);
 }
@@ -82,7 +84,7 @@ export class TaskSubmission {
   reply(taskId: string, body: ReplyRequest) { return this.start({ kind: 'reply', taskId, body }); }
   confirm(taskId: string, body: ConfirmRequest) { return this.start({ kind: 'confirm', taskId, body }); }
   verify(taskId: string) { return this.runTaskAction(() => tasksApi.verify(taskId)); }
-  advance(taskId: string) { return this.runTaskAction(() => tasksApi.advance(taskId)); }
+  advance(taskId: string, body: AdvanceRequest) { return this.start({ kind: 'advance', taskId, body }); }
   private async runTaskAction(action: () => Promise<TaskDetail>): Promise<TaskDetail> {
     if (this.state.busy) throw new Error('正在处理任务，请先等待结果并读取当前状态。');
     this.writeEpoch += 1;
@@ -116,6 +118,7 @@ export class TaskSubmission {
         case 'agent': task = await tasksApi.createAgent(operation.body, operation.key); break;
         case 'reply': task = await tasksApi.reply(operation.taskId, operation.body, operation.key); break;
         case 'confirm': task = await tasksApi.confirm(operation.taskId, operation.body, operation.key); break;
+        case 'advance': task = await tasksApi.advance(operation.taskId, operation.body, operation.key); break;
       }
       this.update({ pending: null, ...(this.selectionVersion === selectedVersion ? { selectedId: task.id } : {}) });
       return task;
@@ -145,6 +148,9 @@ export class TaskSubmission {
     let unresolved = false;
     if (pending?.kind === 'reply') unresolved = task.mode === 'single_agent' && task.status === 'waiting_input' && task.agent_run.turn === pending.body.expected_turn;
     if (pending?.kind === 'confirm') unresolved = task.mode === 'single_agent' && task.status === 'waiting_confirmation' && task.agent_run.turn === pending.body.expected_turn;
+    if (pending?.kind === 'advance') unresolved = !(task.advance_records ?? []).some((record) => record.key === pending.key
+      && record.request.expected_world_id === pending.body.expected_world_id
+      && record.request.expected_simulated_minutes === pending.body.expected_simulated_minutes);
     this.update({ pending: unresolved ? pending : null, ...(this.selectionVersion === selectedVersion ? { selectedId: task.id } : {}) });
     return task;
   }

@@ -95,6 +95,33 @@ def register(client, username):
     return result.json()
 
 
+def test_mysql_product_c_advance_replay_survives_new_database_and_reset(mysql_installation):
+    from test_product_c_advance import advance, sleeping, snapshot
+
+    database, settings, app, names, _ = mysql_installation
+    with TestClient(app) as first:
+        register(first, names[0])
+        task, body = sleeping(first)
+        response = advance(first, task, body)
+        assert response.status_code == 200, response.text
+        committed = response.json()
+        rebuilt = create_app(
+            settings,
+            database=Database(
+                os.environ["HOMEMIND_TEST_DATABASE_URL"], instance_id=database.instance_id
+            ),
+        )
+        with TestClient(rebuilt) as restarted:
+            restarted.cookies.update(first.cookies)
+            restarted.headers.update(first.headers)
+            assert advance(restarted, task, body).json() == committed
+            assert snapshot(restarted)["simulated_minutes"] == 10
+            assert restarted.post("/simulation/reset", json={}).status_code == 200
+            before = snapshot(restarted)
+            assert advance(restarted, task, body).json() == committed
+            assert snapshot(restarted) == before
+
+
 def test_mysql_isolation_persistence_history_and_cookie_revocation(mysql_installation):
     database, settings, app, names, anonymous = mysql_installation
     with TestClient(app) as first, TestClient(app) as second:
