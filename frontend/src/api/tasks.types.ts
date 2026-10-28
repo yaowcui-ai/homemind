@@ -9,14 +9,16 @@ export interface RuleRequest {
   ready_in_minutes?: number; keep_entity_ids?: string[]; protected_room_ids?: string[];
   expected_world_id?: string;
 }
+export type AgentStrategy = 'standard' | 'single_forecast';
 export interface AgentRequest {
   text: string; expected_world_id: string; keep_entity_ids?: string[]; protected_room_ids?: string[];
+  strategy?: AgentStrategy;
 }
 export interface ReplyRequest { text: string; expected_turn: number }
 export interface ConfirmRequest { expected_turn: number }
 export interface AdvanceRequest { expected_world_id: string; expected_simulated_minutes: number }
 export interface AdvanceRecord { key: string; request: AdvanceRequest; advanced_to_minutes: number }
-export interface AgentConfig { available: boolean; model: string; reason: string | null }
+export interface AgentConfig { available: boolean; model: string; reason: string | null; strategies?: AgentStrategy[] }
 export type TaskStatus = 'queued' | 'planning' | 'running' | 'waiting_input' | 'waiting_confirmation' | 'waiting_verification' | 'succeeded' | 'partial' | 'failed' | 'cancelled';
 export interface TaskSummary {
   id: string; mode: TaskMode; scenario: TaskScenario; status: TaskStatus; created_at: number;
@@ -49,7 +51,25 @@ export interface AgentDiagnostic {
   phase: 'validation'; output_kind: 'plan' | 'clarify'; code: string; field_path: string;
   reference_kind: 'room' | 'entity' | null; reference_in_current_home: boolean | null;
 }
+export interface ForecastGoal {
+  kind: 'goal'; room_id: string; climate_entity_id: string; cover_entity_id: string | null;
+  target_temperature_c: number; ready_in_minutes: number; priority: 'comfort_first' | 'energy_first';
+  allowed_fan_modes: ('low' | 'auto')[]; cover_constraint: 'allow_open_close' | 'keep';
+  keep_entity_ids: string[]; protected_room_ids: string[];
+}
+export interface ForecastCandidate {
+  id: string; fan_mode: 'low' | 'auto'; cover_position_pct: number | null;
+  end_temperature_c: number; first_observed_goal_minute: number | null;
+  deadline_met: boolean; energy_wh: number; actions: ProposedPlan['actions'];
+}
+export interface Forecast {
+  model_version: string;
+  source: { world_id: string; revision: number; config_revision: number; simulated_minutes: number };
+  energy_scope_entity_ids: string[]; candidates: ForecastCandidate[];
+}
 export interface AgentRun {
+  strategy?: 'single_forecast'; pipeline_version?: string; goal?: ForecastGoal | null; forecast?: Forecast | null;
+  selected_candidate_id?: string | null; preference_optimal?: boolean | null;
   turn: number; max_replies: number; question: string | null; options: AgentOption[];
   proposed_plan: ProposedPlan | null; rationale: string | null;
   conversation: { role: 'user' | 'assistant'; text: string; options?: AgentOption[] }[];

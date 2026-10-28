@@ -48,3 +48,6 @@
 .preferenceInfo small { display: block; margin-top: 24px; font-size: 11px; }
 @media (max-width: 1100px) { .columns { grid-template-columns: minmax(0, 1fr); } .preferenceLayout { grid-template-columns: minmax(0, 1fr); gap: 0; } }
 @media (max-width: 620px) { .card { padding: 18px; } .taskRow { padding: 13px 10px; } .card h2 { font-size: 19px; } .fieldPair { grid-template-columns: minmax(0, 1fr); gap: 0; } .preferenceInfo { padding: 20px; } }
+.forecastGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 10px; margin: 12px 0; }
+.forecastCandidate { min-width: 0; padding: 12px; border: 1px solid var(--border, #dbe5ee); border-radius: 10px; background: var(--surface, #fff); overflow-wrap: anywhere; }
+.forecastCandidate h4 { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }

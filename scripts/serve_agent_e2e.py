@@ -13,7 +13,20 @@ class ControlledBrowserModel:
     """Only a deterministic test fixture; not an implementation of language understanding."""
 
     async def ainvoke(self, messages, tools):
-        from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
+        from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
+
+        for message in messages:
+            if (
+                isinstance(message, SystemMessage)
+                and "\nFrozen public context: " in message.content
+            ):
+                encoded = message.content.split("\nFrozen public context: ", 1)[1]
+                context, _ = json.JSONDecoder().raw_decode(encoded)
+                output = controlled_forecast(context, messages)
+                return AIMessage(
+                    content=json.dumps(output, ensure_ascii=False),
+                    response_metadata={"model_name": "controlled-browser-test"},
+                )
 
         reads = [message for message in messages if isinstance(message, ToolMessage)]
         if not reads:
@@ -108,6 +121,52 @@ class ControlledBrowserModel:
             content=json.dumps(output, ensure_ascii=False),
             response_metadata={"model_name": "controlled-browser-test"},
         )
+
+
+def controlled_forecast(context, messages):
+    """Fixed D2 browser scenario, not real NL understanding or model evaluation."""
+    from langchain_core.messages import HumanMessage
+
+    if "forecast" not in context:
+        home = context["home"]
+        room = next(r for r in home["rooms"] if r["name"] == "客厅")
+        devices = {e["type"]: e for e in home["entities"] if e["room_id"] == room["id"]}
+        user = next(json.loads(m.content) for m in messages if isinstance(m, HumanMessage))
+        protected = [r["id"] for r in home["rooms"] if r["name"] == "卧室"]
+        return dict(
+            kind="goal",
+            room_id=room["id"],
+            climate_entity_id=devices["climate"]["id"],
+            cover_entity_id=devices["cover"]["id"],
+            target_temperature_c=26,
+            ready_in_minutes=60,
+            priority="energy_first",
+            allowed_fan_modes=["low", "auto"],
+            cover_constraint="allow_open_close",
+            keep_entity_ids=user.get("keep_entity_ids", []),
+            protected_room_ids=list(set(protected + user.get("protected_room_ids", []))),
+        )
+    goal = context["goal"]
+    # This fixture selects from actual public forecasts, without invoking a provider.
+    candidate = min(
+        (c for c in context["forecast"]["candidates"] if c["deadline_met"]),
+        key=lambda c: (c["energy_wh"], c["first_observed_goal_minute"]),
+    )
+    return dict(
+        kind="selection",
+        candidate_id=candidate["id"],
+        plan=dict(
+            kind="plan",
+            scenario="homecoming",
+            room_ids=[goal["room_id"]],
+            keep_entity_ids=goal["keep_entity_ids"],
+            protected_room_ids=goal["protected_room_ids"],
+            actions=candidate["actions"],
+            temperatures=[dict(room_id=goal["room_id"], target=goal["target_temperature_c"])],
+            ready_in_minutes=goal["ready_in_minutes"],
+            rationale="受控浏览器夹具选择，仅验证工程流程，不代表真实模型效果",
+        ),
+    )
 
 
 def main():

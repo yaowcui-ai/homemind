@@ -1,0 +1,217 @@
+{
+  "date": "2026-10-28",
+  "timezone": "Asia/Shanghai",
+  "stage": "D2",
+  "application_version": "0.4.0/M4",
+  "real_model_requests": 0,
+  "model_evidence": "injected_controlled_models_only",
+  "strategy": "single_forecast",
+  "pipeline_version": "d2-forecast-v1",
+  "validation": {
+    "backend": {
+      "passed": 275,
+      "skipped": 6,
+      "seconds": 145.24,
+      "mysql_skips_executed_separately": true
+    },
+    "dedicated_real_mysql": {
+      "passed": 6,
+      "seconds": 11.7,
+      "separate_database_connection_not_os_process_restart": true
+    },
+    "frontend": {
+      "passed": 84,
+      "seconds": 158.23,
+      "max_workers": 1,
+      "test_timeout_ms": 15000,
+      "assertions_unchanged": true
+    },
+    "controlled_browser": {
+      "passed": 14,
+      "new_d2_scenario_included": true,
+      "viewport_widths": [
+        1440,
+        360,
+        390
+      ]
+    },
+    "root_scripts": {
+      "passed": 33,
+      "seconds": 11.37
+    }
+  },
+  "prior_frontend_runs": [
+    {
+      "source": "tool_output",
+      "passed": 82,
+      "failed_by_5000ms_timeout": 2
+    },
+    {
+      "source": "output/product-d2-frontend-full-serial.txt",
+      "passed": 83,
+      "failed_by_5000ms_timeout": 1,
+      "max_workers": 1
+    }
+  ],
+  "default_fixture_60min_26c": [
+    {
+      "fan": "low",
+      "cover_position_pct": 0,
+      "first_observed_minute": 41,
+      "end_temperature_c": 26.0,
+      "energy_wh": 550.05
+    },
+    {
+      "fan": "low",
+      "cover_position_pct": 100,
+      "first_observed_minute": 53,
+      "end_temperature_c": 26.0,
+      "energy_wh": 550.0
+    },
+    {
+      "fan": "auto",
+      "cover_position_pct": 0,
+      "first_observed_minute": 17,
+      "end_temperature_c": 26.0,
+      "energy_wh": 850.05
+    },
+    {
+      "fan": "auto",
+      "cover_position_pct": 100,
+      "first_observed_minute": 18,
+      "end_temperature_c": 26.0,
+      "energy_wh": 850.0
+    }
+  ],
+  "boundary_stress": {
+    "real_model_requests": 0,
+    "runs": [
+      {
+        "name": "active-mixed-single",
+        "concurrent_workers": 1,
+        "rooms_per_worker": 16,
+        "entity_records_per_worker": 256,
+        "archived_per_worker": 0,
+        "steps_per_completed_worker": 5760,
+        "results": [
+          {
+            "outcome": "completed",
+            "candidates": 4,
+            "elapsed_ms": 20076
+          }
+        ],
+        "max_event_loop_lag_ms": 41.77,
+        "process_memory_before": {
+          "working_set_bytes": 36179968,
+          "peak_working_set_bytes": 36179968
+        },
+        "process_memory_after": {
+          "working_set_bytes": 38653952,
+          "peak_working_set_bytes": 38653952
+        },
+        "all_sources_unchanged": true
+      },
+      {
+        "name": "active-mixed-two-workers",
+        "concurrent_workers": 2,
+        "rooms_per_worker": 16,
+        "entity_records_per_worker": 256,
+        "archived_per_worker": 0,
+        "steps_per_completed_worker": 5760,
+        "results": [
+          {
+            "outcome": "completed",
+            "candidates": 4,
+            "elapsed_ms": 35603
+          },
+          {
+            "outcome": "completed",
+            "candidates": 4,
+            "elapsed_ms": 35599
+          }
+        ],
+        "max_event_loop_lag_ms": 174.523,
+        "process_memory_before": {
+          "working_set_bytes": 38662144,
+          "peak_working_set_bytes": 38662144
+        },
+        "process_memory_after": {
+          "working_set_bytes": 41148416,
+          "peak_working_set_bytes": 41148416
+        },
+        "all_sources_unchanged": true
+      },
+      {
+        "name": "archived-records-single",
+        "concurrent_workers": 1,
+        "rooms_per_worker": 16,
+        "entity_records_per_worker": 256,
+        "archived_per_worker": 244,
+        "steps_per_completed_worker": 5760,
+        "results": [
+          {
+            "outcome": "completed",
+            "candidates": 4,
+            "elapsed_ms": 6892
+          }
+        ],
+        "max_event_loop_lag_ms": 40.897,
+        "process_memory_before": {
+          "working_set_bytes": 41148416,
+          "peak_working_set_bytes": 41148416
+        },
+        "process_memory_after": {
+          "working_set_bytes": 41136128,
+          "peak_working_set_bytes": 41164800
+        },
+        "all_sources_unchanged": true
+      }
+    ],
+    "note": "Synthetic boundary loads, not a proof of universal worst-case latency; no concurrent test suites requested."
+  },
+  "source_hash_convention": "sha256 of UTF-8 bytes with CRLF normalized to LF",
+  "source_sha256_lf": {
+    "backend/scripts/benchmark_forecast.py": "2d9a30e6b581d0d46fd193f2798218cf924102f90927f39177eaee142ddb143e",
+    "backend/scripts/benchmark_forecast_stress.py": "bdf6abe7d3259534f9cc99b2695729dafd51936c1d24489d8af868b1b9d1dfe8",
+    "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+    "backend/src/homemind/agent/diagnostics.py": "efa3fb343f24356d33456b8b8fe59df30151f73ccc308de5e8260f723dcd6c40",
+    "backend/src/homemind/agent/forecast.py": "e53678d73e493a753e760d8a0f4a11ba07cc516c2a9e4d8d201b800257e646a0",
+    "backend/src/homemind/agent/graph.py": "bc5e3deb10d5aa3a28fadad7b7192a0334425f8a86e17d29e73440b3d4df3102",
+    "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+    "backend/src/homemind/agent/pipeline.py": "bdaaf9075d74855c8fb9d5950df03797c149e14bcedb3f3c5564592d999ca4fe",
+    "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+    "backend/src/homemind/agent/schemas.py": "f2eea0a626c9d3ca7d32fb632fc7856b5b3cdcc67923e4d79b1e4a54d90b5d91",
+    "backend/src/homemind/agent/service.py": "ee51a0815475c00930ec2fa1df68444db12bcfe731417b65624aab00ca69b59c",
+    "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+    "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+    "backend/tests/test_m3_mysql.py": "28f8f76f3ee83b1b228833ffd4f9a38f862285c5ecbfa813905fed96811e640f",
+    "backend/tests/test_product_d2.py": "55a441c281cc5657da70dacbd2114e12adbb2f334aa0e276ccc3ff20baffbb72",
+    "frontend/e2e/agent-tasks.spec.ts": "dae2a97f178ee71900a6c3f55a495b9519d54923f69f92eb862ff8795bb592d3",
+    "frontend/src/api/forecast.validation.ts": "5a31b85e46b59d81f1bc6f53c8e70db07eef75158ee9cccbaf7116aad5e14463",
+    "frontend/src/components/tasks/AgentComposer.tsx": "0a85f51d205bae87d4dab49e599799d98c176d830228c73361521cc63f11d2f7",
+    "frontend/src/components/tasks/ForecastPanel.tsx": "cc8c8c57116c6b62ee5ceb549dd46ba8e385fcc04a34946ac40184a05e7c1580",
+    "scripts/serve_agent_e2e.py": "e576a64cf03df32c86d8ba5a735d18a476598b1f2436fdffa66e40f2d42403a4"
+  },
+  "original_artifact_sha256_bytes": {
+    "output/product-d2-backend-final.txt": "a5bebff25caf685f5fbb7f9e8e0a486b193958d616419395ec39b8284f4e2b4f",
+    "output/product-d2-mysql.txt": "bc0383d591747e92146ad92622af054642a528e40eb633bd51e7fd74432acd83",
+    "output/product-d2-frontend-full-serial.txt": "57677a38587bedd1ee6f7da6494301492a59e55312daa3c1b1d7123a534a6ca2",
+    "output/product-d2-frontend-full-15s.txt": "42fd44f68a3e90c00b8ad6a6a3f80cd5dabecf655473d0bde3db9634ac8f0a60",
+    "output/product-d2-browser-final.txt": "bf8f96bc62cd88e5dcf2bfa7d3539339f3643d46861e9ba7db437ddc7a56d144",
+    "output/product-d2-root-scripts.txt": "bc6dff2ce0891b87b14259afd6d5d090b921052deef0feed5ccd3dedb7abbcb3",
+    "output/product-d2-forecast-benchmark.json": "0665eb73b9b8c9d5f733b49c6291142e71e02305a36dc26aa9c004a344e2e0a0",
+    "output/product-d2-forecast-stress.json": "503615fdd04339723fe5653d5416018a0b8f3cc939872fb4300c45ae00e351fe",
+    "output/product-d2-frontend-build-final.txt": "34918b8b8c86ab477ba616e280d058adb414b7ace57c26d04569de3d9da5a312",
+    "output/product-d2-frontend-lint-final.txt": "b2e9872b34846a4ee3b71f9e55922ffa0f932e4bf155cde896d34e7fe33c5870"
+  },
+  "limitations": [
+    "No D2 real DeepSeek scenario evaluation or tuning result",
+    "No multi-agent implementation or quality advantage",
+    "All prior 44 language cases remain development data",
+    "No independent holdout or third-party user research",
+    "Simulation only; no real hardware/real savings",
+    "Figma new online states/wiring pending quota",
+    "Boundary loads are not a universal worst-case latency guarantee",
+    "Default 5-second frontend suite had timeouts; final CLI budget was 15 seconds"
+  ]
+}

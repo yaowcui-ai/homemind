@@ -1,16 +1,16 @@
 # HomeMind
 
-目标定位：**将生活意图转为可解释、可核验联动任务的智能家居 AI 助手（仿真验证版）**。当前v0.4.0 / M4，产品C两轮场景验证、可靠性与错误解释优化已交付。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家规则或自然语言任务。
+目标定位：**将生活意图转为可解释、可核验联动任务的智能家居 AI 助手（仿真验证版）**。当前v0.4.0 / M4，产品C两轮验证及D2增强单Agent的预测/确认/实测闭环已实现。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家规则或自然语言任务。
 
 LangGraph为主、LangChain为辅；规划Agent只读、程序校验后统一执行和读回。已有[44个开发案例](docs/product/product-c-cases.md)、[首轮真实批次](docs/product/product-c-evaluation.md)及[C2复测/勘误](docs/product/product-c2-evaluation.md)。C2新增字段级拒绝诊断和重复选项保护，互斥需求可原任务自由回答；2个实际交互问题各复测一次通过。设备/环境/时间仍为仿真，多Agent、独立保留集和用户研究待开展。
 
 后续按用户确认的产品阶段 A—E 推进，优先形成完整任务体验与真实效果证据，再验证按需多 Agent 的收益。阶段 A 产品定义材料：[PRD](docs/product/prd.md)、[需求证据与验证计划](docs/product/validation-plan.md)、[产品决策与迭代](docs/product/decision-iteration-log.md)。材料中的规划与假设不代表已实现或已验证。
 
-D1已完成[全栈方案与分阶段交付](docs/product/product-d-delivery-plan.md)、[单/多Agent评测及调优契约](docs/product/product-d-evaluation-design.md)。先做相同预测资料的增强单Agent，再研究舒适/节能/协调分工；当前尚未实现多Agent或预测工具。本轮仅现有引擎离线重放与设计核对，0真实模型请求，[记录与复现](docs/verification/product-d1-design.md)。无需新增依赖或迁移，启动步骤不变。
+D1完成[全栈方案与分阶段交付](docs/product/product-d-delivery-plan.md)、[单/多Agent评测及调优契约](docs/product/product-d-evaluation-design.md)；D2已实现共享隔离预测的增强单Agent及React候选比较，作为未来专家分工的公平基线。[D2实际验证与边界](docs/verification/product-d2-forecast.md)区分受控模型、真实MySQL和仿真设备；D2真实模型请求0，多Agent收益未评测。无需新增依赖或迁移，启动步骤不变。
 
 ## 项目边界与技术栈
 
-本目录是独立Git仓库，当前分支`codex/product-d1-design`。父工作区通过本地`.git/info/exclude`忽略本目录，旧项目不纳入本仓库。
+本目录是独立Git仓库，当前分支`codex/product-d2-forecast`。父工作区通过本地`.git/info/exclude`忽略本目录，旧项目不纳入本仓库。
 
 - 前端：React、TypeScript、Vite、Ant Design、TanStack Query。
 - API：Python 3.12、FastAPI、Pydantic Settings、Uvicorn。
@@ -73,6 +73,10 @@ npm.cmd run dev
 B 新增了后端运行依赖，C 新增迁移 `0004_product_c` 保存推进幂等记录。更新代码后先执行上面的依赖准备与数据库步骤，再重启API与网页。已配置密钥的用户无需再次发送密钥；模型配置修改后重启后端。
 
 C2没有新增依赖或迁移，旧任务兼容；更新代码后重启API和网页即可使用新诊断与澄清处理，无需重建数据库。模型拒绝或无效方案会解释下一步，技术字段在“运行记录与调用用量”内展开。
+
+D2新增“温控方案比较（实验）”，无新依赖或迁移；更新后重启API和网页。配置模型且开启仿真调试时，在“任务助手→自然语言任务”选择该入口，可输入：“60分钟后客厅26℃，能耗优先，允许调整窗帘，卧室不动”。先查看最多4个候选的截止温度、首次观测达标时间和范围Wh，再确认执行；执行后在原任务推进到目标时刻并独立核验。模型选了偏好次优方案会如实提示，不自动替换。未开放实验的环境仍保留常规助手。
+
+预测只在克隆上计算，不推进真实家庭时间；读数未知、目标房间多空调/多窗帘、故障或规模超限会解释缺口。数据仍是简化仿真，不是现实节电或预约控制。新增S1流程用受控模型验证工程闭环，真实DeepSeek新场景效果和多Agent收益须后续另批评测，不能从程序通过数推断准确率。
 
 数据库准备脚本保留匹配的容器和卷，不重建已有数据。网页/API 停止时在各自终端按 `Ctrl+C`。
 

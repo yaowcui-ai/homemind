@@ -33,6 +33,46 @@ async function submit(page: Page, text: string) {
 const detailRegion = (page: Page) => page.getByRole('region', { name: '任务详情' });
 test.beforeEach(async ({ page, request }) => { await registerAgent(request, page); });
 
+test('产品D2受控模型：预测不写家庭，确认执行后独立核验并刷新保留证据', async ({ page, request }) => {
+  const before: Snapshot = await (await request.get('/api/simulation')).json();
+  await page.goto('/'); await agent(page);
+  await page.getByRole('radio', { name: '温控方案比较（实验）', exact: true }).check();
+  const task = await submit(page, '受控预测：60分钟后客厅26℃，能耗优先，允许调整窗帘，卧室不动。');
+  expect(task.status).toBe('waiting_confirmation'); expect(task.actions).toEqual([]);
+  expect(task.agent_run?.strategy).toBe('single_forecast');
+  expect(task.agent_run?.forecast?.candidates).toHaveLength(4);
+  expect(task.agent_run?.preference_optimal).toBe(true);
+  expect(await (await request.get('/api/simulation')).json()).toEqual(before);
+  const forecast = page.getByRole('region', { name: '仿真方案预测' });
+  await expect(forecast).toBeVisible();
+  await expect(forecast.getByText(/仿真预测不代表已经执行/)).toBeVisible();
+  await expect(forecast.getByText('模型选择', { exact: true })).toBeVisible();
+  await detailRegion(page).screenshot({ path: path.resolve('../output/product-d2-forecast-desktop.png') });
+  for (const width of [360, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    const geometry = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+    expect(geometry.scroll).toBeLessThanOrEqual(geometry.client);
+    await detailRegion(page).screenshot({ path: path.resolve(`../output/product-d2-forecast-${width}.png`) });
+  }
+  const confirm = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/confirm`) && r.request().method() === 'POST');
+  await page.getByRole('button', { name: '确认执行此方案', exact: true }).click();
+  const executed: TaskDetail = await (await confirm).json();
+  expect(executed.status).toBe('waiting_verification');
+  expect(executed.actions.every((a) => a.status === 'verified')).toBe(true);
+  const advance = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/advance`) && r.request().method() === 'POST');
+  await page.getByRole('button', { name: '推进至目标时刻 t+60 分钟并核验', exact: true }).click();
+  const verified: TaskDetail = await (await advance).json();
+  expect(verified.status).toBe('succeeded');
+  expect(verified.verification.conditions.every((c) => c.outcome === 'verified')).toBe(true);
+  let writes = 0;
+  page.on('request', (r) => { if (r.url().includes('/api/tasks') && r.method() === 'POST') writes += 1; });
+  await page.reload(); await tasks(page);
+  await expect(page.getByText(`任务编号 ${task.id}`, { exact: true })).toBeVisible();
+  await expect(page.getByRole('region', { name: '仿真方案预测' })).toBeVisible();
+  expect(writes).toBe(0);
+  await detailRegion(page).screenshot({ path: path.resolve('../output/product-d2-verified-mobile.png') });
+});
+
 test('产品C2受控模型：无效澄清选项说明未执行，诊断折叠且刷新只读', async ({ page, request }) => {
   const before: Snapshot = await (await request.get('/api/simulation')).json();
   await page.goto('/'); await agent(page);

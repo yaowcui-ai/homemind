@@ -357,3 +357,83 @@ def test_mysql_agent_clarification_reopens_and_executes_once(mysql_installation)
 
         asyncio.run(inspect())
     asyncio.run(reopened.close())
+
+
+def test_mysql_d2_forecast_json_reopens_confirms_and_replays_once(mysql_installation):
+    from test_m4_agent import ScriptedModel
+    from test_product_d2 import goal, selected
+
+    database, settings, app, names, _ = mysql_installation
+    with TestClient(app) as first:
+        register(first, names[0])
+        snapshot = first.get("/simulation").json()
+        contract = goal(snapshot)
+        model = ScriptedModel(contract, selected(snapshot, contract))
+        app.state.agent_model = model
+        body = dict(
+            text="客厅60分钟内26度，能耗优先，其他设备保持原样",
+            expected_world_id=snapshot["world_id"],
+            strategy="single_forecast",
+        )
+        creation_headers = {"Idempotency-Key": "mysql-d2-create-123"}
+        response = first.post("/tasks/agent", json=body, headers=creation_headers)
+        assert response.status_code == 200, response.text
+        waiting = response.json()
+        assert waiting["status"] == "waiting_confirmation" and not waiting["actions"]
+        assert waiting["agent_run"]["goal"] == contract
+        assert len(waiting["agent_run"]["forecast"]["candidates"]) == 4
+        assert first.get("/simulation").json() == snapshot and len(model.calls) == 2
+        cookie = first.cookies.get("homemind_session")
+        csrf = first.headers["X-CSRF-Token"]
+    reopened = Database(
+        str(database.engine.url.render_as_string(hide_password=False)),
+        instance_id=database.instance_id,
+    )
+    # A separate application, pool and connection reads persisted JSON. No model is needed
+    # to recover a creation or confirmation; an unexpected model call would be blocked.
+    second_app = create_app(settings, database=reopened)
+    with TestClient(second_app) as second:
+        second.cookies.set("homemind_session", cookie)
+        second.headers.update({"Origin": "http://testserver", "X-CSRF-Token": csrf})
+        url = f"/tasks/{waiting['id']}"
+        assert second.get(url).json() == waiting
+        assert second.post("/tasks/agent", json=body, headers=creation_headers).json() == waiting
+        confirmation_headers = {"Idempotency-Key": "mysql-d2-confirm-123"}
+        response = second.post(
+            url + "/confirm", json={"expected_turn": 0}, headers=confirmation_headers
+        )
+        assert response.status_code == 200, response.text
+        confirmed = response.json()
+        assert confirmed["status"] == "waiting_verification" and len(confirmed["actions"]) == 2
+        after_execution = second.get("/simulation").json()
+        assert (
+            second.post(
+                url + "/confirm", json={"expected_turn": 0}, headers=confirmation_headers
+            ).json()
+            == confirmed
+        )
+        assert second.get("/simulation").json() == after_execution
+        assert confirmed["agent_run"]["forecast"] == waiting["agent_run"]["forecast"]
+        response = second.post(
+            url + "/advance",
+            json=dict(expected_world_id=snapshot["world_id"], expected_simulated_minutes=0),
+            headers={"Idempotency-Key": "mysql-d2-advance-123"},
+        )
+        assert response.status_code == 200, response.text
+        done = response.json()
+        assert done["status"] == "succeeded" and done["final_snapshot"]["simulated_minutes"] == 60
+        assert second.get(url).json() == done
+
+        async def inspect():
+            async with reopened.sessions() as session:
+                stored = await session.get(Task, done["id"])
+                actions = list(
+                    await session.scalars(select(Action).where(Action.task_id == done["id"]))
+                )
+                assert stored.mode == "single_agent" and stored.agent_run == done["agent_run"]
+                assert stored.agent_run["strategy"] == "single_forecast" and len(actions) == 2
+                assert stored.agent_run["selected_candidate_id"] == "c1"
+                assert stored.agent_run["preference_optimal"] is False
+
+        asyncio.run(inspect())
+    asyncio.run(reopened.close())

@@ -14,10 +14,10 @@
 - [x] B：最小 AI 闭环——复用 M4，已实现真实模型适配/单 Agent/澄清/局部动作、必要确认、任务内时间引导与定位；程序/数据库/界面验收通过。真实模型只有两次工具/澄清基础检查；Figma 在线新状态/连线仍因额度待补，不计已完成。
 - [x] C 首轮：产品案例与可靠性——36例案例库，18个真实模型开发场景基线/5个Bad Case、C04一次同条件复测，共40请求；推进未知恢复与busy原键保护已验证。[实际报告](product/product-c-evaluation.md)。C06/C09/C12/C14仍待真实复测，取消在途/自动重规划未实现。
 - [x] C第二轮：错误解释与澄清——44个开发案例，12例复测原判9符合、1预期缺陷、2交互问题；后两例各复测一次通过，共30/32请求。有限字段诊断、重复对象选项拒绝、自由回答原任务继续已验证；[实际报告与C06勘误](product/product-c2-evaluation.md)。
-- [ ] D：按需多 Agent 与对照——D1[全栈方案](superpowers/specs/2026-10-28-product-d1-design.md)、[公平评测与调优契约](product/product-d-evaluation-design.md)已设计；D2预测/S1、D3专家/React、D4真实调优、D5新集验收待实施，允许无收益或退化。
+- [ ] D：按需多 Agent 与对照——D1设计、D2预测/增强S1/React闭环已交付；[D2实际验证](verification/product-d2-forecast.md)。D3专家及角色反馈、D4真实调优、D5新集验收待实施，按[公平评测契约](product/product-d-evaluation-design.md)允许无收益或退化。
 - [ ] E：作品交付——核心 Figma 原型、PRD、AI 方案、真实评估/迭代、演示及 AI PM/应用开发求职材料，对应 M10 的必要部分。
 
-用户继续后已完成D1设计：以增强单Agent（相同预测资料）为主对照，舒适/节能/协调为实验分工；模型原选不能由程序偷换成正确候选。本轮现有引擎4次离线重放、0真实请求，无业务代码/依赖/迁移变更；[分步交付](product/product-d-delivery-plan.md)、[本轮核对](verification/product-d1-design.md)。下一次从D2隔离预测与增强S1开始，不直接扩展全部D。旧C2实际30/32已停止，不转用余2；新批次另授权。独立样本、用户研究和在线Figma完整交互仍待补。
+本轮D2实现精确隔离预测、严格目标/候选绑定和必要确认，React展示预测/次优/错误恢复，Task JSON与实际核验证据贯通。后端最终275过/6条件skip，另真实MySQL6过；前端在显式单worker/15秒测试预算84过（默认5秒曾超时，保留原件）、TS/Vite/lint过，受控browser14过。真实模型0请求，未新增依赖或迁移；[分步交付](product/product-d-delivery-plan.md)。下一次进入D3专家角色及模式兼容，不重做S1已完成界面。M5/M9仍不勾选；独立新样本、用户研究、在线Figma完整交互和多Agent收益仍待补，C2余2不可转用。
 
 ## 当前进度
 

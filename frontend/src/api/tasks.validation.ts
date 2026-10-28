@@ -1,7 +1,9 @@
 import { isObject, isNumber, isText } from './client';
 import { isPreferences } from './preferences';
 import { isSnapshot } from './simulation';
-import type { AgentRun, TaskDetail, TaskSummary } from './tasks.types';
+import type { AgentRequest, AgentRun, TaskDetail, TaskSummary } from './tasks.types';
+import type { Snapshot } from './simulation.types';
+import { forecastContext, forecastRun, isAgentStrategy } from './forecast.validation';
 
 const scenarios = ['homecoming', 'sleep', 'away', 'local'];
 const statuses = ['queued', 'planning', 'running', 'waiting_input', 'waiting_confirmation', 'waiting_verification', 'succeeded', 'partial', 'failed', 'cancelled'];
@@ -33,7 +35,7 @@ function diagnostic(v: unknown) {
     && (v.reference_in_current_home === null || typeof v.reference_in_current_home === 'boolean'));
 }
 function agentRun(v: unknown): v is AgentRun {
-  return isObject(v) && isNumber(v.turn) && isNumber(v.max_replies) && nullableText(v.question)
+  return isObject(v) && forecastRun(v) && isNumber(v.turn) && isNumber(v.max_replies) && nullableText(v.question)
     && Array.isArray(v.options) && v.options.every(option) && proposedPlan(v.proposed_plan) && nullableText(v.rationale)
     && Array.isArray(v.conversation) && v.conversation.every((c) => isObject(c) && ['user', 'assistant'].includes(String(c.role))
       && typeof c.text === 'string' && (c.options === undefined || (Array.isArray(c.options) && c.options.every(option))))
@@ -58,7 +60,7 @@ export function parseDetail(data: unknown): TaskDetail {
   const request = v.request;
   const legacy = v.mode === undefined;
   const validRequest = isObject(request) && (summary.mode === 'single_agent'
-    ? isText(request.text) && isText(request.expected_world_id)
+    ? isText(request.text) && isText(request.expected_world_id) && (request.strategy === undefined || isAgentStrategy(request.strategy))
     : ['homecoming', 'sleep', 'away'].includes(String(request.scenario)) && textArray(request.room_ids))
     && (request.keep_entity_ids === undefined || textArray(request.keep_entity_ids))
     && (request.protected_room_ids === undefined || textArray(request.protected_room_ids));
@@ -76,6 +78,8 @@ export function parseDetail(data: unknown): TaskDetail {
     throw new Error('服务返回了无法识别的任务信息。');
   }
   const run = v.agent_run as AgentRun | null | undefined;
+  if (summary.mode === 'single_agent' && run && !forecastContext(run, request as unknown as AgentRequest,
+    v.initial_snapshot as unknown as Snapshot, summary.status)) throw new Error('服务返回了无法识别的任务信息。');
   return { ...v, ...summary, plan: v.plan ?? { actions: [], constraints: [], temperatures: [], due_at_minutes: null },
     agent_run: run ? { ...run, actual_model: run.actual_model ?? null } : null } as TaskDetail;
 }

@@ -7,7 +7,9 @@ from uuid import uuid4
 
 from sqlalchemy import select
 
+from homemind.agent.forecast import clone_engine, validate_selection
 from homemind.agent.graph import PlannerCancelled, run_planner
+from homemind.agent.pipeline import run_pipeline
 from homemind.agent.validation import ambiguous_question, validate_options, validate_plan
 from homemind.executor import execute, verify
 from homemind.persistence.models import Preference, Task
@@ -23,7 +25,8 @@ FAILURE_MESSAGES = {
     "model_unavailable": "模型服务暂不可用，请检查本项目模型配置或稍后重试",
     "invalid_output": "模型输出未通过严格格式校验，未发送设备动作，请重新提交",
     "invalid_tool": "模型请求了未授权工具或参数，未发送设备动作",
-    "model_budget": "本轮已达3次模型调用上限，未发送设备动作，请简化需求",
+    "model_budget": "本轮已达模型调用上限，未发送设备动作，请简化需求",
+    "task_model_budget": "任务已达12次模型调用上限，未发送设备动作，请重新提交明确需求",
     "tool_budget": "本轮已达6次只读工具调用上限，未发送设备动作，请简化需求",
 }
 
@@ -34,6 +37,9 @@ def public_config(app):
         "available": available,
         "model": app.state.settings.model_name,
         "reason": None if available else "自然语言任务尚未配置模型，请使用规则模板",
+        "strategies": ["standard", "single_forecast"]
+        if app.state.settings.simulation_debug_enabled
+        else ["standard"],
     }
 
 
@@ -129,6 +135,9 @@ def record_round(task, result):
         {key: result[key] for key in ("model_calls", "tool_calls", "usage", "elapsed_ms")}
         | {"turn": updated["turn"]}
     )
+    if updated.get("strategy") == "single_forecast":
+        for key in ("goal", "forecast", "selected_candidate_id", "preference_optimal"):
+            updated[key] = result.get(key)
     task.agent_run = updated
     return updated
 
@@ -137,6 +146,9 @@ async def create_agent(request, body, key):
     app, home_id = request.app, request.state.home_id
     database = app.state.database
     normalized = body.model_dump()
+    experimental = normalized["strategy"] == "single_forecast"
+    if not experimental:
+        normalized.pop("strategy")
     digest = request_hash(normalized)
     async with database.sessions() as session:
         previous = await session.scalar(
@@ -147,6 +159,8 @@ async def create_agent(request, body, key):
             return await detail(session, previous)
     if app.state.agent_model is None:
         raise SimulationError(503, "model_unavailable", "自然语言任务尚未配置模型，请使用规则模板")
+    if experimental and not app.state.settings.simulation_debug_enabled:
+        raise SimulationError(422, "simulation_debug_required", "方案权衡需要开启仿真调试模式")
     claim(database, home_id)
     task_id = uuid4().hex
     try:
@@ -168,6 +182,12 @@ async def create_agent(request, body, key):
             now = int(time.time())
             preferences = preference_view(await session.get(Preference, home_id))
             snapshot = engine.snapshot()
+            exact = None
+            if experimental:
+                try:
+                    exact = clone_engine(engine)
+                except SimulationError:
+                    pass
             task = Task(
                 id=task_id,
                 home_id=home_id,
@@ -212,7 +232,16 @@ async def create_agent(request, body, key):
                 },
             )
             session.add(task)
-        return await plan_round(app, home_id, task_id)
+            if experimental:
+                task.agent_run = task.agent_run | dict(
+                    strategy="single_forecast",
+                    pipeline_version="d2-forecast-v1",
+                    goal=None,
+                    forecast=None,
+                    selected_candidate_id=None,
+                    preference_optimal=None,
+                )
+        return await plan_round(app, home_id, task_id, exact)
     finally:
         database.busy.discard(home_id)
 
@@ -247,6 +276,23 @@ async def reply_agent(request, task_id, body, key):
             run = deepcopy(task.agent_run)
             run["turn"] += 1
             run["question"], run["options"] = None, []
+            exact = None
+            if run.get("strategy") == "single_forecast":
+                for field in (
+                    "goal",
+                    "forecast",
+                    "selected_candidate_id",
+                    "preference_optimal",
+                    "proposed_plan",
+                    "rationale",
+                    "failure_code",
+                ):
+                    run[field] = None
+                run.pop("diagnostic", None)
+                try:
+                    exact = clone_engine(engine)
+                except SimulationError:
+                    pass
             run["conversation"].append({"role": "user", "text": body.text})
             operation(run, key, digest, "reply")
             task.agent_run = run
@@ -254,12 +300,12 @@ async def reply_agent(request, task_id, body, key):
             task.initial_snapshot = engine.snapshot()
             task.preferences_snapshot = preference_view(await session.get(Preference, home_id))
             task.updated_at = int(time.time())
-        return await plan_round(app, home_id, task_id)
+        return await plan_round(app, home_id, task_id, exact)
     finally:
         database.busy.discard(home_id)
 
 
-async def plan_round(app, home_id, task_id):
+async def plan_round(app, home_id, task_id, exact=None):
     database = app.state.database
     async with database.sessions() as session:
         task = await task_by_id(session, home_id, task_id)
@@ -269,9 +315,20 @@ async def plan_round(app, home_id, task_id):
             task.agent_run,
         )
     try:
-        result = await run_planner(
-            app.state.agent_model, snapshot, preferences, run["conversation"]
-        )
+        if run.get("strategy") == "single_forecast":
+            result = await run_pipeline(
+                app.state.agent_model,
+                snapshot,
+                preferences,
+                run["conversation"],
+                exact,
+                task.request,
+                run["model_calls"],
+            )
+        else:
+            result = await run_planner(
+                app.state.agent_model, snapshot, preferences, run["conversation"]
+            )
     except asyncio.CancelledError as error:
         cancelled_result = error.result if isinstance(error, PlannerCancelled) else None
 
@@ -286,7 +343,9 @@ async def plan_round(app, home_id, task_id):
 
         await asyncio.shield(save_cancelled())
         raise
-    async with database.home(home_id, task_id=task_id) as (session, _, engine):
+    async with database.home(
+        home_id, task_id=task_id, save=run.get("strategy") != "single_forecast"
+    ) as (session, _, engine):
         task = await task_by_id(session, home_id, task_id)
         updated = record_round(task, result)
         task.updated_at = int(time.time())
@@ -294,7 +353,8 @@ async def plan_round(app, home_id, task_id):
             mark_failure(
                 task,
                 result["failure_code"],
-                FAILURE_MESSAGES.get(result["failure_code"], "模型规划未完成，未发送设备动作"),
+                result.get("failure_message")
+                or FAILURE_MESSAGES.get(result["failure_code"], "模型规划未完成，未发送设备动作"),
             )
         elif not same_facts(task, engine):
             mark_failure(task, "state_changed", "规划期间家庭状态或配置已变化，请重新提交")
@@ -326,6 +386,13 @@ async def plan_round(app, home_id, task_id):
                         task.status, task.message = "waiting_input", "需要补充信息后继续同一任务"
                 else:
                     validation_started = time.monotonic()
+                    experimental = updated.get("strategy") == "single_forecast"
+                    if experimental:
+                        optimal = validate_selection(
+                            engine, output, updated["goal"], updated["forecast"], task.request
+                        )
+                        selected_candidate_id = output["candidate_id"]
+                        output = output["plan"]
                     plan, confirmation = validate_plan(
                         engine,
                         output,
@@ -333,10 +400,13 @@ async def plan_round(app, home_id, task_id):
                         debug=app.state.settings.simulation_debug_enabled,
                     )
                     task.plan, task.scenario = plan, output["scenario"]
+                    if experimental:
+                        updated["selected_candidate_id"] = selected_candidate_id
+                        updated["preference_optimal"] = optimal
                     updated["proposed_plan"], updated["rationale"] = output, output["rationale"]
                     task.agent_run = updated
                     add_timing(task, "validation", validation_started)
-                    if confirmation:
+                    if confirmation or experimental:
                         task.status, task.message = (
                             "waiting_confirmation",
                             "请核对实际方案后确认执行",
@@ -379,6 +449,18 @@ async def confirm_agent(request, task_id, body, key):
             else:
                 try:
                     validation_started = time.monotonic()
+                    if run.get("strategy") == "single_forecast":
+                        validate_selection(
+                            engine,
+                            dict(
+                                kind="selection",
+                                candidate_id=run["selected_candidate_id"],
+                                plan=run["proposed_plan"],
+                            ),
+                            run["goal"],
+                            run["forecast"],
+                            task.request,
+                        )
                     plan, _ = validate_plan(
                         engine,
                         run["proposed_plan"],

@@ -4,6 +4,20 @@
 
 ## 当前授权与进度
 
+**最新为D2全栈交付（用户本轮“继续推进ai全栈”授权）。** 分支`codex/product-d2-forecast`，基线00e031e；应用仍0.4.0/M4，无新依赖/迁移，真实模型0请求。按[D2计划](docs/superpowers/plans/2026-10-28-product-d2-forecast.md)实现single_forecast和轻量React入口；[实际验证](docs/verification/product-d2-forecast.md)、[可移植结果/哈希](evaluation/results/product-d2-20261028.json)。专家/multi_agent留D3；仅本地提交，不推送/合并/发布。
+
+当前已实现：严格GoalContract→精确隔离forecast→Selection/Plan绑定→必要确认→既有执行/独立核验。≤4候选low/auto×帘0/100，keep固定原位置；目标室恰好1空调/≤1帘，全部物理感知可观测。16房/256实体含归档/256归档/5760步上限；线程槽等实际worker结束归还，取消/截止分块检查。实验每轮6/任务12请求，标准3/轮不变；strategy standard省略新hash字段，旧请求/刷新原键兼容。Task.mode仍single_agent，agent_run新增版本化goal/forecast/选择/偏好标志，不存被拒raw/非法ID。预测规划事务save=False只保存Task，不写物理表。
+
+React已做实验选择/候选卡/偏好次优提示、预测与实测区分、不可预测恢复说明；API解析绑定请求/本轮快照/目标/作用域/完整原选动作（含room_id）。独立前端/后端规格和质量均批准。已修实际RED：同名goal猜测、实验plan_round仍save_engine、最终Plan失败却先存selected、前端候选/原选room引用缺口；旧RED保留output。
+
+最终：后端完整275passed/6 MySQL条件skip（145.24s），另实际专用MySQL6passed/11.70s含D2新JSON新连接/确认原键/推进（不是OS进程重启）；前端显式单worker/15秒预算84passed/158.23s、lint/TS/Vite过；受控模型browser全Agent14passed（约1.5m）含D2和移动/恢复，root目视桌面/360px截图、360/390几何过；根脚本33passed/11.37s、后端15文件和browser脚本ruff/format过。初后端272/6skip、定向37/39及前端默认5秒82过2超时/串行83过1超时均留历史，不覆盖或称修复线上竞态。最终原件output/product-d2-{backend-final,mysql,frontend-full-15s,browser-final,root-scripts}.txt。
+
+边界压力原件output/product-d2-forecast-stress.json：16房/256实体/每worker5760步，混合启用单worker20076ms/lag41.77ms；双worker35603/35599ms、lag174.523ms；244真实归档6892ms/lag40.897ms；全部源不变。进程工作集约36.2→41.1MB含Python/库，不是纯算法内存。之前单worker关闭灯负载27728ms/lag66.546ms在并发pytest条件下，不能互算性能提升或称普遍最坏保证。
+
+**下一次继续：进入D3专家并行/协调及实际角色反馈，先写细化实施计划，复用S1预测与React候选卡。** 扩multi_agent时必须覆盖check_creation_replay/check_turn、verify/TaskDetail零动作保护、混合历史与session恢复；D1指出的这些兼容项不能漏。按已定Advice/预算/65秒/失败零写设计，不引入队列/向量库/SSE等无关模块。D4/D5真实调优/新验收仍未做，真实请求另授权，C2余2禁止转用。Figma在线新状态/连线待额度，44例全开发集，无访谈/真实硬件/多Agent收益。Docker本轮在已安装路径隐藏启动，setup_mysql成功；受控browser临时API/网页已退出，MySQL保留。启动仍README8110/5174。
+
+## D1设计交付历史（最新D2以上方为准）
+
 **最新为D1设计交付，以下C2/C1/B是历史。** 用户要求同时面向AI全栈和AI产品、评测调优不能少；“继续”延续本轮D1。当前分支`codex/product-d1-design`，基于C2 e95e0be；应用仍0.4.0/M4、迁移仍0004_product_c。本轮无业务代码/依赖/迁移更改、0真实模型请求，无新常驻服务，只本地保存不推送/合并/发布。
 
 交付：[D1全栈规格](docs/superpowers/specs/2026-10-28-product-d1-design.md)、[分步交付与需求映射](docs/product/product-d-delivery-plan.md)、[评测调优契约](docs/product/product-d-evaluation-design.md)、[核对记录](docs/verification/product-d1-design.md)。主对照S1为增强单Agent，同样获得预测资料；实验M为舒适/节能并行建议+协调，所有角色只读、程序统一执行/独立核验。当前三角色/预测工具都未实现；有限候选最优不能包装成多Agent必要性。

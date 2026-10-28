@@ -2,7 +2,7 @@
 
 from typing import Annotated, Literal
 
-from pydantic import Field, StrictInt, TypeAdapter
+from pydantic import Field, StrictInt, TypeAdapter, model_validator
 
 from homemind.simulation.models import Identifier, InputModel, Minutes, TargetTemperature
 
@@ -14,6 +14,7 @@ class AgentRequest(InputModel):
     expected_world_id: Identifier
     keep_entity_ids: list[Identifier] = Field(default_factory=list, max_length=1000)
     protected_room_ids: list[Identifier] = Field(default_factory=list, max_length=100)
+    strategy: Literal["standard", "single_forecast"] = "standard"
 
 
 class ReplyRequest(InputModel):
@@ -68,3 +69,35 @@ class Plan(InputModel):
 
 
 OUTPUT = TypeAdapter(Annotated[Plan | Clarify | Refuse, Field(discriminator="kind")])
+
+
+class GoalContract(InputModel):
+    nullable_fields = frozenset({"cover_entity_id"})
+    kind: Literal["goal"]
+    room_id: Identifier
+    climate_entity_id: Identifier
+    cover_entity_id: Identifier | None
+    target_temperature_c: TargetTemperature
+    ready_in_minutes: Minutes
+    priority: Literal["comfort_first", "energy_first"]
+    allowed_fan_modes: list[Literal["low", "auto"]] = Field(min_length=1, max_length=2)
+    cover_constraint: Literal["allow_open_close", "keep"]
+    keep_entity_ids: list[Identifier] = Field(max_length=1000)
+    protected_room_ids: list[Identifier] = Field(max_length=100)
+
+    @model_validator(mode="after")
+    def unique_references(self):
+        for values in (self.allowed_fan_modes, self.keep_entity_ids, self.protected_room_ids):
+            if len(set(values)) != len(values):
+                raise ValueError("重复引用")
+        return self
+
+
+class Selection(InputModel):
+    kind: Literal["selection"]
+    candidate_id: Annotated[str, Field(strict=True, min_length=1, max_length=80)]
+    plan: Plan
+
+
+GOAL_OUTPUT = TypeAdapter(Annotated[GoalContract | Clarify | Refuse, Field(discriminator="kind")])
+SELECTION_OUTPUT = TypeAdapter(Annotated[Selection | Clarify | Refuse, Field(discriminator="kind")])

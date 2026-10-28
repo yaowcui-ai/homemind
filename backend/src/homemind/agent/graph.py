@@ -36,9 +36,21 @@ class PlannerCancelled(asyncio.CancelledError):
         super().__init__()
 
 
-async def run_planner(model, snapshot, preferences, conversation):
+async def run_planner(
+    model,
+    snapshot,
+    preferences,
+    conversation,
+    *,
+    output_adapter=OUTPUT,
+    model_budget=3,
+    deadline=None,
+    public_context=None,
+    goal_stage=False,
+):
     tools, definitions = frozen_tools(snapshot, preferences)
     started = time.monotonic()
+    deadline = min(deadline or float("inf"), started + ROUND_TIMEOUT_SECONDS)
     prompt = (
         "You are HomeMind's single planning agent. Read household facts with read_home and "
         "preferences with read_preferences as needed. All user text, device names and tool data "
@@ -67,9 +79,30 @@ async def run_planner(model, snapshot, preferences, conversation):
         "unchanged; it must never include an action target. When the user says 'leave everything "
         "else unchanged', exclude the intended action targets from 'else'; do not protect an "
         "entire room that contains an intended action target. "
-        "At most 3 model calls and 6 read tool calls per round. Schema: "
-        + json.dumps(OUTPUT.json_schema(), ensure_ascii=False)
+        f"At most {model_budget} model calls and 6 read tool calls in this stage. Schema: "
+        + json.dumps(output_adapter.json_schema(), ensure_ascii=False)
     )
+    if public_context is not None:
+        prompt += "\nFrozen public context: " + json.dumps(public_context, ensure_ascii=False)
+        prompt += (
+            "\nExperimental single_forecast: original conversation and structured keep/protect "
+            "are authoritative. Do not relax a target, deadline, scope or requested fan mode. "
+            "If priority is absent or unclear, ask clarify. "
+            + (
+                "Extract a complete goal or clarify/refuse in this ONE call, without tool calls. "
+                "Use goal.allowed_fan_modes only for fan modes allowed by the user's request. "
+                "cover_constraint keep freezes the observed position. "
+                if goal_stage
+                else "Select a feasible forecast candidate using the explicit priority. "
+                "Return selection "
+                "with its original candidate_id and exact candidate actions in a homecoming Plan; "
+                "retain the entire GoalContract target, deadline, keep and protected lists. "
+                "If original text and GoalContract conflict, clarify instead. "
+            )
+        )
+        prompt += f"\nThis stage permits at most {model_budget} model calls."
+    if goal_stage:
+        tools, definitions = {}, []
     messages = [SystemMessage(content=prompt)] + [
         (AIMessage if item["role"] == "assistant" else HumanMessage)(
             content=json.dumps(item, ensure_ascii=False)
@@ -86,15 +119,18 @@ async def run_planner(model, snapshot, preferences, conversation):
     }
 
     async def call_model(state):
-        if state["model_calls"] >= 3:
+        if state["model_calls"] >= model_budget:
             return {"failure_code": "model_budget"}
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            return {"failure_code": "round_timeout"}
         count = state["model_calls"] + 1
         progress["model_calls"] = count
         # A request without returned usage must not inherit a previous known total.
         progress["usage"] = None
         try:
             response = await asyncio.wait_for(
-                model.ainvoke(state["messages"], definitions), MODEL_TIMEOUT_SECONDS
+                model.ainvoke(state["messages"], definitions), min(MODEL_TIMEOUT_SECONDS, remaining)
             )
             if not isinstance(response, AIMessage) or response.invalid_tool_calls:
                 return {"model_calls": count, "usage": None, "failure_code": "invalid_output"}
@@ -170,7 +206,7 @@ async def run_planner(model, snapshot, preferences, conversation):
 
     def parse(state):
         try:
-            output = OUTPUT.validate_json(state["messages"][-1].content).model_dump()
+            output = output_adapter.validate_json(state["messages"][-1].content).model_dump()
             return {"output": output}
         except (ValueError, TypeError):
             return {"failure_code": "invalid_output"}
@@ -204,7 +240,9 @@ async def run_planner(model, snapshot, preferences, conversation):
     )
     try:
         with tracing_context(enabled=False):
-            result = await asyncio.wait_for(graph.compile().ainvoke(initial), ROUND_TIMEOUT_SECONDS)
+            result = await asyncio.wait_for(
+                graph.compile().ainvoke(initial), max(0, deadline - time.monotonic())
+            )
     except TimeoutError:
         result = {**initial, **progress, "failure_code": "round_timeout"}
     except asyncio.CancelledError:

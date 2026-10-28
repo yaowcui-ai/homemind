@@ -5,6 +5,7 @@ import type { Snapshot } from '../../api/simulation.types';
 import { scenarioLabels, statusLabels, modeLabels } from './labels';
 import { actionTarget, entityLabel, optionLabel, roomLabel } from './taskLabels';
 import styles from './Tasks.module.css';
+import ForecastPanel from './ForecastPanel';
 
 const outcomeLabels: Record<string, string> = { planned: '待执行', submitted: '已提交', verified: '已核验', failed: '失败', unknown: '未知', skipped: '未执行', pending: '待核验' };
 interface Props {
@@ -37,6 +38,10 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
     {unexecuted && run?.failure_code === 'duplicate_option' && <p className={styles.hint}>
       当前方案未执行：模型给出了重复选项，不能区分你的选择。请点击“开始新任务”，明确希望保留和放宽的要求或取舍后重新提交。
     </p>}
+    {unexecuted && run?.failure_code === 'forecast_unavailable' && <p className={styles.hint}>
+      本轮没有执行。请检查主温度与窗户、占用感知是否可读，目标房间是否只有一台空调且至多一只窗帘，以及是否超过预测规模上限。
+      恢复后点击“开始新任务”重新比较，或切回常规助手处理其他任务；口头假定读数不能替代实际感知。
+    </p>}
     {unexecuted && run?.failure_code === 'window_not_closed' && <p className={styles.hint}>
       当前方案未执行：请先确认实际窗户读数，关闭打开的窗户或恢复未知读数。仅口头说“已经关窗”不能代替读数；确认后点击“开始新任务”重新提交。
     </p>}
@@ -51,6 +56,7 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
     </p>}
     <p className={styles.hint}>任务编号 {task.id}</p>
     {task.mode === 'single_agent' && <p className={styles.requestText}>你的需求：{task.request.text}</p>}
+    {run && <ForecastPanel run={run} snapshot={snapshot} />}
     {(proposed || task.mode === 'rule') && <div className={styles.plan} aria-label="实际任务方案">
       <h3>理解到的目标与方案</h3>
       <p>目标：{scenarioLabels[task.scenario]}{(task.plan?.temperatures ?? []).map((goal) => ` · ${roomLabel(snapshot, goal.room_id)} ${goal.target}℃`).join('')}</p>

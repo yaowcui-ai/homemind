@@ -1,6 +1,6 @@
-# HomeMind 产品需求文档 v0.5
+# HomeMind 产品需求文档 v0.6
 
-日期：2026-10-28。阶段A定义、B实现、C两轮验证，D1完成设计、D2—D5未实施。用户已确认采用A—E，并要求兼顾AI全栈/AI产品；需求价值尚未经过真实用户验证。[C首轮](product-c-evaluation.md)与[C2复测/勘误](product-c2-evaluation.md)分开记录；案例扩为44个，C2新增诊断与澄清选项约束，12例真实验证后定向修复2个交互问题。独立保留集/单多Agent对照未开展，[B验证](../verification/product-b-single-agent.md)保留历史。本文版本不代表应用升级（应用仍0.4.0/M4）。
+日期：2026-10-28。阶段A定义、B实现、C两轮验证，D1设计、D2隔离预测/增强单Agent/React闭环已实现，D3—D5待做。用户已确认采用A—E，并要求兼顾AI全栈/AI产品；需求价值尚未经过真实用户验证。[C首轮](product-c-evaluation.md)与[C2复测/勘误](product-c2-evaluation.md)分开记录；案例扩为44个，C2新增诊断与澄清选项约束，12例真实验证后定向修复2个交互问题。独立保留集/单多Agent对照未开展，[B验证](../verification/product-b-single-agent.md)保留历史。本文版本不代表应用升级（应用仍0.4.0/M4）。
 
 ## 1. 产品定义和当前边界
 
@@ -116,8 +116,10 @@ C2澄清该反例的条件：低风20分钟读26.8℃、自动风可达26.0℃�
 
 文档入口：[现状审查](2026-10-27-ai-pm-positioning-review.md)、[验证计划](validation-plan.md)、[决策与迭代](decision-iteration-log.md)。技术事实继续引用 [总体设计](../superpowers/specs/2026-10-26-homemind-system-design.md)、[M3 设计](../superpowers/specs/2026-10-27-m3-accounts-persistence-design.md)、[M4 技术设计](../superpowers/specs/2026-10-27-m4-single-agent-design.md)，不重复复制接口和数据库细节。
 
-## 9. D1增量需求：有依据的方案权衡（设计，未实现）
+## 9. D增量需求：有依据的方案权衡（D2增强单Agent已实现，专家待做）
 
 只对明确单房间/单空调的温度-期限-能耗取舍开放实验流程，其他设备保持用户约束。用户先明确舒适优先或能耗优先；舒适只用首次观测达标分钟代理。硬温度/期限不能为节能被改掉，未知感知不能凭口头断言恢复。展示候选的仿真预测、范围、取舍和必要确认，执行后的实测证据另列。
 
-先实现共享隔离预测的增强单Agent，再加入只读舒适/节能建议和协调角色。单Agent/多Agent同资料/工具/预算；无收益则保留增强单Agent默认、多Agent维持实验。当前未实现预测或多Agent，本轮离线重放不能作为这两项功能验收。[全栈需求映射与D2—D5验收](product-d-delivery-plan.md)、[评测/调优/采用门槛](product-d-evaluation-design.md)是本增量的执行依据，44旧例仍是开发集。
+D2已落地共享隔离预测的增强单Agent、React实验入口/候选卡/必要确认/错误出口，以及MySQL JSON证据。模型仅选择程序产生的候选，目标/范围/期限/例外不得漂移；偏好次优保留原选并提示。受控模型、真实数据库和浏览器的工程验证见[D2报告](../verification/product-d2-forecast.md)，不证明新S1真实模型质量或节电收益。
+
+D3再加入只读舒适/节能建议和协调角色。单Agent/多Agent同资料/工具/预算；无收益则保留增强单Agent默认、多Agent维持实验。[全栈需求映射与分步验收](product-d-delivery-plan.md)、[评测/调优/采用门槛](product-d-evaluation-design.md)是执行依据，44旧例仍是开发集；新集和真实调优未运行。

@@ -1,5 +1,5 @@
 import { useRef, useState, useSyncExternalStore } from 'react';
-import { Alert, Button, Input, Select } from 'antd';
+import { Alert, Button, Input, Radio, Select } from 'antd';
 import type { AgentConfig, TaskDetail } from '../../api/tasks.types';
 import type { Snapshot } from '../../api/simulation.types';
 import type { TaskSubmission } from '../../api/tasks';
@@ -13,12 +13,16 @@ export default function AgentComposer({ snapshot, config, disabled, submission, 
   const [error, setError] = useState<string | null>(null);
   const lock = useRef(false);
   const draft = state.agentDraft;
+  const strategy = draft.strategy ?? 'standard';
+  const supportsForecast = config?.strategies?.includes('single_forecast') ?? false;
+  const strategyAvailable = strategy === 'standard' || supportsForecast;
   async function submit() {
-    if (disabled || !config?.available || !draft.text.trim() || lock.current) return;
+    if (disabled || !config?.available || !strategyAvailable || !draft.text.trim() || lock.current) return;
     lock.current = true; setPending(true); setError(null);
     try {
       await onCreated(await submission.submitAgent({ text: draft.text.trim(), expected_world_id: snapshot.world_id,
-        keep_entity_ids: draft.keep_entity_ids, protected_room_ids: draft.protected_room_ids }));
+        keep_entity_ids: draft.keep_entity_ids, protected_room_ids: draft.protected_room_ids,
+        ...(strategy === 'single_forecast' ? { strategy } : {}) }));
     } catch (error) { setError(error instanceof Error ? error.message : '任务提交未完成，请读取原提交结果。'); }
     finally { lock.current = false; setPending(false); }
   }
@@ -30,6 +34,16 @@ export default function AgentComposer({ snapshot, config, disabled, submission, 
       : <Alert type="info" title={config.reason ?? '自然语言任务尚未配置模型，请使用规则模板'} />
       : <p className={styles.hint}>尚未读取模型配置，请先读取配置。</p>}
     {error && <Alert type="error" title={error} description="结果不明时先读取原提交结果；同键重试会使用原始需求。" />}
+    {supportsForecast && <Radio.Group aria-label="方案处理方式" value={strategy} disabled={disabled || pending}
+      onChange={(event) => submission.saveAgentDraft({ ...draft, strategy: event.target.value })}>
+      <Radio value="standard">常规助手</Radio><Radio value="single_forecast">温控方案比较（实验）</Radio>
+    </Radio.Group>}
+    {strategy === 'single_forecast' && <p className={styles.hint}>
+      比较单房间温控方案，先预测、再由你确认。请明确温度、期限、能耗优先或尽早达标优先，以及窗帘能否调整。
+      例如：60分钟后客厅26℃，能耗优先，允许调整窗帘，卧室不动。
+    </p>}
+    {!strategyAvailable && <div><p className={styles.hint}>当前环境未开放所选实验，请切回常规助手；未决提交请先读取原结果。</p>
+      <Button disabled={disabled || pending} onClick={() => submission.saveAgentDraft({ ...draft, strategy: 'standard' })}>切回常规助手</Button></div>}
     <form className={styles.agentForm} onSubmit={(event) => { event.preventDefault(); void submit(); }}>
       <label htmlFor="agent-intent">生活需求</label>
       <Input.TextArea id="agent-intent" rows={5} maxLength={2000} value={draft.text} disabled={disabled || pending}
@@ -46,7 +60,7 @@ export default function AgentComposer({ snapshot, config, disabled, submission, 
           onChange={(value) => submission.saveAgentDraft({ ...draft, protected_room_ids: value })} />
         <p className={styles.hint}>这些是额外硬约束，服务端独立检查；也可以在需求中说明例外。</p>
       </details>
-      <Button block type="primary" htmlType="submit" loading={pending} disabled={disabled || !config?.available || !draft.text.trim()}>提交自然语言任务</Button>
+      <Button block type="primary" htmlType="submit" loading={pending} disabled={disabled || !config?.available || !strategyAvailable || !draft.text.trim()}>提交自然语言任务</Button>
     </form>
     {pending && <p role="status">正在处理，请等待实际结果。</p>}
     <p className={styles.hint}>最多补充 3 轮。未来温度目标需要演示模式的仿真时间推进能力。</p>

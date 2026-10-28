@@ -1,5 +1,6 @@
 import { ApiError, isObject, isText } from './client';
 import { tasksApi } from './tasks';
+import { isAgentStrategy } from './forecast.validation';
 import type { AdvanceRequest, AgentRequest, ConfirmRequest, ReplyRequest, RuleRequest, TaskDetail } from './tasks.types';
 
 export type PendingOperation =
@@ -8,7 +9,7 @@ export type PendingOperation =
   | { kind: 'reply'; key: string; taskId: string; body: ReplyRequest }
   | { kind: 'confirm'; key: string; taskId: string; body: ConfirmRequest }
   | { kind: 'advance'; key: string; taskId: string; body: AdvanceRequest };
-export interface AgentDraft { text: string; keep_entity_ids: string[]; protected_room_ids: string[] }
+export interface AgentDraft { text: string; keep_entity_ids: string[]; protected_room_ids: string[]; strategy?: AgentRequest['strategy'] }
 export interface TaskSessionState {
   selectedId: string | null; pending: PendingOperation | null; busy: boolean; restorePending: boolean;
   agentDraft: AgentDraft; ruleDraft: Partial<RuleRequest> | null;
@@ -22,7 +23,8 @@ function validPending(v: unknown): v is PendingOperation {
   if (v.kind === 'rule') return ['homecoming', 'sleep', 'away'].includes(String(b.scenario))
     && Array.isArray(b.room_ids) && b.room_ids.every(isText) && ids(b.keep_entity_ids) && ids(b.protected_room_ids)
     && (b.expected_world_id === undefined || isText(b.expected_world_id));
-  if (v.kind === 'agent') return isText(b.text) && b.text.length <= 2000 && isText(b.expected_world_id) && ids(b.keep_entity_ids) && ids(b.protected_room_ids);
+  if (v.kind === 'agent') return isText(b.text) && b.text.length <= 2000 && isText(b.expected_world_id) && ids(b.keep_entity_ids) && ids(b.protected_room_ids)
+    && (b.strategy === undefined || isAgentStrategy(b.strategy));
   if (v.kind === 'advance') return isText(v.taskId) && isText(b.expected_world_id) && Number.isSafeInteger(b.expected_simulated_minutes) && Number(b.expected_simulated_minutes) >= 0;
   if (!isText(v.taskId) || !Number.isInteger(b.expected_turn) || Number(b.expected_turn) < 0 || Number(b.expected_turn) > 3) return false;
   return v.kind === 'confirm' || (v.kind === 'reply' && isText(b.text) && b.text.length <= 2000);
@@ -30,7 +32,7 @@ function validPending(v: unknown): v is PendingOperation {
 function fingerprint(operation: Omit<PendingOperation, 'key'>) {
   // Sort recursively: property insertion order must not change an intent's retry identity.
   return JSON.stringify(operation, (_key, value) => isObject(value)
-    ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, value[key]])) : value);
+    ? Object.fromEntries(Object.keys(value).filter((key) => key !== 'strategy' || value[key] !== 'standard').sort().map((key) => [key, value[key]])) : value);
 }
 
 /** Only task locators and public user input are saved; cookies/CSRF remain in the client. */
@@ -53,7 +55,8 @@ export class TaskSubmission {
       if (validPending(saved.pending)) this.state.pending = saved.pending;
       if (isObject(saved.agentDraft) && typeof saved.agentDraft.text === 'string' && saved.agentDraft.text.length <= 2000
         && Array.isArray(saved.agentDraft.keep_entity_ids) && saved.agentDraft.keep_entity_ids.every(isText)
-        && Array.isArray(saved.agentDraft.protected_room_ids) && saved.agentDraft.protected_room_ids.every(isText)) {
+        && Array.isArray(saved.agentDraft.protected_room_ids) && saved.agentDraft.protected_room_ids.every(isText)
+        && (saved.agentDraft.strategy === undefined || isAgentStrategy(saved.agentDraft.strategy))) {
         this.state.agentDraft = saved.agentDraft as unknown as AgentDraft;
       }
       if (isObject(saved.ruleDraft) && ['homecoming', 'sleep', 'away'].includes(String(saved.ruleDraft.scenario))
