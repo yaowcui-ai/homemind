@@ -2,7 +2,7 @@
 
 **技术栈：** React、TypeScript、TanStack Query、Python、FastAPI、LangGraph、LangChain、DeepSeek、MySQL、SQLAlchemy、Alembic、Docker Compose、GitHub Actions
 
-**源码：** https://github.com/yaowcui-ai/homemind
+**源码：** [GitHub · yaowcui-ai/homemind](https://github.com/yaowcui-ai/homemind)
 
 **项目介绍：** 面向多设备联动与舒适度、能耗取舍场景，开发从自然语言需求、澄清确认到执行核验的智能家居应用；支持多账号独立家庭、可配置设备、任务历史和单／多 Agent 实验，设备与环境使用确定性仿真。
 
