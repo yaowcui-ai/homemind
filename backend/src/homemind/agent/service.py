@@ -12,6 +12,7 @@ from homemind.agent.graph import PlannerCancelled, run_planner
 from homemind.agent.pipeline import run_pipeline
 from homemind.agent.validation import ambiguous_question, validate_options, validate_plan
 from homemind.executor import execute, verify
+from homemind.persistence.codec import save_engine
 from homemind.persistence.models import Preference, Task
 from homemind.preferences import preference_view
 from homemind.simulation.models import SimulationError
@@ -28,7 +29,14 @@ FAILURE_MESSAGES = {
     "model_budget": "本轮已达模型调用上限，未发送设备动作，请简化需求",
     "task_model_budget": "任务已达12次模型调用上限，未发送设备动作，请重新提交明确需求",
     "tool_budget": "本轮已达6次只读工具调用上限，未发送设备动作，请简化需求",
+    "analysis_incomplete": "专家分析未完成，本轮未发送设备动作；请查看角色记录或重新提交",
 }
+
+EXPERIMENTAL_STRATEGIES = {"single_forecast", "expert_forecast"}
+
+
+def agent_mode(strategy):
+    return "multi_agent" if strategy == "expert_forecast" else "single_agent"
 
 
 def public_config(app):
@@ -37,7 +45,7 @@ def public_config(app):
         "available": available,
         "model": app.state.settings.model_name,
         "reason": None if available else "自然语言任务尚未配置模型，请使用规则模板",
-        "strategies": ["standard", "single_forecast"]
+        "strategies": ["standard", "single_forecast", "expert_forecast"]
         if app.state.settings.simulation_debug_enabled
         else ["standard"],
     }
@@ -51,7 +59,9 @@ def claim(database, home_id):
 
 def check_turn(task, expected_turn, status):
     if (
-        task.mode != "single_agent"
+        task.mode not in {"single_agent", "multi_agent"}
+        or task.mode != agent_mode((task.agent_run or {}).get("strategy", "standard"))
+        or task.mode != agent_mode((task.request or {}).get("strategy", "standard"))
         or task.agent_run["turn"] != expected_turn
         or task.status != status
     ):
@@ -74,7 +84,12 @@ def operation(run, key, digest, kind):
 
 
 def check_creation_replay(task, digest):
-    if task.mode != "single_agent" or task.request_hash != digest:
+    if (
+        task.mode not in {"single_agent", "multi_agent"}
+        or task.mode != agent_mode((task.request or {}).get("strategy", "standard"))
+        or task.mode != agent_mode((task.agent_run or {}).get("strategy", "standard"))
+        or task.request_hash != digest
+    ):
         raise SimulationError(409, "idempotency_conflict", "此幂等键已用于不同请求或模式")
 
 
@@ -120,22 +135,29 @@ def record_round(task, result):
     previous_calls = updated["model_calls"]
     updated["model_calls"] += result["model_calls"]
     updated["tool_calls"] += result["tool_calls"]
-    updated["usage"] = (
-        {
-            key: (updated["usage"] or {}).get(key, 0) + result["usage"][key]
-            for key in ("input_tokens", "output_tokens")
-        }
-        if result["usage"] is not None and (not previous_calls or updated["usage"] is not None)
-        else None
-    )
-    updated["actual_model"] = result["actual_model"]
+    if result["model_calls"]:
+        updated["usage"] = (
+            {
+                key: (updated["usage"] or {}).get(key, 0) + result["usage"][key]
+                for key in ("input_tokens", "output_tokens")
+            }
+            if result["usage"] is not None and (not previous_calls or updated["usage"] is not None)
+            else None
+        )
+        updated["actual_model"] = result["actual_model"]
     updated["records"].extend(result["records"])
     updated["timings"]["planning_ms"] += result["elapsed_ms"]
     updated["rounds"].append(
         {key: result[key] for key in ("model_calls", "tool_calls", "usage", "elapsed_ms")}
         | {"turn": updated["turn"]}
     )
-    if updated.get("strategy") == "single_forecast":
+    if updated.get("strategy") == "expert_forecast":
+        updated["role_runs"] = result.get("role_runs", [])
+        updated["rounds"][-1]["roles"] = [
+            {key: value for key, value in role.items() if key != "advice"}
+            for role in updated["role_runs"]
+        ]
+    if updated.get("strategy") in EXPERIMENTAL_STRATEGIES:
         for key in ("goal", "forecast", "selected_candidate_id", "preference_optimal"):
             updated[key] = result.get(key)
     task.agent_run = updated
@@ -146,7 +168,7 @@ async def create_agent(request, body, key):
     app, home_id = request.app, request.state.home_id
     database = app.state.database
     normalized = body.model_dump()
-    experimental = normalized["strategy"] == "single_forecast"
+    experimental = normalized["strategy"] in EXPERIMENTAL_STRATEGIES
     if not experimental:
         normalized.pop("strategy")
     digest = request_hash(normalized)
@@ -194,7 +216,7 @@ async def create_agent(request, body, key):
                 idempotency_key=key,
                 request_hash=digest,
                 request=normalized,
-                mode="single_agent",
+                mode=agent_mode(body.strategy),
                 scenario="local",
                 status="planning",
                 world_id=engine._world_id,
@@ -234,13 +256,17 @@ async def create_agent(request, body, key):
             session.add(task)
             if experimental:
                 task.agent_run = task.agent_run | dict(
-                    strategy="single_forecast",
-                    pipeline_version="d2-forecast-v1",
+                    strategy=body.strategy,
+                    pipeline_version="d3-experts-v1"
+                    if body.strategy == "expert_forecast"
+                    else "d2-forecast-v1",
                     goal=None,
                     forecast=None,
                     selected_candidate_id=None,
                     preference_optimal=None,
                 )
+                if body.strategy == "expert_forecast":
+                    task.agent_run = task.agent_run | {"role_runs": []}
         return await plan_round(app, home_id, task_id, exact)
     finally:
         database.busy.discard(home_id)
@@ -277,7 +303,7 @@ async def reply_agent(request, task_id, body, key):
             run["turn"] += 1
             run["question"], run["options"] = None, []
             exact = None
-            if run.get("strategy") == "single_forecast":
+            if run.get("strategy") in EXPERIMENTAL_STRATEGIES:
                 for field in (
                     "goal",
                     "forecast",
@@ -289,6 +315,8 @@ async def reply_agent(request, task_id, body, key):
                 ):
                     run[field] = None
                 run.pop("diagnostic", None)
+                if run.get("strategy") == "expert_forecast":
+                    run["role_runs"] = []
                 try:
                     exact = clone_engine(engine)
                 except SimulationError:
@@ -315,7 +343,7 @@ async def plan_round(app, home_id, task_id, exact=None):
             task.agent_run,
         )
     try:
-        if run.get("strategy") == "single_forecast":
+        if run.get("strategy") in EXPERIMENTAL_STRATEGIES:
             result = await run_pipeline(
                 app.state.agent_model,
                 snapshot,
@@ -344,7 +372,7 @@ async def plan_round(app, home_id, task_id, exact=None):
         await asyncio.shield(save_cancelled())
         raise
     async with database.home(
-        home_id, task_id=task_id, save=run.get("strategy") != "single_forecast"
+        home_id, task_id=task_id, save=run.get("strategy") not in EXPERIMENTAL_STRATEGIES
     ) as (session, _, engine):
         task = await task_by_id(session, home_id, task_id)
         updated = record_round(task, result)
@@ -386,7 +414,7 @@ async def plan_round(app, home_id, task_id, exact=None):
                         task.status, task.message = "waiting_input", "需要补充信息后继续同一任务"
                 else:
                     validation_started = time.monotonic()
-                    experimental = updated.get("strategy") == "single_forecast"
+                    experimental = updated.get("strategy") in EXPERIMENTAL_STRATEGIES
                     if experimental:
                         optimal = validate_selection(
                             engine, output, updated["goal"], updated["forecast"], task.request
@@ -436,7 +464,7 @@ async def confirm_agent(request, task_id, body, key):
         check_turn(task, body.expected_turn, "waiting_confirmation")
     claim(database, home_id)
     try:
-        async with database.home(home_id, task_id=task_id) as (session, _, engine):
+        async with database.home(home_id, task_id=task_id, save=False) as (session, home, engine):
             task = await task_by_id(session, home_id, task_id)
             if check_replay(task, key, digest, "confirm"):
                 return await detail(session, task)
@@ -449,7 +477,7 @@ async def confirm_agent(request, task_id, body, key):
             else:
                 try:
                     validation_started = time.monotonic()
-                    if run.get("strategy") == "single_forecast":
+                    if run.get("strategy") in EXPERIMENTAL_STRATEGIES:
                         validate_selection(
                             engine,
                             dict(
@@ -471,6 +499,7 @@ async def confirm_agent(request, task_id, body, key):
                     add_timing(task, "validation", validation_started)
                     execution_started = time.monotonic()
                     actions = await execute(session, engine, home_id, task_id, plan)
+                    await save_engine(session, home, engine, task_id=task_id)
                     task.status, task.message, task.verification = verify(engine, task, actions)
                     add_timing(task, "execution", execution_started)
                 except SimulationError as error:

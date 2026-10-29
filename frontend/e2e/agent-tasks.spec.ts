@@ -33,6 +33,104 @@ async function submit(page: Page, text: string) {
 const detailRegion = (page: Page) => page.getByRole('region', { name: '任务详情' });
 test.beforeEach(async ({ page, request }) => { await registerAgent(request, page); });
 
+test('产品D3：专家不同意见、协调原选、确认实际核验与刷新恢复', async ({ page, request }) => {
+  const before: Snapshot = await (await request.get('/api/simulation')).json();
+  await page.goto('/'); await agent(page);
+  await page.getByRole('radio', { name: '多 Agent 协作（实验）' }).check();
+  const task = await submit(page, '60分钟后客厅26℃，能耗优先，允许调整窗帘，卧室不动。');
+  expect(task.mode).toBe('multi_agent'); expect(task.status).toBe('waiting_confirmation');
+  expect(task.actions).toEqual([]); expect(await (await request.get('/api/simulation')).json()).toEqual(before);
+  const records = task.agent_run?.role_runs ?? [];
+  expect(records.map((r) => r.role)).toEqual(['coordinator_goal', 'comfort', 'energy', 'coordinator_plan']);
+  expect(records.every((r) => r.status === 'succeeded')).toBe(true);
+  expect(task.agent_run?.model_calls).toBe(4);
+  expect(records[1].advice?.preferred_candidate_id).not.toBe(records[2].advice?.preferred_candidate_id);
+  expect(task.agent_run?.selected_candidate_id).toBe(records[2].advice?.preferred_candidate_id);
+  const roles = page.getByRole('region', { name: '多 Agent 分析记录' });
+  await expect(roles).toBeVisible();
+  await expect(roles.getByText(/舒适建议方案 3.*节能建议方案 2/)).toBeVisible();
+  await expect(roles.getByText(/协调选择方案 2/)).toBeVisible();
+  await roles.screenshot({ path: path.resolve('../output/product-d3-roles-desktop.png') });
+  await roles.getByText('阶段调用记录', { exact: true }).first().click();
+  await expect(roles.getByText(/实际模型 controlled-browser-test/).first()).toBeVisible();
+  await roles.screenshot({ path: path.resolve('../output/product-d3-roles-expanded.png') });
+  await roles.getByText('阶段调用记录', { exact: true }).first().click();
+  for (const width of [360, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    await roles.screenshot({ path: path.resolve(`../output/product-d3-roles-${width}.png`) });
+  }
+  const confirm = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/confirm`) && r.request().method() === 'POST');
+  await page.getByRole('button', { name: '确认执行此方案', exact: true }).click();
+  expect((await (await confirm).json()).status).toBe('waiting_verification');
+  const advance = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/advance`) && r.request().method() === 'POST');
+  await page.getByRole('button', { name: '推进至目标时刻 t+60 分钟并核验', exact: true }).click();
+  const done: TaskDetail = await (await advance).json();
+  expect(done.status).toBe('succeeded'); expect(done.agent_run?.model_calls).toBe(4);
+  expect(done.agent_run?.role_runs).toEqual(records);
+  let posts = 0;
+  page.on('request', (r) => { if (r.url().includes('/api/tasks') && r.method() === 'POST') posts += 1; });
+  await page.reload(); await tasks(page);
+  await expect(page.getByText(`任务编号 ${task.id}`, { exact: true })).toBeVisible();
+  await expect(page.getByRole('region', { name: '多 Agent 分析记录' })).toBeVisible();
+  expect(posts).toBe(0);
+});
+
+test('产品D3：非法专家证据停止，未运行协调不伪造成功且零动作不可核验', async ({ page, request }) => {
+  const before: Snapshot = await (await request.get('/api/simulation')).json();
+  await page.goto('/'); await agent(page);
+  await page.getByRole('radio', { name: '多 Agent 协作（实验）' }).check();
+  const task = await submit(page, '受控专家失败：60分钟后客厅26℃，能耗优先，允许调整窗帘。');
+  expect(task.mode).toBe('multi_agent'); expect(task.status).toBe('failed'); expect(task.actions).toEqual([]);
+  expect(task.agent_run?.failure_code).toBe('analysis_incomplete'); expect(task.agent_run?.model_calls).toBe(3);
+  expect(task.agent_run?.role_runs?.[2]).toMatchObject({ status: 'failed', failure_code: 'invalid_advice', advice: null });
+  expect(task.agent_run?.role_runs?.[3]).toMatchObject({ status: 'skipped', model_calls: 0, advice: null });
+  expect(JSON.stringify(task)).not.toContain('PRIVATE-BAD-ADVICE-ID');
+  expect(JSON.stringify(task)).not.toContain('无效引用内容不应保留');
+  await expect(page.getByText(/专业分析未完整完成.*开始新任务/)).toBeVisible();
+  await expect(page.getByRole('button', { name: '确认执行此方案' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '核验目标' })).toHaveCount(0);
+  await expect(page.getByRole('region', { name: '多 Agent 分析记录' }).getByText('未运行', { exact: true })).toBeVisible();
+  const reverify = await agentWrite(request, 'POST', `/tasks/${task.id}/verify`, {});
+  expect((await reverify.json()).status).toBe('failed');
+  expect(await (await request.get('/api/simulation')).json()).toEqual(before);
+  await detailRegion(page).screenshot({ path: path.resolve('../output/product-d3-analysis-incomplete.png') });
+});
+
+test('产品D3：未提交的未知补答刷新保键，原任务继续只新增一轮角色记录', async ({ page, request }) => {
+  await page.goto('/'); await agent(page);
+  await page.getByRole('radio', { name: '多 Agent 协作（实验）' }).check();
+  const task = await submit(page, '受控专家澄清：60分钟后客厅26℃，能耗优先，允许调整窗帘。');
+  expect(task.status).toBe('waiting_input'); expect(task.agent_run?.model_calls).toBe(3);
+  let originalKey = ''; let originalBody: unknown;
+  await page.route(`**/api/tasks/${task.id}/reply`, async (route) => {
+    originalKey = route.request().headers()['idempotency-key']; originalBody = route.request().postDataJSON();
+    await route.abort('failed');
+  }, { times: 1 });
+  await page.getByLabel('自由补充回答').fill('能耗优先');
+  await page.getByRole('button', { name: '提交补充回答' }).click();
+  await expect(page.getByText('原提交结果待确认', { exact: true })).toBeVisible();
+  let replies = 0;
+  page.on('request', (r) => { if (r.url().endsWith(`/tasks/${task.id}/reply`) && r.method() === 'POST') replies += 1; });
+  await page.reload(); await tasks(page);
+  await expect(page.getByText('原提交结果待确认', { exact: true })).toBeVisible();
+  expect(replies).toBe(0);
+  const answer = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/reply`) && r.request().method() === 'POST');
+  await page.getByRole('button', { name: '同键重试原始意图', exact: true }).click();
+  const response = await answer;
+  expect(response.request().headers()['idempotency-key']).toBe(originalKey);
+  expect(response.request().postDataJSON()).toEqual(originalBody);
+  const after: TaskDetail = await response.json();
+  expect(after.id).toBe(task.id); expect(after.status).toBe('waiting_confirmation');
+  expect(after.agent_run?.turn).toBe(1); expect(after.agent_run?.model_calls).toBe(7);
+  expect(after.agent_run?.rounds).toHaveLength(2); expect(after.agent_run?.role_runs).toHaveLength(4);
+  expect(after.agent_run?.rounds.every((round) => round.roles?.every((r) => !('advice' in r)))).toBe(true);
+  await expect(page.getByRole('button', { name: '确认执行此方案' })).toBeVisible();
+  expect(replies).toBe(1);
+  const snapshot: Snapshot = await (await request.get('/api/simulation')).json();
+  expect(snapshot.simulated_minutes).toBe(0);
+});
+
 test('产品D2受控模型：预测不写家庭，确认执行后独立核验并刷新保留证据', async ({ page, request }) => {
   const before: Snapshot = await (await request.get('/api/simulation')).json();
   await page.goto('/'); await agent(page);

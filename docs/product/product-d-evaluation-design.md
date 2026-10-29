@@ -79,4 +79,4 @@ D5在候选代码/提示词/工具冻结后另编12个独立验收输入，建�
 
 ## 6. 当前证据账
 
-D1当时已发生：现有引擎4次离线独立重放，0真实请求，详见[原始数值与复现](../../evaluation/results/product-d1-tradeoff-20261028.json)。D2后续已实现隔离forecast和增强S1，完成受控模型/React/API/真实MySQL工程验证与合成负载测量，见[D2报告](../verification/product-d2-forecast.md)。尚无真实S1/M效果比较或真实模型调优收益，M也未实现；独立集测试、Figma新增连线、第三方访谈仍未开展。本文是评测契约，D2工程报告也不能充作真实模型效果报告。
+D1已做现有引擎4次离线独立重放，详见[原始数值与复现](../../evaluation/results/product-d1-tradeoff-20261028.json)。D2实现隔离forecast和增强S1并测量合成负载，见[D2报告](../verification/product-d2-forecast.md)。D3已实现M的真实LangGraph并行角色、React和MySQL闭环，受控案例覆盖意见分歧、非法证据零动作、澄清后未知补答恢复及预算/取消记账，见[D3报告](../verification/product-d3-experts.md)。D1—D3真实模型均0请求；S1/M真实效果比较、模型调优收益、独立集测试、Figma新增连线和第三方访谈仍未开展。工程报告不能充作真实模型效果报告。D4先另授权小批真实开发评测，保留所有首次失败，D5再冻结新集。

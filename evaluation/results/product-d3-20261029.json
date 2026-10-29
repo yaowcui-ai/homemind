@@ -1,0 +1,196 @@
+{
+  "date": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "stage": "D3",
+  "application_version": "0.4.0",
+  "baseline_commit": "5c61fb3",
+  "branch": "codex/product-d3-experts",
+  "real_model_requests": 0,
+  "model_evidence": "injected_controlled_models_only",
+  "strategy": "expert_forecast",
+  "task_mode": "multi_agent",
+  "pipeline_version": "d3-experts-v1",
+  "roles": [
+    "coordinator",
+    "comfort",
+    "energy"
+  ],
+  "stages": [
+    "coordinator_goal",
+    "comfort",
+    "energy",
+    "coordinator_plan"
+  ],
+  "validation": {
+    "backend": {
+      "passed": 311,
+      "skipped": 7,
+      "seconds": 231.32,
+      "mysql_skips_executed_separately": true
+    },
+    "dedicated_real_mysql": {
+      "passed": 7,
+      "seconds": 12.06,
+      "new_connection_not_os_process_restart": true
+    },
+    "frontend": {
+      "files": 19,
+      "passed": 93,
+      "seconds": 208.32,
+      "max_workers": 1,
+      "test_timeout_ms": 15000
+    },
+    "controlled_browser": {
+      "passed": 17,
+      "new_d3_cases": 3,
+      "duration_display": "2.1m",
+      "viewport_widths": [
+        1440,
+        360,
+        390
+      ],
+      "screenshots_visually_reviewed": true
+    },
+    "root_scripts": {
+      "passed": 33,
+      "seconds": 25.74
+    },
+    "eslint": "passed",
+    "typescript_vite": "passed",
+    "backend_ruff_format": "passed_56_files",
+    "browser_harness_ruff_format": "passed"
+  },
+  "controlled_d3_cases": [
+    {
+      "case": "disagreement_confirm_execute_deadline_refresh",
+      "model_method_calls": 4,
+      "comfort_candidate": "c3",
+      "energy_candidate": "c2",
+      "selected_candidate": "c2",
+      "final_status": "succeeded",
+      "real_provider_calls": 0
+    },
+    {
+      "case": "invalid_expert_reference",
+      "model_method_calls": 3,
+      "failure_code": "analysis_incomplete",
+      "action_count": 0,
+      "coordinator_plan_status": "skipped",
+      "real_provider_calls": 0
+    },
+    {
+      "case": "clarify_unknown_uncommitted_reply_refresh_same_key",
+      "model_method_calls": 7,
+      "calls_per_round": [
+        3,
+        4
+      ],
+      "same_task": true,
+      "turn": 1,
+      "final_status": "waiting_confirmation",
+      "executed_in_this_case": false,
+      "real_provider_calls": 0
+    }
+  ],
+  "failure_preservation": {
+    "mysql_initial": "7 setup errors before registration; owned container not running; original kept",
+    "cancellation_test": "sleep(0) assumed peer completion; explicit Event repaired test synchronization, not lost-accounting claim",
+    "business_red": [
+      "expert schema",
+      "multi zero-action verify",
+      "parallel Event barrier",
+      "zero-call round usage",
+      "failed confirm physical save",
+      "coordinator advice integration",
+      "frontend status/history/empty ledger binding"
+    ],
+    "test_build_error": "unsupported exact option on getByRole removed"
+  },
+  "source_sha256_lf": {
+    "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+    "backend/src/homemind/agent/experts.py": "a87daef9c1c25c085cea7c1a40047c602bef0c795a34e40bf3e359ff2709af30",
+    "backend/src/homemind/agent/graph.py": "80c53493b8581ac639b05ad5ca5020b514a06d1f9be51fa7f30f42dee0dd1a36",
+    "backend/src/homemind/agent/pipeline.py": "d97050da6d9645fd85560d3f977d3704f228572a2ffc7e2b252d3b80b03e850f",
+    "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+    "backend/src/homemind/agent/service.py": "a2aa831b2255901778dd18b334cda235da38303ee9615ee3c502d3bf7703772a",
+    "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b",
+    "backend/tests/test_m3_mysql.py": "7cfcbb9cfea38b418adeeee7bc167fb10ee7d11d1f1c4830edd3ea0e8df39a4e",
+    "backend/tests/test_product_d2.py": "c15cc3808b39df3aea0848da120e6a380b83efe5ed94003cc182e1bd2c9d7eeb",
+    "backend/tests/test_product_d3.py": "fedf944ac358d48756ee90d1a127b2c52898ff0b43c523135bbd06e851caf89e",
+    "frontend/e2e/agent-tasks.spec.ts": "4d8baa8c6473c1cdd6d40bd74f5e4f87ba73d21550a4f80473c04255b9b726f6",
+    "frontend/src/api/expert-tasks.test.ts": "ac6f0cf60a01bc86ed0eb06bb5e5adb7e288dbe7dcb8607c64136c498dda6443",
+    "frontend/src/api/forecast.validation.ts": "b69fce6afb380a612a86fdd2e2c0cd0a01e80c24e6ea47a2dbd80e27ff312f2c",
+    "frontend/src/api/roles.validation.ts": "bba1e8c4879aba9141d1a4786895004211e9558906ab606eb09560a75a8d8494",
+    "frontend/src/api/taskSubmission.ts": "76be5176046334a8b7040d714f3f7f94731c3d84b354963eed50a2dc418dabcc",
+    "frontend/src/api/tasks.ts": "811b66d2bc12937206ea41684f122f459c8d3e47f72df2d2b5f3e7059f22a0d9",
+    "frontend/src/api/tasks.types.ts": "9870aa7fb6b984d7ca7c281765096b4536629a234a1bb4f7a6c709d77c822283",
+    "frontend/src/api/tasks.validation.ts": "a74621753696ebd3df733da0c04f171694100c54e94b11e8840d078a3f7f9345",
+    "frontend/src/components/tasks/AgentComposer.test.tsx": "9d5b2435242b7e3f726941a24eb9aa47fd0ed72881b2064d9608a3af4a14afc3",
+    "frontend/src/components/tasks/AgentComposer.tsx": "eb7af73a37e9cee383dba67e670669d0d90d6d7a7074cd77e23d7c5a7de14b07",
+    "frontend/src/components/tasks/ForecastPanel.tsx": "fa3f0d5351534c1c950f09f7cc163b1de7e7436e9c2892dcf652fdcc08ceb440",
+    "frontend/src/components/tasks/RolePanel.test.tsx": "d948c6b83a85ebf0cbc6a287b6d3d8e7a5867b1b4d8bd0d8eacb0a4296242e9e",
+    "frontend/src/components/tasks/RolePanel.tsx": "72fe57fef9ccde2a3ebc9f5aef647881e6da95c642fac929dd7a686534ace29d",
+    "frontend/src/components/tasks/TaskDetail.tsx": "8bb0be0a503be5da4f76924e3d2c6fcaa1cdc2d2c6ab46f4338a0826737d1661",
+    "frontend/src/components/tasks/TasksPanel.tsx": "77dbe8b4d59ed4a9b7802e5cefa313863bdf9e304f42b7aa1735e5b4d38c6927",
+    "frontend/src/components/tasks/labels.ts": "da98240bd7824f37340fb53274ecbc67a4ee84ab00bc9f2452ac0f1c7d6e2e82",
+    "frontend/src/test/expert-fixtures.ts": "c2c60b75d32b6358302b4918ab32577fbfeecc67021fa3248a5bebceee89fbc4",
+    "scripts/serve_agent_e2e.py": "aef92bcc4ad5ba6745293872e03629e150965281d4d92a1fc71a2b4d94be5e6a"
+  },
+  "original_artifact_sha256_bytes": {
+    "output/product-d3-analysis-incomplete.png": "5fca7647ed7cff1f361acbcb1f56da779d3da9bf14b27ed61f0f77648f02dafe",
+    "output/product-d3-backend-agent-green.txt": "076e54c365c3274d974625f7760540b20eb264fb63bafc83bc2d584460d6faf0",
+    "output/product-d3-backend-complete-targeted.txt": "66459b4380f1cc1898358ce81d47f5f17cdeb3cdd3cee446e60427e22414d34d",
+    "output/product-d3-backend-coordinator-prompt-red.txt": "d436947d8fc0fe7709e3ef0e55aa54cab977fe29a14b95db9eac81bdbc5798a4",
+    "output/product-d3-backend-expanded-green.txt": "82ac7edbbcc60ac331957903bec6718bb7aedfee774ce9a652a6eca264ca5e04",
+    "output/product-d3-backend-expanded.txt": "c20a98843ab6608aeb30f3eb3145de5874675615d2247f1ee3fdbd664485ebdf",
+    "output/product-d3-backend-failed-confirm-red.txt": "d16cb21eebdcd5306bdf684fad3bb093f6715de7f9bec0c1fd5699e92d1cda11",
+    "output/product-d3-backend-format-final.txt": "0ebfbaa6ecd9eab5453c889fae528fb1672e5f8c90d46a9964e8e3fdf028c8a2",
+    "output/product-d3-backend-format-green.txt": "0ebfbaa6ecd9eab5453c889fae528fb1672e5f8c90d46a9964e8e3fdf028c8a2",
+    "output/product-d3-backend-format.txt": "0ebfbaa6ecd9eab5453c889fae528fb1672e5f8c90d46a9964e8e3fdf028c8a2",
+    "output/product-d3-backend-full-final.txt": "a1b905e30d35af830ca601a59bc227d63e401338a326c10a64dc98a06bf52fba",
+    "output/product-d3-backend-full.txt": "39816d5c6e7aab7e1e71ca5c030958302ddbe31df5104894e74522c8c152dc44",
+    "output/product-d3-backend-initial-green.txt": "de448eb106c4b955826f74e87214cc8ff74ab7bbab897f18650e442f592b9d69",
+    "output/product-d3-backend-mysql-gated.txt": "99ce8dd10f5266c08fc9544d4dcf576da72cb3a6baf25c528508c2708dc43eba",
+    "output/product-d3-backend-rationale-red.txt": "62acbcab263aa4dbbe1bab83dbee167bd67d1030b11d08423db46c4b343a1790",
+    "output/product-d3-backend-red.txt": "daf84092e8b94e7cecf9d2ebd7519b26d10dcbe60de6db829a093f0cdaec4434",
+    "output/product-d3-backend-root-final.txt": "260fcf7a6eb3cdc90d9711dfd2e9f59f63e72e226c97376818d07bf2232d9ce2",
+    "output/product-d3-backend-ruff-final.txt": "63cbcdf756e146e62e43da8492041795d2ceaaf15e20194bd50ea702e8061fae",
+    "output/product-d3-backend-ruff-green.txt": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "output/product-d3-backend-ruff.txt": "45a27510f2ad45ded095efa4b27529134465a7bd93023ff45392b7734af74fed",
+    "output/product-d3-backend-zero-call-red.txt": "631765cd3f616473b692797c7367fe06a71438a3baa5fe2a0efce70da0ff94e4",
+    "output/product-d3-browser-final.txt": "5282a5eb496a9fbd1e29b29209ca7c74c222ddf7941ef195b6d8fb70a91877d4",
+    "output/product-d3-browser-target.txt": "4215914148a25e86d6d092e9fa3a619fcfd257d2b1d23800f556107a17d39ab4",
+    "output/product-d3-build-current.txt": "6685f53d544d6afaa0aa64c08207b8d0ba3e5ca862af644063a423d688292e49",
+    "output/product-d3-build-final.txt": "6723b7ade77e85269b6be84a7a04c5a9eff5e9a8ec3dd66e1c883a073f831d00",
+    "output/product-d3-build-first.txt": "6f559dc70e22d7a82376a607b5eee94acb949f76b86d96369b981bc59f0108a4",
+    "output/product-d3-composer-red.txt": "4b4e798fe5f5dd33235ff0ce4b65e6c41aed9e3344fc9fee51be67cc02ac7326",
+    "output/product-d3-empty-ledger-red.txt": "966171ee6a28d5701edd1278b62708c3bb094a6fe57b40084b8f7ef9509d2c5f",
+    "output/product-d3-format-final.txt": "0ebfbaa6ecd9eab5453c889fae528fb1672e5f8c90d46a9964e8e3fdf028c8a2",
+    "output/product-d3-frontend-full.txt": "2087d214c1e16c09c9b8e9808134652073facba0388588f87e9542bf7bd844ce",
+    "output/product-d3-frontend-red.txt": "a97abbecaa499c7dd1fbc74c89085d9e6c4a1223163404d989b82b3cce5c7cf7",
+    "output/product-d3-frontend-spec-red.txt": "90804392773b5f8194688dd22bd4ba895a8e360d881a99a49c6cfbd40ba4758d",
+    "output/product-d3-frontend-target-final.txt": "9ffdb103973caa2d1e0943676fce8625d2aedcfc65edaba8b94eb48f7c2099e2",
+    "output/product-d3-frontend-target-green.txt": "393488f7ab5fd246f0034f9b8a4c6767e9fabc8f4e5b39bd5d930c37e3b17499",
+    "output/product-d3-frontend-target.txt": "f5529fa9afa73ede59280a75c7d2c9c37dae039eb12ca02c5b20471d97a3a966",
+    "output/product-d3-harness-format.txt": "7688ae71c60af2e4266827abb3678cc2145655f587daf33dfa649dbac2c619c3",
+    "output/product-d3-harness-ruff.txt": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "output/product-d3-lint-final.txt": "b2e9872b34846a4ee3b71f9e55922ffa0f932e4bf155cde896d34e7fe33c5870",
+    "output/product-d3-mysql-final.txt": "f1d8e14fedf420c862499ca29f13a8dae8fa4961458b07b07c9b80093af16523",
+    "output/product-d3-mysql-not-running.txt": "d3195874961f0e866a10ee81bf4d41444f06f31d530d756efbc5376f1bbbf54b",
+    "output/product-d3-roles-360.png": "150a8e78b2c3ad3cf803b97b6c59d2e1bb2619fa8d6dea9b63d641402eec0175",
+    "output/product-d3-roles-390.png": "96854bfe461582ec52971359353816241390c2c956982a55cc548cc215823c85",
+    "output/product-d3-roles-desktop.png": "e31019d1bd4db910b398fffd59d2a39a3150055b8ffcae740ddd8897ce7ae486",
+    "output/product-d3-roles-expanded.png": "dba8a079be4a557b9347dcc108558b644e519e145ad78c1423a3ae6b0fc8cc23",
+    "output/product-d3-root-scripts.txt": "50973e9a8d7f59376a46066066f9f67e559a82afac5e7694b8e15f910da30f66",
+    "output/product-d3-ruff-final.txt": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+  },
+  "limitations": [
+    "No D3 real DeepSeek evaluation, tuning outcome or S1/M quality/latency advantage",
+    "Only explicit single-room temperature/deadline/simulation-energy experiment; no automatic router",
+    "All prior 44 language cases remain development data; no independent holdout",
+    "No third-party user research, real hardware, real savings or public deployment",
+    "Figma online new states/wiring pending quota; React screenshots are not Figma completion",
+    "No SSE, user cancel control, graph checkpoint recovery or distributed execution",
+    "C2 remaining two requests not used; D4 requires new scoped authorization"
+  ]
+}

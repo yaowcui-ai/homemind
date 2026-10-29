@@ -28,6 +28,19 @@ it('可用实验入口保存选择并把策略随原始需求提交，旧配置�
   expect(screen.getByRole('button', { name: '提交自然语言任务' })).toBeDisabled();
 });
 
+it('专家入口显式选择并提交expert策略，不让普通关灯默认走多Agent', async () => {
+  const submission = new TaskSubmission();
+  submission.saveAgentDraft({ text: '60分钟26℃，能耗优先', keep_entity_ids: [], protected_room_ids: [] });
+  vi.spyOn(submission, 'submitAgent').mockResolvedValue(makeAgentTask());
+  render(<AgentComposer snapshot={makeAgentTask().final_snapshot}
+    config={{ available: true, model: 'model', reason: null, strategies: ['standard', 'single_forecast', 'expert_forecast'] }}
+    submission={submission} onCreated={vi.fn()} disabled={false} />);
+  expect(screen.getByRole('radio', { name: '常规助手' })).toBeChecked();
+  fireEvent.click(screen.getByRole('radio', { name: '多 Agent 协作（实验）' }));
+  fireEvent.click(screen.getByRole('button', { name: '提交自然语言任务' }));
+  await waitFor(() => expect(submission.submitAgent).toHaveBeenCalledWith(expect.objectContaining({ strategy: 'expert_forecast' })));
+});
+
 it('已配置不声称已连接，等待真实响应只显示正在处理', async () => {
   const submission = new TaskSubmission();
   let finish!: (value: ReturnType<typeof makeAgentTask>) => void;

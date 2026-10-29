@@ -15,14 +15,15 @@ export default function AgentComposer({ snapshot, config, disabled, submission, 
   const draft = state.agentDraft;
   const strategy = draft.strategy ?? 'standard';
   const supportsForecast = config?.strategies?.includes('single_forecast') ?? false;
-  const strategyAvailable = strategy === 'standard' || supportsForecast;
+  const supportsExperts = config?.strategies?.includes('expert_forecast') ?? false;
+  const strategyAvailable = strategy === 'standard' || (config?.strategies?.includes(strategy) ?? false);
   async function submit() {
     if (disabled || !config?.available || !strategyAvailable || !draft.text.trim() || lock.current) return;
     lock.current = true; setPending(true); setError(null);
     try {
       await onCreated(await submission.submitAgent({ text: draft.text.trim(), expected_world_id: snapshot.world_id,
         keep_entity_ids: draft.keep_entity_ids, protected_room_ids: draft.protected_room_ids,
-        ...(strategy === 'single_forecast' ? { strategy } : {}) }));
+        ...(strategy !== 'standard' ? { strategy } : {}) }));
     } catch (error) { setError(error instanceof Error ? error.message : '任务提交未完成，请读取原提交结果。'); }
     finally { lock.current = false; setPending(false); }
   }
@@ -34,14 +35,17 @@ export default function AgentComposer({ snapshot, config, disabled, submission, 
       : <Alert type="info" title={config.reason ?? '自然语言任务尚未配置模型，请使用规则模板'} />
       : <p className={styles.hint}>尚未读取模型配置，请先读取配置。</p>}
     {error && <Alert type="error" title={error} description="结果不明时先读取原提交结果；同键重试会使用原始需求。" />}
-    {supportsForecast && <Radio.Group aria-label="方案处理方式" value={strategy} disabled={disabled || pending}
+    {(supportsForecast || supportsExperts) && <Radio.Group aria-label="方案处理方式" value={strategy} disabled={disabled || pending}
       onChange={(event) => submission.saveAgentDraft({ ...draft, strategy: event.target.value })}>
-      <Radio value="standard">常规助手</Radio><Radio value="single_forecast">温控方案比较（实验）</Radio>
+      <Radio value="standard">常规助手</Radio>
+      {supportsForecast && <Radio value="single_forecast">温控方案比较（实验）</Radio>}
+      {supportsExperts && <Radio value="expert_forecast">多 Agent 协作（实验）</Radio>}
     </Radio.Group>}
-    {strategy === 'single_forecast' && <p className={styles.hint}>
+    {strategy !== 'standard' && <p className={styles.hint}>
       比较单房间温控方案，先预测、再由你确认。请明确温度、期限、能耗优先或尽早达标优先，以及窗帘能否调整。
       例如：60分钟后客厅26℃，能耗优先，允许调整窗帘，卧室不动。
     </p>}
+    {strategy === 'expert_forecast' && <p className={styles.hint}>舒适与节能 Agent 分别分析相同的预测资料，协调 Agent 按你的偏好形成方案；任何专业分析失败都不会发送设备动作。</p>}
     {!strategyAvailable && <div><p className={styles.hint}>当前环境未开放所选实验，请切回常规助手；未决提交请先读取原结果。</p>
       <Button disabled={disabled || pending} onClick={() => submission.saveAgentDraft({ ...draft, strategy: 'standard' })}>切回常规助手</Button></div>}
     <form className={styles.agentForm} onSubmit={(event) => { event.preventDefault(); void submit(); }}>

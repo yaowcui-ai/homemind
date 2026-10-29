@@ -16,7 +16,7 @@ export const tasksApi = {
     const data = await apiRequest('/tasks/agent/config');
     if (!isObject(data) || typeof data.available !== 'boolean' || !isText(data.model)
       || !(data.reason === null || typeof data.reason === 'string')
-      || (data.strategies !== undefined && (!Array.isArray(data.strategies) || data.strategies.length > 2
+      || (data.strategies !== undefined && (!Array.isArray(data.strategies) || data.strategies.length > 3
         || !data.strategies.every(isAgentStrategy) || new Set(data.strategies).size !== data.strategies.length))) throw new Error('服务返回了无法识别的模型配置。');
     return data as unknown as AgentConfig;
   },

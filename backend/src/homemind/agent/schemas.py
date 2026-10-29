@@ -14,7 +14,7 @@ class AgentRequest(InputModel):
     expected_world_id: Identifier
     keep_entity_ids: list[Identifier] = Field(default_factory=list, max_length=1000)
     protected_room_ids: list[Identifier] = Field(default_factory=list, max_length=100)
-    strategy: Literal["standard", "single_forecast"] = "standard"
+    strategy: Literal["standard", "single_forecast", "expert_forecast"] = "standard"
 
 
 class ReplyRequest(InputModel):
@@ -101,3 +101,25 @@ class Selection(InputModel):
 
 GOAL_OUTPUT = TypeAdapter(Annotated[GoalContract | Clarify | Refuse, Field(discriminator="kind")])
 SELECTION_OUTPUT = TypeAdapter(Annotated[Selection | Clarify | Refuse, Field(discriminator="kind")])
+
+
+class Advice(InputModel):
+    nullable_fields = frozenset({"preferred_candidate_id"})
+    role: Literal["comfort", "energy"]
+    outcome: Literal["recommend", "clarify", "refuse"]
+    preferred_candidate_id: Annotated[str, Field(strict=True, min_length=1, max_length=80)] | None
+    evidence_refs: list[Annotated[str, Field(strict=True, min_length=1, max_length=100)]] = Field(
+        max_length=5
+    )
+    public_summary: Annotated[str, Field(strict=True, min_length=1, max_length=1000)]
+
+    @model_validator(mode="after")
+    def consistent_outcome(self):
+        if len(self.evidence_refs) != len(set(self.evidence_refs)):
+            raise ValueError("重复证据引用")
+        if (self.outcome == "recommend") != (self.preferred_candidate_id is not None):
+            raise ValueError("建议与候选不一致")
+        return self
+
+
+ADVICE_OUTPUT = TypeAdapter(Advice)

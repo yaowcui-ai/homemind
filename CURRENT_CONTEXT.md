@@ -1,8 +1,20 @@
 # HomeMind 当前接续
 
-更新日期：2026-10-28（Asia/Shanghai）。
+更新日期：2026-10-29（Asia/Shanghai）。
 
 ## 当前授权与进度
+
+**D3多Agent全栈已实现并完成本轮验收。** 用户2026-10-29“继续下一步/继续”按D1设计授权D3，分支codex/product-d3-experts，基线5c61fb3。[计划](docs/superpowers/plans/2026-10-29-product-d3-experts.md)、[实际报告](docs/verification/product-d3-experts.md)、[结果与哈希](evaluation/results/product-d3-20261029.json)。本轮无新依赖/迁移/真实模型请求，不使用C2余2；应用版本仍0.4.0，仅本地提交，不推送/合并/发布。
+
+已实现：expert_forecast→multi_agent；Goal/精确预测后真实LangGraph comfort/energy并行节点+join，再协调选择，同S1资料/硬约束。严格Advice引用goal或candidate:<id>，无效Advice整轮analysis_incomplete，0动作且无raw/非法ID。共享原子6次/轮12次/任务，预算拒绝0请求；peer取消后等待结算。role_runs本轮4槽固定coordinator_goal/comfort/energy/coordinator_plan，rounds.roles仅存当轮指标无旧Advice；0请求补答不抹已有已知usage。M重放/补答/确认/verify零动作保护、混合历史已扩。确认事务save=False，实际execute后同事务显式save_engine，失败不物理回写。
+
+React已支持3策略与multi实际标签、意见分歧/原选、M补答和确认刷新保原key；本轮状态/意见可见，阶段模型/调用/Token折叠。新增roles parser严格绑定失败/执行状态、历史指标与唯一连续turn，空记录仅合法planning或未启动取消且当前字段全空，已用实际RED修反例；非实时SSE。独立后端/前端规格及质量审阅均通过，折叠调用记录后的完整browser也已复验。
+
+最终实际：根完整后端311passed/7 MySQL条件skip（231.32s，output/product-d3-backend-root-final.txt）；另专用真实MySQL7passed/12.06s，包含同户rule/standard/S1/M混合历史、新Database连接逐detail读回、M确认原键重放和实际推进，不是OS进程重启。最初MySQL7项因13306拒绝全setup error，原件output/product-d3-mysql-not-running.txt保留；本项目容器Exited137，setup_mysql保数据启动恢复，不推断退出原因。前端19文件93passed/208.32s（沿用单worker/15秒），lint/TS/Vite通过，测试误用getByRole exact选项已修。受控browser完整17passed/约2.1m，新增3例覆盖分歧确认执行核验刷新、非法证据0动作/verify保护、未知补答原键恢复；后者仅到待确认，不冒称执行。根目视1440/360/390px及展开记录/失败截图。根脚本33passed/25.74s；全部后端56文件、browser脚本ruff/format过。
+
+**下一次继续：D4真实开发评测与调优。** 先细化开发小批执行器/评分/记录与配置预检，再另列最小S1/M真实请求范围和预算申请，未获授权前只做离线准备，不调用模型；建议72只是旧计划未授权上界，C2余2不可转用。保留首次失败、按理解/工具/协调/执行/评分定位，单变量修复及同条件复测；D5新集另冻结/另授权。44旧案例全部开发集，无真实多Agent优势结论。D3原始RED/失败不覆盖（取消测试sleep(0)猜完成失败改明确Event，不冒充真实丢账修复）。Figma在线新增状态/连线仍待额度，无硬件/第三方研究；完整旧M5自动路由/多场景和M9不勾完成。本轮临时18110/5176服务已退出、MySQL保留，实际启动仍README Docker→setup_mysql→API8110/网页5174。
+
+## D2交付历史（最新D3以上方为准）
 
 **最新为D2全栈交付（用户本轮“继续推进ai全栈”授权）。** 分支`codex/product-d2-forecast`，基线00e031e；应用仍0.4.0/M4，无新依赖/迁移，真实模型0请求。按[D2计划](docs/superpowers/plans/2026-10-28-product-d2-forecast.md)实现single_forecast和轻量React入口；[实际验证](docs/verification/product-d2-forecast.md)、[可移植结果/哈希](evaluation/results/product-d2-20261028.json)。专家/multi_agent留D3；仅本地提交，不推送/合并/发布。
 

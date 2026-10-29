@@ -5,7 +5,7 @@ import { entityLabel, roomLabel } from './taskLabels';
 import styles from './Tasks.module.css';
 
 export default function ForecastPanel({ run, snapshot }: { run: AgentRun; snapshot: Snapshot }) {
-  if (run.strategy !== 'single_forecast' || !run.goal) return null;
+  if (!['single_forecast', 'expert_forecast'].includes(run.strategy ?? '') || !run.goal) return null;
   const goal = run.goal;
   const forecast = run.forecast;
   return <section className={styles.plan} aria-label="仿真方案预测">

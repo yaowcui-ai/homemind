@@ -212,12 +212,16 @@ def test_no_deadline_candidate_clarifies_same_task_without_planner(client):
 def test_strategy_config_and_debug_gate(client, tmp_path):
     from conftest import authenticated_client
 
-    assert client.get("/tasks/agent/config").json()["strategies"] == ["standard", "single_forecast"]
+    assert client.get("/tasks/agent/config").json()["strategies"] == [
+        "standard",
+        "single_forecast",
+        "expert_forecast",
+    ]
     with authenticated_client(tmp_path / "plain-d2.db", debug=False) as plain:
         assert plain.get("/tasks/agent/config").json()["strategies"] == ["standard"]
         response = experimental(plain, ScriptedModel())
         assert response.status_code == 422
-    assert experimental(client, ScriptedModel(), strategy="expert_forecast").status_code == 422
+    assert experimental(client, ScriptedModel(), strategy="unknown_strategy").status_code == 422
 
 
 def test_exact_clone_pending_archives_and_independent_lock():

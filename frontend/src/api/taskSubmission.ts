@@ -150,8 +150,8 @@ export class TaskSubmission {
     const task = await tasksApi.get(id);
     if (this.state.busy || this.state.pending !== pending || this.writeEpoch !== writeEpoch) return null;
     let unresolved = false;
-    if (pending?.kind === 'reply') unresolved = task.mode === 'single_agent' && task.status === 'waiting_input' && task.agent_run.turn === pending.body.expected_turn;
-    if (pending?.kind === 'confirm') unresolved = task.mode === 'single_agent' && task.status === 'waiting_confirmation' && task.agent_run.turn === pending.body.expected_turn;
+    if (pending?.kind === 'reply') unresolved = task.mode !== 'rule' && task.status === 'waiting_input' && task.agent_run.turn === pending.body.expected_turn;
+    if (pending?.kind === 'confirm') unresolved = task.mode !== 'rule' && task.status === 'waiting_confirmation' && task.agent_run.turn === pending.body.expected_turn;
     if (pending?.kind === 'advance') unresolved = !(task.advance_records ?? []).some((record) => record.key === pending.key
       && record.request.expected_world_id === pending.body.expected_world_id
       && record.request.expected_simulated_minutes === pending.body.expected_simulated_minutes);

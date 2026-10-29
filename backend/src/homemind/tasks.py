@@ -234,7 +234,7 @@ def tasks_router():
                     .order_by(Action.sequence)
                 )
             )
-            if (task.mode == "single_agent" and not actions) or task.status in {
+            if (task.mode in {"single_agent", "multi_agent"} and not actions) or task.status in {
                 "planning",
                 "waiting_input",
                 "waiting_confirmation",

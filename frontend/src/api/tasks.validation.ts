@@ -49,7 +49,7 @@ function agentRun(v: unknown): v is AgentRun {
 export function parseSummary(v: unknown): TaskSummary {
   if (!isObject(v) || !isText(v.id) || !scenarios.includes(String(v.scenario)) || !statuses.includes(String(v.status))
     || !isNumber(v.created_at) || !isNumber(v.updated_at) || !isText(v.world_id) || typeof v.message !== 'string'
-    || (v.mode !== undefined && !['rule', 'single_agent'].includes(String(v.mode)))) throw new Error('服务返回了无法识别的任务信息。');
+    || (v.mode !== undefined && !['rule', 'single_agent', 'multi_agent'].includes(String(v.mode)))) throw new Error('服务返回了无法识别的任务信息。');
   return { ...v, mode: v.mode ?? 'rule' } as TaskSummary;
 }
 
@@ -59,7 +59,7 @@ export function parseDetail(data: unknown): TaskDetail {
   const v = data;
   const request = v.request;
   const legacy = v.mode === undefined;
-  const validRequest = isObject(request) && (summary.mode === 'single_agent'
+  const validRequest = isObject(request) && (summary.mode !== 'rule'
     ? isText(request.text) && isText(request.expected_world_id) && (request.strategy === undefined || isAgentStrategy(request.strategy))
     : ['homecoming', 'sleep', 'away'].includes(String(request.scenario)) && textArray(request.room_ids))
     && (request.keep_entity_ids === undefined || textArray(request.keep_entity_ids))
@@ -74,12 +74,14 @@ export function parseDetail(data: unknown): TaskDetail {
     || !isObject(v.verification) || !nullableNumber(v.verification.due_at_minutes) || !isNumber(v.verification.checked_at_minutes)
     || !Array.isArray(v.verification.conditions) || !v.verification.conditions.every(condition)
     || (!(legacy && v.plan === undefined) && !plan(v.plan))
-    || (summary.mode === 'single_agent' ? !agentRun(v.agent_run) : !(v.agent_run === null || (legacy && v.agent_run === undefined)))) {
+    || (summary.mode !== 'rule' ? !agentRun(v.agent_run) : !(v.agent_run === null || (legacy && v.agent_run === undefined)))) {
     throw new Error('服务返回了无法识别的任务信息。');
   }
   const run = v.agent_run as AgentRun | null | undefined;
-  if (summary.mode === 'single_agent' && run && !forecastContext(run, request as unknown as AgentRequest,
-    v.initial_snapshot as unknown as Snapshot, summary.status)) throw new Error('服务返回了无法识别的任务信息。');
+  if (summary.mode === 'multi_agent' && ['succeeded', 'partial', 'waiting_verification'].includes(summary.status)
+    && (!Array.isArray(v.actions) || !v.actions.length)) throw new Error('服务返回了无法识别的任务信息。');
+  if (summary.mode !== 'rule' && run && !forecastContext(run, request as unknown as AgentRequest,
+    v.initial_snapshot as unknown as Snapshot, summary.status, summary.mode)) throw new Error('服务返回了无法识别的任务信息。');
   return { ...v, ...summary, plan: v.plan ?? { actions: [], constraints: [], temperatures: [], due_at_minutes: null },
     agent_run: run ? { ...run, actual_model: run.actual_model ?? null } : null } as TaskDetail;
 }

@@ -3,13 +3,13 @@ import type { Snapshot } from './simulation.types';
 
 export type Scenario = 'homecoming' | 'sleep' | 'away';
 export type TaskScenario = Scenario | 'local';
-export type TaskMode = 'rule' | 'single_agent';
+export type TaskMode = 'rule' | 'single_agent' | 'multi_agent';
 export interface RuleRequest {
   scenario: Scenario; room_ids: string[]; target_temperature_c?: number;
   ready_in_minutes?: number; keep_entity_ids?: string[]; protected_room_ids?: string[];
   expected_world_id?: string;
 }
-export type AgentStrategy = 'standard' | 'single_forecast';
+export type AgentStrategy = 'standard' | 'single_forecast' | 'expert_forecast';
 export interface AgentRequest {
   text: string; expected_world_id: string; keep_entity_ids?: string[]; protected_room_ids?: string[];
   strategy?: AgentStrategy;
@@ -67,8 +67,20 @@ export interface Forecast {
   source: { world_id: string; revision: number; config_revision: number; simulated_minutes: number };
   energy_scope_entity_ids: string[]; candidates: ForecastCandidate[];
 }
+export interface ExpertAdvice {
+  role: 'comfort' | 'energy'; outcome: 'recommend' | 'clarify' | 'refuse';
+  preferred_candidate_id: string | null; evidence_refs: string[]; public_summary: string;
+}
+export interface RoleMetrics {
+  role: 'coordinator_goal' | 'comfort' | 'energy' | 'coordinator_plan';
+  status: 'succeeded' | 'failed' | 'cancelled' | 'skipped';
+  model_calls: number; tool_calls: number; usage: { input_tokens: number; output_tokens: number } | null;
+  actual_model: string | null; elapsed_ms: number; failure_code: string | null;
+}
+export interface RoleRun extends RoleMetrics { advice: ExpertAdvice | null }
 export interface AgentRun {
-  strategy?: 'single_forecast'; pipeline_version?: string; goal?: ForecastGoal | null; forecast?: Forecast | null;
+  strategy?: 'single_forecast' | 'expert_forecast'; pipeline_version?: string; goal?: ForecastGoal | null; forecast?: Forecast | null;
+  role_runs?: RoleRun[];
   selected_candidate_id?: string | null; preference_optimal?: boolean | null;
   turn: number; max_replies: number; question: string | null; options: AgentOption[];
   proposed_plan: ProposedPlan | null; rationale: string | null;
@@ -77,7 +89,7 @@ export interface AgentRun {
   model_calls: number; tool_calls: number; usage: { input_tokens: number; output_tokens: number } | null;
   actual_model: string | null; failure_code: string | null;
   diagnostic?: AgentDiagnostic | null;
-  rounds: { turn: number; model_calls: number; tool_calls: number; usage: AgentRun['usage']; elapsed_ms: number }[];
+  rounds: { turn: number; model_calls: number; tool_calls: number; usage: AgentRun['usage']; elapsed_ms: number; roles?: RoleMetrics[] }[];
   timings: { planning_ms: number; validation_ms: number; execution_ms: number };
 }
 interface DetailFields extends Omit<TaskSummary, 'mode'> {
@@ -87,5 +99,5 @@ interface DetailFields extends Omit<TaskSummary, 'mode'> {
 }
 export type TaskDetail = DetailFields & (
   { mode: 'rule'; request: RuleRequest; agent_run: null } |
-  { mode: 'single_agent'; request: AgentRequest; agent_run: AgentRun }
+  { mode: 'single_agent' | 'multi_agent'; request: AgentRequest; agent_run: AgentRun }
 );

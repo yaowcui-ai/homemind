@@ -6,6 +6,7 @@ import { scenarioLabels, statusLabels, modeLabels } from './labels';
 import { actionTarget, entityLabel, optionLabel, roomLabel } from './taskLabels';
 import styles from './Tasks.module.css';
 import ForecastPanel from './ForecastPanel';
+import RolePanel from './RolePanel';
 
 const outcomeLabels: Record<string, string> = { planned: '待执行', submitted: '已提交', verified: '已核验', failed: '失败', unknown: '未知', skipped: '未执行', pending: '待核验' };
 interface Props {
@@ -23,7 +24,7 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
   const continuing = ['waiting_verification', 'partial'].includes(task.status) && task.actions.length > 0;
   const temperatureGoal = (task.plan?.temperatures.length ?? 0) > 0;
   const canAdvance = debugEnabled && sameWorld && continuing && temperatureGoal && (due !== null ? due > now : task.scenario === 'sleep');
-  const canVerify = ['waiting_verification', 'partial', 'failed'].includes(task.status) && (task.mode !== 'single_agent' || task.actions.length > 0);
+  const canVerify = ['waiting_verification', 'partial', 'failed'].includes(task.status) && (task.mode === 'rule' || task.actions.length > 0);
   const keep = proposed?.keep_entity_ids ?? task.request.keep_entity_ids ?? [];
   const protectedRooms = proposed?.protected_room_ids ?? task.request.protected_room_ids ?? [];
   const rooms = proposed?.room_ids ?? (task.mode === 'rule' ? task.request.room_ids : []);
@@ -42,6 +43,9 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
       本轮没有执行。请检查主温度与窗户、占用感知是否可读，目标房间是否只有一台空调且至多一只窗帘，以及是否超过预测规模上限。
       恢复后点击“开始新任务”重新比较，或切回常规助手处理其他任务；口头假定读数不能替代实际感知。
     </p>}
+    {unexecuted && run?.failure_code === 'analysis_incomplete' && <p className={styles.hint}>
+      专业分析未完整完成，本轮未发送设备动作。请查看下方本轮角色记录，点击“开始新任务”后重试，或明确选择常规助手、单 Agent 方案比较处理；系统没有自动降级或补发动作。
+    </p>}
     {unexecuted && run?.failure_code === 'window_not_closed' && <p className={styles.hint}>
       当前方案未执行：请先确认实际窗户读数，关闭打开的窗户或恢复未知读数。仅口头说“已经关窗”不能代替读数；确认后点击“开始新任务”重新提交。
     </p>}
@@ -55,8 +59,9 @@ export default function TaskDetail({ task, pending, onVerify, onReply, onConfirm
       此任务已结束，未发送设备动作。请点击“开始新任务”，说明你的取舍或调整需求后重新提交。
     </p>}
     <p className={styles.hint}>任务编号 {task.id}</p>
-    {task.mode === 'single_agent' && <p className={styles.requestText}>你的需求：{task.request.text}</p>}
+    {task.mode !== 'rule' && <p className={styles.requestText}>你的需求：{task.request.text}</p>}
     {run && <ForecastPanel run={run} snapshot={snapshot} />}
+    {run && <RolePanel run={run} />}
     {(proposed || task.mode === 'rule') && <div className={styles.plan} aria-label="实际任务方案">
       <h3>理解到的目标与方案</h3>
       <p>目标：{scenarioLabels[task.scenario]}{(task.plan?.temperatures ?? []).map((goal) => ` · ${roomLabel(snapshot, goal.room_id)} ${goal.target}℃`).join('')}</p>

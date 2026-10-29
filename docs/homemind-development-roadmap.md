@@ -1,6 +1,6 @@
 # HomeMind 分阶段开发路线与接续记录
 
-更新日期：2026-10-28（Asia/Shanghai）
+更新日期：2026-10-29（Asia/Shanghai）
 
 设计依据：[系统设计与验收规范](superpowers/specs/2026-10-26-homemind-system-design.md)。
 
@@ -14,10 +14,10 @@
 - [x] B：最小 AI 闭环——复用 M4，已实现真实模型适配/单 Agent/澄清/局部动作、必要确认、任务内时间引导与定位；程序/数据库/界面验收通过。真实模型只有两次工具/澄清基础检查；Figma 在线新状态/连线仍因额度待补，不计已完成。
 - [x] C 首轮：产品案例与可靠性——36例案例库，18个真实模型开发场景基线/5个Bad Case、C04一次同条件复测，共40请求；推进未知恢复与busy原键保护已验证。[实际报告](product/product-c-evaluation.md)。C06/C09/C12/C14仍待真实复测，取消在途/自动重规划未实现。
 - [x] C第二轮：错误解释与澄清——44个开发案例，12例复测原判9符合、1预期缺陷、2交互问题；后两例各复测一次通过，共30/32请求。有限字段诊断、重复对象选项拒绝、自由回答原任务继续已验证；[实际报告与C06勘误](product/product-c2-evaluation.md)。
-- [ ] D：按需多 Agent 与对照——D1设计、D2预测/增强S1/React闭环已交付；[D2实际验证](verification/product-d2-forecast.md)。D3专家及角色反馈、D4真实调优、D5新集验收待实施，按[公平评测契约](product/product-d-evaluation-design.md)允许无收益或退化。
+- [ ] D：多Agent与对照——D1设计、D2预测/增强S1、D3专家及React/MySQL闭环已交付；[D3实际验证](verification/product-d3-experts.md)。D4真实开发调优、D5新集验收待实施，按[公平评测契约](product/product-d-evaluation-design.md)允许无收益或退化。
 - [ ] E：作品交付——核心 Figma 原型、PRD、AI 方案、真实评估/迭代、演示及 AI PM/应用开发求职材料，对应 M10 的必要部分。
 
-本轮D2实现精确隔离预测、严格目标/候选绑定和必要确认，React展示预测/次优/错误恢复，Task JSON与实际核验证据贯通。后端最终275过/6条件skip，另真实MySQL6过；前端在显式单worker/15秒测试预算84过（默认5秒曾超时，保留原件）、TS/Vite/lint过，受控browser14过。真实模型0请求，未新增依赖或迁移；[分步交付](product/product-d-delivery-plan.md)。下一次进入D3专家角色及模式兼容，不重做S1已完成界面。M5/M9仍不勾选；独立新样本、用户研究、在线Figma完整交互和多Agent收益仍待补，C2余2不可转用。
+本轮D3实现LangGraph舒适/节能并行只读建议与协调、共享原子预算及本轮角色记录；React三策略、意见分歧、确认/补答/刷新恢复贯通，真实MySQL覆盖混合历史与新连接。真实模型0请求，未新增依赖或迁移；[分步交付](product/product-d-delivery-plan.md)和[D3验收](verification/product-d3-experts.md)保存实际检查。下一阶段D4准备真实开发对照/调优，新请求须另授权；不自动进入D5。M5只完成D1约定的最小单房温控实验，手动策略切换，没有自动路由/全部旧场景，因此完整M5/M9仍不勾选。独立新样本、用户研究、在线Figma完整交互和多Agent收益待补，C2余2不可转用。
 
 ## 当前进度
 
@@ -26,7 +26,7 @@
 - [x] M2：可配置家庭与设备仿真。
 - [x] M3：账号隔离、业务持久化与规则基线。
 - [x] M4：单 Agent 闭环（纳入产品 B，验证边界见记录）。
-- [ ] M5：多 Agent 协同。
+- [ ] M5：D3最小三角色温控实验已实现；自动按需路由和旧多场景完整验收未做。
 - [ ] M6：状态变化与可靠执行。
 - [ ] M7：SSE 与实时控制台。
 - [ ] M8：历史、偏好、配置体验与产品整理。
@@ -34,7 +34,7 @@
 - [ ] M10：部署与交付。
 - [ ] M11：可选真实设备扩展，不属于 v1 完成要求。
 
-当前技术状态：v0.4.0 / M4，单规划 Agent 已按[产品 B 补充](superpowers/specs/2026-10-27-product-b-design.md)落地，保留三个规则入口，共用执行/核验。实际启动与独立8110端口说明见 [项目说明](../README.md)，事实与限制见 [当前记录](../CURRENT_CONTEXT.md)、[B 验证](verification/product-b-single-agent.md)。多 Agent、SSE、自动图恢复、真实硬件仍未实现。
+当前应用版本v0.4.0，M4及D3最小多Agent实验已落地，保留三个规则入口、标准/增强单Agent，共用执行/核验。实际启动与独立8110端口说明见[项目说明](../README.md)，事实与限制见[当前记录](../CURRENT_CONTEXT.md)、[D3验证](verification/product-d3-experts.md)。SSE、自动路由/图恢复、真实硬件仍未实现；技术索引不替代当前A—E产品范围。
 
 用户在 M4 前插入的 Figma 浅色改版与 React 同步已完成：实际可编辑画稿、桌面/手机页面、30 单元与 21 浏览器回归及窄屏补查均有记录。Figma 原稿因 Starter 工具额度未回写的排版问题已在代码修正，用户已批准此差异。见 [设计与验证](verification/figma-redesign.md)。该改版不等同于 M4 Agent 完成。
 

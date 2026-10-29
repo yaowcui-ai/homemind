@@ -437,3 +437,117 @@ def test_mysql_d2_forecast_json_reopens_confirms_and_replays_once(mysql_installa
 
         asyncio.run(inspect())
     asyncio.run(reopened.close())
+
+
+def test_mysql_d3_expert_roles_reopen_confirm_replay_and_advance(mysql_installation):
+    from test_m4_agent import ScriptedModel
+    from test_product_d2 import goal, selected
+    from test_product_d3 import ROLES, ExpertModel
+
+    database, settings, app, names, _ = mysql_installation
+    with TestClient(app) as first:
+        register(first, names[0])
+        snapshot = first.get("/simulation").json()
+        rule = first.post(
+            "/tasks",
+            json=dict(scenario="away", room_ids=[snapshot["rooms"][0]["id"]]),
+            headers={"Idempotency-Key": "mysql-d3-mixed-rule"},
+        )
+        assert rule.status_code == 200, rule.text
+        snapshot = first.get("/simulation").json()
+        app.state.agent_model = ScriptedModel(dict(kind="refuse", reason="受控标准路径拒绝"))
+        standard = first.post(
+            "/tasks/agent",
+            json=dict(text="标准需求", expected_world_id=snapshot["world_id"]),
+            headers={"Idempotency-Key": "mysql-d3-mixed-standard"},
+        )
+        assert standard.status_code == 200, standard.text
+        app.state.agent_model = ScriptedModel(goal(snapshot), selected(snapshot, goal(snapshot)))
+        single = first.post(
+            "/tasks/agent",
+            json=dict(
+                text="客厅60分钟内26度，能耗优先，其他设备保持原样",
+                expected_world_id=snapshot["world_id"],
+                strategy="single_forecast",
+            ),
+            headers={"Idempotency-Key": "mysql-d3-mixed-single"},
+        )
+        assert single.status_code == 200, single.text
+        assert single.json()["status"] == "waiting_confirmation"
+        app.state.agent_model = model = ExpertModel(snapshot)
+        body = dict(
+            text="客厅60分钟内26度，能耗优先，其他设备保持原样",
+            expected_world_id=snapshot["world_id"],
+            strategy="expert_forecast",
+        )
+        creation = {"Idempotency-Key": "mysql-d3-create-123"}
+        response = first.post("/tasks/agent", json=body, headers=creation)
+        assert response.status_code == 200, response.text
+        waiting = response.json()
+        assert waiting["mode"] == "multi_agent" and waiting["status"] == "waiting_confirmation"
+        assert not waiting["actions"] and first.get("/simulation").json() == snapshot
+        assert len(model.calls) == 4
+        assert [r["role"] for r in waiting["agent_run"]["role_runs"]] == ROLES
+        assert waiting["agent_run"]["rounds"][0]["model_calls"] == 4
+        expected_history = {
+            value["id"]: value for value in (rule.json(), standard.json(), single.json(), waiting)
+        }
+        assert len(expected_history) == 4
+        cookie, csrf = first.cookies.get("homemind_session"), first.headers["X-CSRF-Token"]
+
+    reopened = Database(
+        str(database.engine.url.render_as_string(hide_password=False)),
+        instance_id=database.instance_id,
+    )
+    second_app = create_app(settings, database=reopened)
+    # This app has no SDK model. Recovery/confirm/advance must use persisted public JSON only.
+    with TestClient(second_app) as second:
+        second.cookies.set("homemind_session", cookie)
+        second.headers.update({"Origin": "http://testserver", "X-CSRF-Token": csrf})
+        url = f"/tasks/{waiting['id']}"
+        history = second.get("/tasks").json()
+        assert {task["id"] for task in history} == set(expected_history)
+        assert {task["mode"] for task in history} == {"rule", "single_agent", "multi_agent"}
+        for task_id, expected in expected_history.items():
+            assert second.get("/tasks/" + task_id).json() == expected
+        assert second.get(url).json() == waiting
+        assert second.post("/tasks/agent", json=body, headers=creation).json() == waiting
+        assert second.get("/simulation").json() == snapshot
+        confirmation = {"Idempotency-Key": "mysql-d3-confirm-123"}
+        response = second.post(url + "/confirm", json={"expected_turn": 0}, headers=confirmation)
+        assert response.status_code == 200, response.text
+        confirmed = response.json()
+        assert confirmed["status"] == "waiting_verification" and len(confirmed["actions"]) == 2
+        after = second.get("/simulation").json()
+        assert (
+            second.post(url + "/confirm", json={"expected_turn": 0}, headers=confirmation).json()
+            == confirmed
+        )
+        assert second.get("/simulation").json() == after
+        advanced = second.post(
+            url + "/advance",
+            json=dict(expected_world_id=snapshot["world_id"], expected_simulated_minutes=0),
+            headers={"Idempotency-Key": "mysql-d3-advance-123"},
+        )
+        assert advanced.status_code == 200, advanced.text
+        done = advanced.json()
+        assert done["status"] == "succeeded" and done["final_snapshot"]["simulated_minutes"] == 60
+        assert done["agent_run"]["role_runs"] == waiting["agent_run"]["role_runs"]
+
+        async def inspect():
+            async with reopened.sessions() as session:
+                stored = await session.get(Task, done["id"])
+                actions = list(
+                    await session.scalars(select(Action).where(Action.task_id == done["id"]))
+                )
+                assert stored.mode == "multi_agent" and stored.agent_run == done["agent_run"]
+                assert stored.agent_run["pipeline_version"] == "d3-experts-v1"
+                assert (
+                    stored.agent_run["model_calls"]
+                    == sum(r["model_calls"] for r in stored.agent_run["role_runs"])
+                    == 4
+                )
+                assert len(actions) == 2
+
+        asyncio.run(inspect())
+    asyncio.run(reopened.close())

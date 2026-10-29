@@ -1,8 +1,9 @@
 import { isObject, isNumber, isText } from './client';
 import type { AgentRun, AgentRequest, AgentStrategy } from './tasks.types';
 import type { Snapshot } from './simulation.types';
+import { expertContext, expertRunShape } from './roles.validation';
 
-export const isAgentStrategy = (v: unknown): v is AgentStrategy => v === 'standard' || v === 'single_forecast';
+export const isAgentStrategy = (v: unknown): v is AgentStrategy => v === 'standard' || v === 'single_forecast' || v === 'expert_forecast';
 const integer = (v: unknown, min: number, max: number) => Number.isSafeInteger(v) && Number(v) >= min && Number(v) <= max;
 const ids = (v: unknown, max: number) => Array.isArray(v) && v.length <= max && v.every(isText) && new Set(v).size === v.length;
 const nonnegative = (v: unknown) => isNumber(v) && v >= 0;
@@ -11,9 +12,11 @@ const nonnegative = (v: unknown) => isNumber(v) && v >= 0;
 export function forecastRun(v: Record<string, unknown>): boolean {
   const extension = ['strategy', 'pipeline_version', 'goal', 'forecast', 'selected_candidate_id', 'preference_optimal'];
   if (!extension.some((key) => v[key] !== undefined)) return true;
-  if (v.strategy !== 'single_forecast' || v.pipeline_version !== 'd2-forecast-v1'
+  const expert = v.strategy === 'expert_forecast';
+  if ((!expert && v.strategy !== 'single_forecast') || v.pipeline_version !== (expert ? 'd3-experts-v1' : 'd2-forecast-v1')
     || !(v.selected_candidate_id === null || isText(v.selected_candidate_id))
     || !(v.preference_optimal === null || typeof v.preference_optimal === 'boolean')) return false;
+  if (expert && !expertRunShape(v)) return false;
   const g = v.goal;
   if (g !== null && (!isObject(g) || g.kind !== 'goal' || !isText(g.room_id) || !isText(g.climate_entity_id)
     || !(g.cover_entity_id === null || isText(g.cover_entity_id))
@@ -67,9 +70,12 @@ const sameActions = (a: { entity_id: string; room_id: string; action: string; pa
   === canonical([...b].sort((a, b) => a.entity_id.localeCompare(b.entity_id)));
 
 /** Public evidence must belong to this task's original round, not a different home/version. */
-export function forecastContext(run: AgentRun, request: AgentRequest, snapshot: Snapshot, status: string): boolean {
-  if ((request.strategy === 'single_forecast') !== (run.strategy === 'single_forecast')) return false;
-  if (run.strategy !== 'single_forecast') return true;
+export function forecastContext(run: AgentRun, request: AgentRequest, snapshot: Snapshot, status: string, mode: 'single_agent' | 'multi_agent'): boolean {
+  const experimental = request.strategy === 'single_forecast' || request.strategy === 'expert_forecast';
+  if (experimental ? request.strategy !== run.strategy : run.strategy !== undefined) return false;
+  if ((mode === 'multi_agent') !== (run.strategy === 'expert_forecast')) return false;
+  if (run.strategy === 'expert_forecast' && !expertContext(run, status)) return false;
+  if (!experimental) return true;
   const goal = run.goal; const f = run.forecast;
   if (goal) {
     if (!snapshot.rooms.some((r) => r.id === goal.room_id)

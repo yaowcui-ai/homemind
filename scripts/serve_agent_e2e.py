@@ -124,7 +124,7 @@ class ControlledBrowserModel:
 
 
 def controlled_forecast(context, messages):
-    """Fixed D2 browser scenario, not real NL understanding or model evaluation."""
+    """Fixed D2/D3 browser scenarios, not real NL understanding or model evaluation."""
     from langchain_core.messages import HumanMessage
 
     if "forecast" not in context:
@@ -147,6 +147,38 @@ def controlled_forecast(context, messages):
             protected_room_ids=list(set(protected + user.get("protected_room_ids", []))),
         )
     goal = context["goal"]
+    role = context.get("role")
+    if role in {"comfort", "energy"}:
+        users = [json.loads(m.content) for m in messages if isinstance(m, HumanMessage)]
+        original = users[0]["text"]
+        if role == "energy" and "受控专家澄清" in original and len(users) == 1:
+            return dict(
+                role=role,
+                outcome="clarify",
+                preferred_candidate_id=None,
+                evidence_refs=["goal"],
+                public_summary="请确认你要能耗优先还是尽早达标优先？",
+            )
+        key = (
+            (lambda c: (c["first_observed_goal_minute"], c["energy_wh"]))
+            if role == "comfort"
+            else (lambda c: (c["energy_wh"], c["first_observed_goal_minute"]))
+        )
+        candidate = min(
+            (c for c in context["forecast"]["candidates"] if c["deadline_met"]), key=key
+        )
+        invalid = role == "energy" and "受控专家失败" in original
+        return dict(
+            role=role,
+            outcome="recommend",
+            preferred_candidate_id=candidate["id"],
+            evidence_refs=["candidate:PRIVATE-BAD-ADVICE-ID"]
+            if invalid
+            else ["goal", "candidate:" + candidate["id"]],
+            public_summary="无效引用内容不应保留"
+            if invalid
+            else "受控专家按公开预测给出候选建议，不代表真实模型效果",
+        )
     # This fixture selects from actual public forecasts, without invoking a provider.
     candidate = min(
         (c for c in context["forecast"]["candidates"] if c["deadline_met"]),
