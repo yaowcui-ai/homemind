@@ -1,0 +1,381 @@
+{
+  "date": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "stage": "D4_targeted_followup",
+  "baseline_commit": "c1ef757",
+  "strategy_scope": [
+    [
+      "DD01",
+      "expert_forecast"
+    ],
+    [
+      "DD05",
+      "single_forecast"
+    ],
+    [
+      "DD06",
+      "expert_forecast"
+    ]
+  ],
+  "real_requests": 13,
+  "authorized_limit": 24,
+  "unused_stopped": 11,
+  "original_batch_remaining_not_used": 3,
+  "phase_requests": {
+    "diagnosis": 9,
+    "repair": 4
+  },
+  "model": "deepseek-flash",
+  "thinking": "disabled",
+  "max_tokens": 2048,
+  "temperature": "provider_default",
+  "split": "development",
+  "architecture_comparison": false,
+  "usage": {
+    "input_tokens": 69880,
+    "output_tokens": 2327,
+    "known_requests": 13,
+    "unknown_requests": 0
+  },
+  "runs": [
+    {
+      "phase": "diagnosis",
+      "case_id": "DD01",
+      "strategy": "expert_forecast",
+      "status": "succeeded",
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "preference_correct": true,
+        "exception_correct": null,
+        "all_actions_verified": true,
+        "confirmation_observed": true,
+        "unexpected_write": false,
+        "false_success": false
+      },
+      "requests": 5,
+      "planning_api_ms": 19406,
+      "elapsed_ms": 19609,
+      "scope_energy_wh": 283.383,
+      "failure_code": null,
+      "selected_candidate_id": "c3",
+      "details": [],
+      "model_calls": 5,
+      "tool_calls": 1,
+      "usage": {
+        "input_tokens": 25898,
+        "output_tokens": 944
+      },
+      "role_statuses": [
+        {
+          "role": "coordinator_goal",
+          "status": "succeeded",
+          "model_calls": 1
+        },
+        {
+          "role": "comfort",
+          "status": "succeeded",
+          "model_calls": 1
+        },
+        {
+          "role": "energy",
+          "status": "succeeded",
+          "model_calls": 1
+        },
+        {
+          "role": "coordinator_plan",
+          "status": "succeeded",
+          "model_calls": 2
+        }
+      ]
+    },
+    {
+      "phase": "diagnosis",
+      "case_id": "DD05",
+      "strategy": "single_forecast",
+      "status": "failed",
+      "score": {
+        "case_pass": false,
+        "understanding_correct": true,
+        "goal_completed": false,
+        "preference_correct": false,
+        "exception_correct": null,
+        "all_actions_verified": false,
+        "confirmation_observed": false,
+        "unexpected_write": false,
+        "false_success": false
+      },
+      "requests": 3,
+      "planning_api_ms": 12422,
+      "elapsed_ms": 12469,
+      "scope_energy_wh": 0.0,
+      "failure_code": "goal_drift",
+      "selected_candidate_id": null,
+      "details": [
+        {
+          "stage": "validation_detail",
+          "message": "role=coordinator_plan | path=$.plan.keep_entity_ids | type=goal_drift"
+        }
+      ],
+      "model_calls": 3,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 17876,
+        "output_tokens": 555
+      },
+      "role_statuses": []
+    },
+    {
+      "phase": "diagnosis",
+      "case_id": "DD06",
+      "strategy": "expert_forecast",
+      "status": "failed",
+      "score": {
+        "case_pass": false,
+        "understanding_correct": null,
+        "goal_completed": null,
+        "preference_correct": null,
+        "exception_correct": false,
+        "all_actions_verified": null,
+        "confirmation_observed": false,
+        "unexpected_write": false,
+        "false_success": false
+      },
+      "requests": 1,
+      "planning_api_ms": 4344,
+      "elapsed_ms": 4390,
+      "scope_energy_wh": 0.0,
+      "failure_code": "invalid_output",
+      "selected_candidate_id": null,
+      "details": [
+        {
+          "stage": "validation_detail",
+          "message": "role=coordinator_goal | path=$.options | type=missing"
+        }
+      ],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 3932,
+        "output_tokens": 76
+      },
+      "role_statuses": [
+        {
+          "role": "coordinator_goal",
+          "status": "failed",
+          "model_calls": 1
+        },
+        {
+          "role": "comfort",
+          "status": "skipped",
+          "model_calls": 0
+        },
+        {
+          "role": "energy",
+          "status": "skipped",
+          "model_calls": 0
+        },
+        {
+          "role": "coordinator_plan",
+          "status": "skipped",
+          "model_calls": 0
+        }
+      ]
+    },
+    {
+      "phase": "repair",
+      "case_id": "DD05",
+      "strategy": "single_forecast",
+      "status": "succeeded",
+      "score": {
+        "case_pass": true,
+        "understanding_correct": true,
+        "goal_completed": true,
+        "preference_correct": true,
+        "exception_correct": null,
+        "all_actions_verified": true,
+        "confirmation_observed": true,
+        "unexpected_write": false,
+        "false_success": false
+      },
+      "requests": 3,
+      "planning_api_ms": 12016,
+      "elapsed_ms": 12219,
+      "scope_energy_wh": 550.0,
+      "failure_code": null,
+      "selected_candidate_id": "c1",
+      "details": [],
+      "model_calls": 3,
+      "tool_calls": 2,
+      "usage": {
+        "input_tokens": 18193,
+        "output_tokens": 701
+      },
+      "role_statuses": []
+    },
+    {
+      "phase": "repair",
+      "case_id": "DD06",
+      "strategy": "expert_forecast",
+      "status": "waiting_input",
+      "score": {
+        "case_pass": true,
+        "understanding_correct": null,
+        "goal_completed": null,
+        "preference_correct": null,
+        "exception_correct": true,
+        "all_actions_verified": null,
+        "confirmation_observed": false,
+        "unexpected_write": false,
+        "false_success": false,
+        "semantic_review_required": true,
+        "semantic_review_accepted": true
+      },
+      "requests": 1,
+      "planning_api_ms": 5984,
+      "elapsed_ms": 6031,
+      "scope_energy_wh": 0.0,
+      "failure_code": null,
+      "selected_candidate_id": null,
+      "details": [],
+      "model_calls": 1,
+      "tool_calls": 0,
+      "usage": {
+        "input_tokens": 3981,
+        "output_tokens": 51
+      },
+      "role_statuses": [
+        {
+          "role": "coordinator_goal",
+          "status": "succeeded",
+          "model_calls": 1
+        },
+        {
+          "role": "comfort",
+          "status": "skipped",
+          "model_calls": 0
+        },
+        {
+          "role": "energy",
+          "status": "skipped",
+          "model_calls": 0
+        },
+        {
+          "role": "coordinator_plan",
+          "status": "skipped",
+          "model_calls": 0
+        }
+      ]
+    }
+  ],
+  "conclusions": {
+    "DD01": "Current diagnosis passed; original invalid_advice not reproduced, cause not backfilled",
+    "DD05": "Current keep-list drift reproduced, stage-specific exact-copy instruction, one successful actual execution retest",
+    "DD06": "Current clarify missing options reproduced, complete-clarify instruction, one structurally valid first-response retest with SHA-bound author semantic review"
+  },
+  "limits": [
+    "No overall improvement/independent holdout/architecture benefit claim",
+    "DD06 goal not executed; only first response verified; author review is not independent human labeling",
+    "One retest per observed failure cannot isolate model randomness or establish stable reliability",
+    "No rejected raw output, unknown field names or invalid IDs retained",
+    "Synthetic SQLite homes and simulated devices/time/Wh, not real hardware/real savings",
+    "No new frontend, migration, dependency, automatic repair/retry or weakened schema",
+    "Remaining11 stopped; future acceptance needs separate scope/budget"
+  ],
+  "validation": {
+    "backend_related": {
+      "passed": 163,
+      "seconds": 87.73
+    },
+    "root_scripts": {
+      "passed": 55,
+      "seconds": 29.73
+    },
+    "backend_ruff_format": "passed_58_files",
+    "evaluation_ruff_format": "passed_3_files",
+    "frontend_mysql_not_rerun": "no UI schema or persistence migration change"
+  },
+  "source_sha256_lf": {
+    "evaluation/product-d4-cases.json": "781a426d704496269eaef436b2a6380ed7c26cd8c5ac8d1d9aa7d4a12b92bbb9",
+    "scripts/product_eval_d4.py": "604799109bd06b581fba78fbe2f62ede021caf85df6beb5a33c237054a2e4e56",
+    "scripts/product_eval.py": "3a84846e00b8dd8aa6f9029328571b13db1a704dba570c1a4d108d73d16d1c71",
+    "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+    "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+    "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+    "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+    "backend/src/homemind/agent/diagnostics.py": "93457cf1f61d49433bdac4e76341a5c26e5b3797e04cf360a88f07beea7279b8",
+    "backend/src/homemind/agent/experts.py": "153cdcee75945626ed24429e701d2cb26c692c70cfd4a2395c5bbd6b0f2884be",
+    "backend/src/homemind/agent/forecast.py": "2cdd00a76bf36e089c177a2961a1610845f1e0d6c6a3b3b953ea1ba0a3acac8c",
+    "backend/src/homemind/agent/graph.py": "f3a59658b39276b4c6b08c2f397370d426750f6fb3f0061265bb66b82d698498",
+    "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+    "backend/src/homemind/agent/pipeline.py": "771b35108d0c3d00086adc899183e71eb0417325571f566e49ad73d96ceb08ca",
+    "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+    "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+    "backend/src/homemind/agent/service.py": "d597ebcc8099dac8331dab16e8dbb37523661a264c15027f934da52b91a0f677",
+    "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+    "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+    "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+    "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+    "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+    "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+    "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+    "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+    "backend/src/homemind/migrations/versions/0001_m3.py": "c3b964979fbcb0fbb747d3931253267b29490cadcbb1d477e193404b9f57f005",
+    "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+    "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+    "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+    "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+    "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+    "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+    "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+    "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+    "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+    "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+    "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+    "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+    "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+    "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+    "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+    "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+    "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b",
+    "scripts/product_eval_d4_followup.py": "b5dea90477e6e0bfa64fc3bbb36ba6689758c7c5be01e6d20b2177786f0582bc",
+    "evaluation/probes/product_d4_audit.py": "e68f627f7d0544d62c34afb1e44258bf15ddfb048ff4d10e007672b10e233a06",
+    "backend/tests/test_product_d4_followup.py": "8fa1af69d22fd9c998cf191239f5f523d72afcf07eb75d2f4b89da32b08edce0",
+    "scripts/tests/test_product_eval_d4_followup.py": "69b4d0a806e2d390ef53c849b448201d51ce9660f1d673400963b65493bd2d27"
+  },
+  "original_artifact_sha256_bytes": {
+    "output/product-d4-followup-20261029/budget.json": "8f8205628d2da834385c72e7e70966357ab14641e1752bb9d184ce54e19523a8",
+    "output/product-d4-followup-20261029/diagnosis/DD01-expert_forecast.json": "bb01bc61b39b6a6255599a3ca374be52dbed69f40b8503dae59bbf3912045df8",
+    "output/product-d4-followup-20261029/diagnosis/DD05-single_forecast.json": "c1e2aad91cf296999dce7e30ddf404a4e0f736b0465a77b22e5e3af224f8225f",
+    "output/product-d4-followup-20261029/diagnosis/DD06-expert_forecast.json": "bb97352cea264e997333eb488d46c9e86ec8ddcbb8dd57492d48f9aba21e7172",
+    "output/product-d4-followup-20261029/diagnosis/manifest.json": "e19206e70f8031b9c87cbe8f346c42b089fd432fbf398667f87af54a2d5be4cf",
+    "output/product-d4-followup-20261029/diagnosis/summary.json": "727a16b2fe99b0303011fa0feac088d7976bd1608f058cd30dadfb495ab4e6b5",
+    "output/product-d4-followup-20261029/repair/DD05-single_forecast.json": "082236f3bec8e6760de818fcb65827e62dafb064e3875b56b641980c688427c7",
+    "output/product-d4-followup-20261029/repair/DD06-expert_forecast.json": "8fc5f53fd73f5d7582789c65e6d1077715f6a09bc4352aabf8631cc9cba4710b",
+    "output/product-d4-followup-20261029/repair/manifest.json": "6b1f4e14cc7f5764ac23871b9a103a90406576caff3e578b16f83a7e0b577c19",
+    "output/product-d4-followup-20261029/repair/summary.json": "5514dcf80c83e4da355e3581f34a1418c8bee6582a7e5f4a7a9f8519da54a9ea",
+    "output/product-d4-followup-20261029/semantic-audit/DD06-expert_forecast.json": "ceaa4b06e61a078742c2838507c68b5607086077662dad4c85f46732d3b536a4",
+    "output/product-d4-followup-20261029/semantic-review.json": "a8119564260ec4a8a3e8cfa9e1fa847f7a4ba10c40420f71cc18308ea9703995",
+    "output/product-d4-followup-20261029/stopped.json": "644c885ff246cc14a924a2c769a93c0791dbf8add4e3c7d2b69d5edd4e7b0835",
+    "output/product-d4-followup-backend-final.txt": "c5491e703521e5d0ff369749abf9ad01ed632810850563f25dfbefeba9fe575d",
+    "output/product-d4-followup-backend-first.txt": "b2a82301150efc5a6878c250aaca0f72a7536a140eee89ef9930195b49bea3ae",
+    "output/product-d4-followup-diagnosis-console.txt": "cdfadd8eda8b08cc56ea8a5f947c6eeac0259cc7151017bf84a9dba3012eaa6c",
+    "output/product-d4-followup-diagnostics-green.txt": "955e445f14951cd6d5c676b25d5335125048eaa1ab0a66f869cccf2fddb05859",
+    "output/product-d4-followup-diagnostics-red-confirmed.txt": "52bd8e7c933345f321529d8c8378a46cc96ecaf949357b2024b4c3d72b63b668",
+    "output/product-d4-followup-diagnostics-red.txt": "87de201daa37868b5ec62de2bfdd1132affd103619f51e8b0c34b49fb77b05de",
+    "output/product-d4-followup-format-final.txt": "580da9ea46bbc6f550abfea298cb135df7003afaa1c2b147db6e4bc91967f24e",
+    "output/product-d4-followup-repair-console.txt": "746e19d91801dd438d9ad9988427e14c38a638f7e96d365125d9c090a668f151",
+    "output/product-d4-followup-repair-green.txt": "41752250a6f3b6a0e92e2ed580c1f29faaeec31f52364cdec96ccd9966040d30",
+    "output/product-d4-followup-repair-red.txt": "a3b0e930c8c99980d78d8f1dea1abc93d51c521c71c6275ad5594d3b5dbace87",
+    "output/product-d4-followup-resume-red.txt": "0407289e593799813c48923a36c35c72a30dd114c75588fe53c46f37d2d77df3",
+    "output/product-d4-followup-ruff-final.txt": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "output/product-d4-followup-ruff-first.txt": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+    "output/product-d4-followup-ruff-initial.txt": "c64e4136aa5947de9f5e1a15dbf5715b85495b3608c1aee7d033d3a62193fbfb",
+    "output/product-d4-followup-runner-green.txt": "800342b1ecc11e230309d6c8d3d17f7c8075ea33ebb8f41624b956d57c7d2328",
+    "output/product-d4-followup-runner-red.txt": "b6c6ad3dd8b84ba4cb6caff2b803d1ad9372c19d45819a0030687b5f94748a50",
+    "output/product-d4-followup-scripts-first.txt": "7c2c5f0754673154b28df4a78cbcf1fb7b29e7d06bdcf5f4e6d96793d254a72a",
+    "output/product-d4-followup-scripts-format.txt": "81e0708af79a682467b0ecbd3453a0a33cfcbbe2812201b4d4f405f78ded2976",
+    "output/product-d4-followup-scripts-ruff.txt": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0"
+  }
+}

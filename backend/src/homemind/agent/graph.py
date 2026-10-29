@@ -96,6 +96,9 @@ async def run_planner(
                 "Extract a complete goal or clarify/refuse in this ONE call, without tool calls. "
                 "Use goal.allowed_fan_modes only for fan modes allowed by the user's request. "
                 "cover_constraint keep freezes the observed position. "
+                "Never omit options when returning clarify, even for free-text answers. "
+                "For missing readings, identify the actual missing sensor in question and use "
+                '{"kind":"clarify","question":"请先恢复缺失读数，再继续规划。","options":[]}. '
                 if goal_stage
                 else "Select a feasible forecast candidate using the explicit priority. "
                 "Return selection "
@@ -106,6 +109,10 @@ async def run_planner(
                 "Use the supplied numeric values exactly; do not round away differences "
                 "or assume closing curtains always uses less energy. "
                 "retain the entire GoalContract target, deadline, keep and protected lists. "
+                "Copy keep_entity_ids and protected_room_ids exactly from GoalContract; "
+                "do not add or remove IDs when assembling the Plan. cover_constraint keep "
+                "already freezes the cover position; do not independently add that cover to "
+                "Plan.keep_entity_ids unless GoalContract.keep_entity_ids includes it. "
                 "If original text and GoalContract conflict, clarify instead. "
             )
         )

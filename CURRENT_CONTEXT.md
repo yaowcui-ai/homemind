@@ -4,11 +4,17 @@
 
 ## 当前授权与进度
 
-**D4遗留定位/定向复测进行中。** 用户2026-10-29“开始，并先介绍进度与简历前缺项”授权本阶段，随后明确最多24新真实请求。分支codex/product-d4-followup，基线2b33557。新固定output/product-d4-followup-20261029/budget.json共享24，仅DD01/expert、DD05/single、DD06/expert首次诊断+必要修复后各一次；旧余3/C2余2不转用。脚本scripts/product_eval_d4_followup.py，原始D4精确模板只读复用，默认不加载配置/不联网。
+**D4定向定位与两项契约提示修复已交付（2026-10-29）。** 用户先授权开始并介绍简历前缺口，后另授权新24次真实请求；本轮13（诊断9+复测4），余11停止不转用，旧余3/C2余2未用。分支codex/product-d4-followup；诊断基线c1ef757。[报告](docs/product/product-d4-followup.md)、[可移植结果](evaluation/results/product-d4-followup-20261029.json)。固定output/product-d4-followup-20261029/budget.json，模型deepseek-flash非思考/2048/默认temperature，13次均返回用量（input69880/output2327），不估费用。
 
-已完成有限records诊断：schema白名单字段+静态错误类别（最多3条），专家role/引用/候选错误和selection静态字段漂移；不存raw/未知字段/非法ID，不放宽解析/执行。8项诊断RED/GREEN、4项新入口测试通过；相关后端161passed/91.22s、根脚本55passed/29.73s，Ruff过。审阅指出repair不能续跑，已修同源码/模型/目标resume，已发无记录仍拒绝重放，复审批准。真实调用即将开始，先读新账本/原件，不重复--real创建或删目录绕额。旧失败确切字段仍未知，不能用新诊断反推。
+只跑原失败3策略：DD01/M本次成功5调用/c3/283.383Wh，旧invalid_advice未复现，不能追认原因/根治。DD05/S1新失败3调用，静态诊断$.plan.keep_entity_ids/goal_drift；DD06/M新失败1调用，$.options/missing。分别补选择阶段原样复制Goal keep/protect、目标阶段完整clarify options要求，schema/门禁/物理/预算未放宽，不修raw或隐藏重试。原始精确模板/原文/金标/模型不变，各一次复测：DD05 3调用/c1实际550Wh成功；DD06 1调用合法waiting_input/空options/准确恢复窗户读数/0动作。DD06仅首轮，未执行温控，两专家及最终协调未运行；开发助手问题SHA绑定语义核对另存semantic-audit，非独立人工标注，原自动待核对评分不覆盖。
 
-简历交付剩余：[最小清单](docs/product/resume-delivery-checklist.md)。必要顺序为遗留定位/开发复测→稳定候选与独立新集→E核心Figma流程/演示/启动/双方向简历面试材料；已有PRD/AI方案/迭代不重写，硬件/SSE/自动路由/公开部署非简历前必要项。当前阶段不要提前做D5/E或新增无关页面。
+有限诊断复用records，只存schema白名单字段/静态类别/有界下标至多3条，未知字段名<field>，坏Advice/Plan/raw/非法ID不保留。新入口scripts/product_eval_d4_followup.py默认不读配置联网；诊断/修复同源码/模型/目标可resume，已发无记录拒绝自动重放。审阅发现repair不能续跑，实际RED后修正，增量审阅均通过。最初role测试构造重复实参曾错，修测试后8条预期RED留存，不冒充产品故障。
+
+最终相关后端163passed/87.73s，根脚本55passed/29.73s（提示变更前；其后提示/诊断11项及后端相关全量已复验），Ruff/format58后端文件+3评测文件过。没有新前端/依赖/迁移/物理改动，无新浏览器/真实MySQL回归声明；无新常驻服务。更新后重启API即可。仅本地提交，不推送/合并/发布。
+
+**下一次继续：D5候选及独立新集冻结/验收准备。** 新集/金标/初态/版本/评分先固定，列最小真实批次另授权，不能挪余11或旧余量。旧44例+DD01—06都是开发集；本轮不证明总体提升或M优势，标准仍默认、S1保留、M实验。DD01未复现、两项各一次复测和作者语义复核等限制带入新集，不为追求旧例全绿无限重跑。新集若用于修复需转开发并重建。
+
+简历前必要缺口见[清单](docs/product/resume-delivery-checklist.md)：D5独立验收→E核心Figma状态/连线、独立启动与5分钟演示、双方向简历/证据问答。PRD/AI方案/迭代已有，不重写；真实硬件/SSE/自动路由/公网部署不作为当前前置。当前阶段交付后停止，不自动做D5/E。
 
 ## D4首轮历史（本轮以上方为准）
 
