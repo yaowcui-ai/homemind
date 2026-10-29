@@ -67,9 +67,9 @@ class BudgetExceeded(Exception):
 
 
 class BudgetLedger:
-    def __init__(self, path, *, limit, fingerprint, resume=False):
+    def __init__(self, path, *, limit, fingerprint, resume=False, maximum=HARD_LIMIT):
         self.path = Path(path)
-        if not 1 <= limit <= HARD_LIMIT:
+        if not 1 <= limit <= maximum:
             raise ValueError("Invalid batch limit")
         if resume:
             self.data = json.loads(self.path.read_text(encoding="utf-8"))

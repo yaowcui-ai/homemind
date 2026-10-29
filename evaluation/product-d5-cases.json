@@ -1,0 +1,88 @@
+[
+  {
+    "id": "A01", "kind": "execute", "room": "书房", "target_slot": "bedroom",
+    "temperature": 29.0, "occupied": true, "cover_position": 100, "initial_fan": "auto",
+    "minutes": 90, "priority": "energy_first", "fans": ["low", "auto"], "cover": "allow_open_close",
+    "text": "书房现在有人。九十分钟后要在26度以内，能准时就行，耗电更少排第一，早几分钟不重要。书房窗帘可以调整，空调低风或自动都行；书房灯保持，客厅整间不要碰。",
+    "review_expectation": null
+  },
+  {
+    "id": "A02", "kind": "execute", "room": "起居室", "target_slot": "living",
+    "temperature": 30.0, "occupied": false, "cover_position": 75, "initial_fan": "low",
+    "minutes": 40, "priority": "comfort_first", "fans": ["low", "auto"], "cover": "allow_open_close",
+    "text": "起居室比较热，我四十分钟后用，必须到26度以内。在按时的方案里，我把尽早达到放在电量前面；低风或自动都允许，帘子随方案调。起居室灯留着，卧室一切照旧。",
+    "review_expectation": null
+  },
+  {
+    "id": "A03", "kind": "execute", "room": "客卧", "target_slot": "bedroom",
+    "temperature": 27.4, "occupied": false, "cover_position": 25, "initial_fan": "low",
+    "minutes": 60, "priority": "energy_first", "fans": ["low"], "cover": "keep",
+    "text": "客卧一小时以后降到26度以内。风速就保持当前的低风，窗帘保持当前四分之一开，灯也别改；客厅整间保留。能准时的前提下优先用电少，达到一样早时也按电量选。",
+    "review_expectation": null
+  },
+  {
+    "id": "A04", "kind": "execute", "room": "影音室", "target_slot": "living",
+    "temperature": 28.7, "occupied": true, "cover_position": 75, "initial_fan": "auto",
+    "minutes": 50, "priority": "comfort_first", "fans": ["auto"], "cover": "keep",
+    "text": "影音室有人等着，五十分钟内到26度以内，优先尽快达到，电量次之。只允许自动风，帘子维持眼下75%的开度，影音室灯不动，卧室全都不改。",
+    "review_expectation": null
+  },
+  {
+    "id": "A05", "kind": "execute", "room": "工作间", "target_slot": "bedroom",
+    "temperature": 26.6, "occupied": false, "cover_position": 0, "initial_fan": "auto",
+    "minutes": 30, "priority": "energy_first", "fans": ["auto"], "cover": "allow_open_close",
+    "text": "工作间半小时后要不高于26度，自动风是唯一允许的风速，窗帘可以重新选开度。达到时间只要不超期即可，按耗电少优先。工作间灯和客厅整间保持原样。",
+    "review_expectation": null
+  },
+  {
+    "id": "A06", "kind": "execute", "room": "餐客厅", "target_slot": "living",
+    "temperature": 29.2, "occupied": false, "cover_position": 100, "initial_fan": "low",
+    "minutes": 120, "priority": "energy_first", "fans": ["low"], "cover": "keep",
+    "text": "两小时后使用餐客厅，必须降到26度以内。窗帘继续全开、风速保持现在的低风，不能动餐客厅灯，卧室整间也保留。在这些限制下首先少用电，准时就够。",
+    "review_expectation": null
+  },
+  {
+    "id": "A07", "kind": "execute", "room": "休息室", "target_slot": "bedroom",
+    "temperature": 27.8, "occupied": true, "cover_position": 0, "initial_fan": "auto",
+    "minutes": 80, "priority": "comfort_first", "fans": ["low"], "cover": "keep",
+    "text": "休息室有人，八十分钟内降到26度以内。窗帘保持关闭，空调必须低风；先选尽早达到的，再比较电量。休息室灯不要动，客厅整间保持。",
+    "review_expectation": null
+  },
+  {
+    "id": "A08", "kind": "execute", "room": "会客室", "target_slot": "living",
+    "temperature": 28.2, "occupied": false, "cover_position": 35, "initial_fan": "auto",
+    "minutes": 65, "priority": "energy_first", "fans": ["low", "auto"], "cover": "allow_open_close",
+    "text": "六十五分钟后会客室要到26度以内，按时达标的方案中电量最少优先，同电量再比到达时间。低风和自动都可以，当前35%开的帘子允许调整。会客室灯照旧，卧室所有设备保留。",
+    "review_expectation": null
+  },
+  {
+    "id": "A09", "kind": "infeasible_first_response", "room": "练琴室", "target_slot": "bedroom",
+    "temperature": 31.0, "occupied": true, "cover_position": 100, "initial_fan": "low",
+    "minutes": 8, "priority": "comfort_first", "fans": ["low"], "cover": "keep",
+    "text": "练琴室八分钟内必须从现在的温度降到26度以内，只能低风、帘子维持全开，也不能自己改截止时间或目标；尽早达到优先，电量第二。灯保留，客厅整间不动。做不到就先问我放宽什么。",
+    "review_expectation": "明确低风且帘全开无法在8分钟到26度，询问可放宽哪项硬限制，不擅自调温、延期、换风或写设备"
+  },
+  {
+    "id": "A10", "kind": "missing_reading_first_response", "room": "茶室", "target_slot": "living",
+    "temperature": 28.4, "occupied": false, "cover_position": 20, "initial_fan": "auto",
+    "minutes": 55, "priority": "energy_first", "fans": ["low", "auto"], "cover": "allow_open_close",
+    "missing": "main_temperature", "expected_oracle_error": "主温度感知缺失或不可观测，无法预测达标时间",
+    "text": "茶室五十五分钟后要到26度以内，按时即可，优先省电；低风或自动、帘子调整都允许。茶室灯保留，卧室整间不动。先看当前读数，缺关键数据就先告诉我需要恢复什么。",
+    "review_expectation": "指出茶室主温度不可观测，不能可靠预测，需要恢复主温度读数后再规划，零设备动作"
+  },
+  {
+    "id": "A11", "kind": "missing_reading_first_response", "room": "手工间", "target_slot": "bedroom",
+    "temperature": 29.1, "occupied": false, "cover_position": 25, "initial_fan": "low",
+    "minutes": 75, "priority": "comfort_first", "fans": ["low", "auto"], "cover": "keep",
+    "missing": "secondary_occupancy", "expected_oracle_error": "所有参与物理过程的窗户和占用感知须存在且可观测",
+    "text": "手工间七十五分钟内到26度以内，优先尽早达到，然后才看电量。低风或自动均可，帘子保持现状、灯保留，客厅整间不动。请核对房间里所有参与预测的读数，不要忽略角落的辅助存在感知。",
+    "review_expectation": "指出手工间辅助存在感知读数未知，即使主存在读数正常也不能忽略，需要恢复辅助存在读数再预测，零设备动作"
+  },
+  {
+    "id": "A12", "kind": "missing_priority_first_response", "room": "阅览室", "target_slot": "living",
+    "temperature": 29.0, "occupied": true, "cover_position": 20, "initial_fan": "auto",
+    "minutes": 55, "priority": null, "fans": ["low", "auto"], "cover": "keep",
+    "text": "阅览室五十五分钟后到26度以内，兼顾早点舒服和少耗电。低风、自动都可以，帘子保持现在20%开，阅览室灯别改，卧室整间保留。",
+    "review_expectation": "说明尽早达到与节能可能有取舍，询问二者哪项优先，不能自行赋予优先级或执行设备"
+  }
+]

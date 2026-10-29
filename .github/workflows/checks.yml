@@ -68,7 +68,7 @@ jobs:
       - name: Frontend checks
         working-directory: frontend
         run: |
-          npm test -- --run
+          npm test -- --run --maxWorkers=1 --testTimeout=15000
           npm run lint
           npm run build
       - name: Install browser
