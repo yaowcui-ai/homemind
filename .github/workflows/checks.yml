@@ -79,4 +79,6 @@ jobs:
         run: npm run test:e2e
       - name: Controlled agent browser checks (no provider calls)
         working-directory: frontend
-        run: npm run test:e2e:agent
+        run: |
+          npm run test:e2e:agent -- --grep '专家不同意见' --repeat-each=8
+          npm run test:e2e:agent

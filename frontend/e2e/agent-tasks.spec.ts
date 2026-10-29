@@ -57,7 +57,17 @@ test('产品D3：专家不同意见、协调原选、确认实际核验与刷新
   await roles.getByText('阶段调用记录', { exact: true }).first().click();
   for (const width of [360, 390]) {
     await page.setViewportSize({ width, height: 900 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+    const measuredWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    if (measuredWidth > width) {
+      const overflow = await page.evaluate(() => Array.from(document.querySelectorAll('*'))
+        .filter((element) => element.getBoundingClientRect().right > innerWidth)
+        .slice(0, 25).map((element) => ({ tag: element.tagName, className: String(element.className),
+          text: element.textContent?.slice(0, 100), rect: element.getBoundingClientRect().toJSON() })));
+      await page.waitForTimeout(500);
+      const settledWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+      console.log('viewport-overflow', JSON.stringify({ width, measuredWidth, settledWidth, overflow }));
+    }
+    expect(measuredWidth).toBeLessThanOrEqual(width);
     await roles.screenshot({ path: path.resolve(`../output/product-d3-roles-${width}.png`) });
   }
   const confirm = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/confirm`) && r.request().method() === 'POST');
