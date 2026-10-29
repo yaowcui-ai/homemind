@@ -14,6 +14,8 @@ Figma完整新增状态/连线仍阻塞：目录读取成功，详细读取即St
 
 发布增量：9c13ac7云端出现一次窄屏即时宽度失败；edd0f37加诊断的8次云端运行实际6过2失败，均425→360且无持续溢出元素，证实视口切换的布局时序。仅将e2e断言改为2秒有界轮询，宽度标准不变，本机8/8与lint通过；保留全部失败日志，后端/提示/评分冻结不变。临时8次云端定位步骤撤下，CI忽略纯Markdown提交以减少文档维护时重复全套测试。完整后续状态见最终工程记录，不用旧绿覆盖新失败。
 
+**最终确认：** 修复提交3f41ef7的[云端全套CI](https://github.com/yaowcui-ai/homemind/actions/runs/40872598415)实际通过。随后仅补此Markdown记录，应用/测试/冻结集均不再改；源码与唯一AI全栈简历已上传公开main，工作区干净，模型账本98请求/36运行、余22停止。Figma额度缺口仍明确保留，不宣称全部E或旧M编号完成。
+
 ## D4定向修复历史（最新以上方为准）
 
 **D4定向定位与两项契约提示修复已交付（2026-10-29）。** 用户先授权开始并介绍简历前缺口，后另授权新24次真实请求；本轮13（诊断9+复测4），余11停止不转用，旧余3/C2余2未用。分支codex/product-d4-followup；诊断基线c1ef757。[报告](docs/product/product-d4-followup.md)、[可移植结果](evaluation/results/product-d4-followup-20261029.json)。固定output/product-d4-followup-20261029/budget.json，模型deepseek-flash非思考/2048/默认temperature，13次均返回用量（input69880/output2327），不估费用。

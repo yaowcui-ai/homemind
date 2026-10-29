@@ -33,6 +33,8 @@
 
 最小修复仅将该断言改为最多2秒的布局轮询，仍要求scrollWidth不超过viewport，持续溢出仍失败；不是重跑测试或模型任务。应用CSS、功能、D5冻结源码/评分均不变。本机同案例8/8通过（output/release-width-fixed-eight.txt），ESLint通过；云端结果以随后实际运行记录为准。临时8次定位步骤已撤下，CI跳过纯Markdown提交，避免每次补文档重复运行应用全套测试；源码、工作流和评测数据变动仍触发检查。
 
+**修复后最终云端结果：** 提交`3f41ef7`的[完整CI](https://github.com/yaowcui-ai/homemind/actions/runs/40872598415)实际全绿，包含后端/真实MySQL、根脚本、真实进程重启、前端检查与构建、规则和受控Agent浏览器。原失败、8次诊断的2个失败和修复后结果分开保留，解码完整日志在output/release-cloud-fixed-green.txt。本段随后仅Markdown记账，不改变已经验证的源码。
+
 按[README](../../README.md)从公开仓库获取，安装锁定依赖，打开Docker Desktop，再启动MySQL→API→网页。已保留vite缺失、依赖安装警告和数据库503排查步骤；模型密钥只放本项目backend/.env，公开源码不含密钥。README核心演示路径是规则与温控预测/确认/推进/核验，模型输出可能失败，失败状态有真实说明。
 
 唯一求职交付：[AI全栈项目描述](../resume/homemind-ai-fullstack.md)。不承诺简历通过筛选或面试结果。
