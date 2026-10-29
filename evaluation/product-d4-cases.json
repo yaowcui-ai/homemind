@@ -1,0 +1,8 @@
+[
+  {"id":"DD01","text":"20个仿真分钟内把客厅降到26℃，优先尽早达到，低风或自动风均可，允许开合客厅窗帘；卧室不动，其他设备不动。","minutes":20,"priority":"comfort_first","fans":["low","auto"],"cover":"allow_open_close","setup":[],"kind":"execute"},
+  {"id":"DD02","text":"60个仿真分钟内把客厅降到26℃，按时即可，优先少耗电，低风或自动风均可，允许开合客厅窗帘；卧室不动，其他设备不动。","minutes":60,"priority":"energy_first","fans":["low","auto"],"cover":"allow_open_close","setup":[],"kind":"execute"},
+  {"id":"DD03","text":"60个仿真分钟内把客厅降到26℃，优先尽早达到，低风或自动风均可，允许开合客厅窗帘；卧室不动，其他设备不动。","minutes":60,"priority":"comfort_first","fans":["low","auto"],"cover":"allow_open_close","setup":[],"kind":"execute"},
+  {"id":"DD04","text":"20个仿真分钟内把客厅降到26℃，只能低风，优先少耗电，允许开合客厅窗帘；温度和期限不能改，卧室不动，其他设备不动。若做不到请问我放宽哪一条，不要执行。","minutes":20,"priority":"energy_first","fans":["low"],"cover":"allow_open_close","setup":[],"kind":"infeasible_first_response"},
+  {"id":"DD05","text":"60个仿真分钟内把客厅降到26℃，优先少耗电，低风或自动风均可。客厅窗帘必须保持现在的50%开合位置，保留卧室阅读灯，整个卧室不动，其他设备不动。","minutes":60,"priority":"energy_first","fans":["low","auto"],"cover":"keep","setup":["reading_light","half_cover"],"kind":"execute"},
+  {"id":"DD06","text":"60个仿真分钟内把客厅降到26℃，优先少耗电，低风或自动风均可，允许开合客厅窗帘；卧室不动，其他设备不动。窗户读数不可靠时不要假定已经关窗，请先说明需要恢复什么读数。","minutes":60,"priority":"energy_first","fans":["low","auto"],"cover":"allow_open_close","setup":["window_unknown"],"kind":"unknown_reading_first_response"}
+]
