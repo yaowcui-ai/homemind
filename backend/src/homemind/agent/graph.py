@@ -99,6 +99,11 @@ async def run_planner(
                 else "Select a feasible forecast candidate using the explicit priority. "
                 "Return selection "
                 "with its original candidate_id and exact candidate actions in a homecoming Plan; "
+                "Compare ALL deadline_met candidates lexicographically: "
+                "energy_first: minimize (energy_wh, first_observed_goal_minute); "
+                "comfort_first: minimize (first_observed_goal_minute, energy_wh). "
+                "Use the supplied numeric values exactly; do not round away differences "
+                "or assume closing curtains always uses less energy. "
                 "retain the entire GoalContract target, deadline, keep and protected lists. "
                 "If original text and GoalContract conflict, clarify instead. "
             )

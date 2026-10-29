@@ -1,6 +1,6 @@
 # D：单/多Agent评测与调优契约 v0.1
 
-2026-10-28。状态：D1方法设计，未运行D模型评测，未产生多Agent收益。对应[技术设计](../superpowers/specs/2026-10-28-product-d1-design.md)、[交付计划](product-d-delivery-plan.md)。现有44案例全部是开发集；不能更名为保留集。此时冻结比较口径，具体模型别名/提示词/代码和验收集须在实施后另锁版本。
+方法初定2026-10-28，状态更新2026-10-29：D4首轮已运行6对真实开发比较与DD02定向复测，未证明多Agent收益；[真实报告与勘误](product-d4-evaluation.md)。对应[技术设计](../superpowers/specs/2026-10-28-product-d1-design.md)、[交付计划](product-d-delivery-plan.md)。现有44例与DD01—06全部是开发集，不能更名为保留集；D5新样本尚未冻结。
 
 ## 1. 要回答的产品问题
 
@@ -79,4 +79,6 @@ D5在候选代码/提示词/工具冻结后另编12个独立验收输入，建�
 
 ## 6. 当前证据账
 
-D1已做现有引擎4次离线独立重放，详见[原始数值与复现](../../evaluation/results/product-d1-tradeoff-20261028.json)。D2实现隔离forecast和增强S1并测量合成负载，见[D2报告](../verification/product-d2-forecast.md)。D3已实现M的真实LangGraph并行角色、React和MySQL闭环，受控案例覆盖意见分歧、非法证据零动作、澄清后未知补答恢复及预算/取消记账，见[D3报告](../verification/product-d3-experts.md)。D1—D3真实模型均0请求；S1/M真实效果比较、模型调优收益、独立集测试、Figma新增连线和第三方访谈仍未开展。工程报告不能充作真实模型效果报告。D4先另授权小批真实开发评测，保留所有首次失败，D5再冻结新集。
+截至D3：D1已做现有引擎4次离线独立重放，详见[原始数值与复现](../../evaluation/results/product-d1-tradeoff-20261028.json)。D2实现隔离forecast和增强S1并测量合成负载，见[D2报告](../verification/product-d2-forecast.md)。D3已实现M的真实LangGraph并行角色、React和MySQL闭环，受控案例覆盖意见分歧、非法证据零动作、澄清后未知补答恢复及预算/取消记账，见[D3报告](../verification/product-d3-experts.md)。D1—D3真实模型均0请求；S1/M真实效果比较、模型调优收益、独立集测试、Figma新增连线和第三方访谈仍未开展。工程报告不能充作真实模型效果报告。D4先另授权小批真实开发评测，保留所有首次失败，D5再冻结新集。
+
+D4后续实际发生：用户另授权40次，运行37次，余3停止。首次6对+DD02两组各一次复测，真实DeepSeek/合成SQLite/仿真设备；只做E层、DD04/DD06首轮。评分勘误后S1整例4/6、M3/6，原始3/6与2/6保留；DD05/M合法原方案被评分门禁误挡，修正后同task零模型续验，不能冒充原始脚本一次完成；DD06/S1作者语义核对明确非独立人工标注。提示仅明确共同数值排序，DD02/S1一次由c1转c2并核验；M服务恢复不归因调优。仍无独立集、总体提升或M优势，失败和金额未知如实报告。

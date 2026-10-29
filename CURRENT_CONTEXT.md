@@ -4,6 +4,18 @@
 
 ## 当前授权与进度
 
+**D4首轮真实对照与一次定向调优已交付（2026-10-29），遗留待修。** 用户“开始下一步，注意目标、不必要步骤”授权D4，随后明确最多40次真实请求。分支codex/product-d4-evaluation，基线74cec0f；工具/6例在80b95c7冻结。[真实报告](docs/product/product-d4-evaluation.md)、[逐例数据与哈希](evaluation/results/product-d4-20261029.json)。共用固定output/product-d4-real-20261029/budget.json，实际37（首次29+复测8），余3停止，不能自动转用；C2余2同样不能用。6例×S1/M是E端到端开发集，DD04不可行/DD06未知读数仅首轮，无补答恢复/P层/独立集。
+
+首次原评分S1 3/6、M2/6；审计后S1 4/6、M3/6，不能把勘误增分称模型提升。精确SQLite备份同ID/世界/初态、AB/BA，金标只在评分侧，合法偏好次优照原选执行。DD05/M因cover_constraint keep与keep列表冗余表示被评分门禁误挡，原task/原Plan/4次调用不变，在禁用模型app续确认/推进成功，550Wh，账本字节不变；总elapsed_ms=null不假造连续耗时。DD06/S1准确要求恢复窗户读数，开发助手逐字复核并绑定问题SHA，非独立人工研究。原件phase1不覆盖，另存audit-v2与semantic-reviews.json。
+
+唯一应用改动：graph.py对S1/M最终选择共同明确字典序排序与精确比较，不修改候选/校验/物理/standard。DD02/S1原选c1=550.050Wh（温度已达标但偏好次优）；同初态/输入各复测一次，S1 3请求、M5请求均选c2并实测550.000Wh。M首次model_unavailable恢复不能归因prompt，S1一次复测也非总体提升。其余真实DD01/M invalid_advice、DD05/S1 goal_drift、DD06/M invalid_output未修；被拒raw/字段未保存，不能猜具体失败字段。已知36响应输入185047/输出7068token，1次请求用量未知，不估精确费用。M未证优势，标准仍默认、S1保留、M显式实验。
+
+最终相关后端132passed/73.12s，根脚本51passed/27.84s（包含D4新18项），Ruff/format：后端57文件与4评测文件过。独立评分审阅及审计/提示增量复审通过。无前端/依赖/迁移/物理改动，不声称本轮全量后端/浏览器/真实MySQL重跑。原始RED、首次根目录Ruff导入分组误判和审计长行失败保留，正确目录/长行修后过，未批量改旧tests。无新常驻服务，不修改日常家庭，仅合成SQLite；启动不变，重启后端可应用提示。
+
+**下一次继续：先清D4遗留三类真实失败，再D5。** 优先复用现有记录补有限字段诊断（不保存raw/非法ID、不增加无关UI/DB），用受控复现定位后有证据地改单因素；再另列最小真实开发批次申请，不用余3或C2余量。可以先离线改进，不为显示调优而盲改prompt。稳定候选后再冻结独立新集，现44旧例+DD01—06都是开发数据。D5/M9、完整M5自动路由/旧多场景、Figma新增在线状态/连线、真人研究、硬件/部署仍未完成。当前阶段交付后停止，不自动扩大范围。
+
+## D3交付历史（D4以上方为准）
+
 **D3多Agent全栈已实现并完成本轮验收。** 用户2026-10-29“继续下一步/继续”按D1设计授权D3，分支codex/product-d3-experts，基线5c61fb3。[计划](docs/superpowers/plans/2026-10-29-product-d3-experts.md)、[实际报告](docs/verification/product-d3-experts.md)、[结果与哈希](evaluation/results/product-d3-20261029.json)。本轮无新依赖/迁移/真实模型请求，不使用C2余2；应用版本仍0.4.0，仅本地提交，不推送/合并/发布。
 
 已实现：expert_forecast→multi_agent；Goal/精确预测后真实LangGraph comfort/energy并行节点+join，再协调选择，同S1资料/硬约束。严格Advice引用goal或candidate:<id>，无效Advice整轮analysis_incomplete，0动作且无raw/非法ID。共享原子6次/轮12次/任务，预算拒绝0请求；peer取消后等待结算。role_runs本轮4槽固定coordinator_goal/comfort/energy/coordinator_plan，rounds.roles仅存当轮指标无旧Advice；0请求补答不抹已有已知usage。M重放/补答/确认/verify零动作保护、混合历史已扩。确认事务save=False，实际execute后同事务显式save_engine，失败不物理回写。
