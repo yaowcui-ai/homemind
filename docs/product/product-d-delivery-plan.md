@@ -1,5 +1,7 @@
 # D：最小改动的分阶段交付
 
+**2026-10-29交付补记：** D1—D4及[D5新集验收](product-d5-evaluation.md)已完成，36运行/98请求，余22停止；M无优势证据。源码公开，求职只交付一份AI全栈Markdown，不再做AI产品简历/问答。完整新增Figma交互因配额仍未完成，详见[最终工程记录](../verification/final-delivery.md)。后文为分步计划与历史，不等同于所有旧M功能完成。
+
 2026-10-29。D1—D3设计与全栈闭环已实现；D4首轮及后续定向定位已交付，DD01旧原因未复现，D5未做。依据[规格](../superpowers/specs/2026-10-28-product-d1-design.md)和[评测契约](product-d-evaluation-design.md)，应用仍v0.4.0。D3仅最小温控实验，无自动路由/旧多场景完整验收，完整M5/M9不勾选。[D4真实证据](product-d4-evaluation.md)未证明多Agent收益，不以工程通过替代效果。
 
 ## 全栈需求映射

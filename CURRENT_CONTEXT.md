@@ -4,6 +4,16 @@
 
 ## 当前授权与进度
 
+**最新：AI全栈简历与公开源码交付（2026-10-29）。** 用户明确只要本项目一份AI全栈简历MD，移除AI产品简历和面试问答任务，保留产品文档。文件见[简历](docs/resume/homemind-ai-fullstack.md)，公开仓库[yaowcui-ai/homemind](https://github.com/yaowcui-ai/homemind)，当前分支codex/fullstack-delivery，origin/main。最新状态以本段为准，下方为历史，不再适用历史的“仅本地、不推送”或“双方向求职材料”要求。
+
+用户另授权最多120请求，固定12新例×S1/M与A02/A03/A11各额外两次成对重复，共36运行。实际98/120，余22停止；没有新集调优或临时换题。冻结47项源/规则哈希、精确合成初态与金标，首轮审计后S1 9/12、M6/12，硬目标6/8对3/8，M无收益证据；标准仍默认，M实验。重复与首次分列。开发助手语义核对非独立人工；评分器对4条已否决语义记录仍标pending，公开汇总明确此标签缺陷，不改原件/分子。92请求有用量（input538751/output16018），6未知。报告：[D5](docs/product/product-d5-evaluation.md)，公开36任务证据/逐请求账本与源码/原件哈希在evaluation/results；本机原始SQLite账号库不上传。旧余额全部不转用。未来该集已公开，不能再当未见集。
+
+工程最终复验：后端322passed/7条件skip；另真实MySQL7passed；前端93passed、lint/build通过；受控Agent浏览器17passed，不冒充真实模型。实际进程重启后MySQL会话/配置/任务/动作/幂等一致。本机18100被既有进程占用，未停止它，改用忽略目录内仅替换端口18130/日志名的验证副本；原失败保留。GitHub全新Linux检出首次因缺output目录失败，verify_m3补mkdir并经RED/GREEN修复；d6caf15对应[云端CI全绿](https://github.com/yaowcui-ai/homemind/actions/runs/40866913208)。README已改为公开克隆和相对目录启动，端口默认8100，本机私有配置8110，不读取旧项目配置。
+
+Figma完整新增状态/连线仍阻塞：目录读取成功，详细读取即Starter额度拒绝，本轮无画布写入，不能称完整原型已交付。[边界与节点待办](docs/verification/figma-final.md)。产品PRD/案例/AI方案/迭代保留，无真人研究/硬件/现实节电/公网应用部署声明。最终交付见[记录](docs/verification/final-delivery.md)。不再扩展功能或调用模型；后续如继续，优先新集已知异常的明确说明，再另建验收集。
+
+## D4定向修复历史（最新以上方为准）
+
 **D4定向定位与两项契约提示修复已交付（2026-10-29）。** 用户先授权开始并介绍简历前缺口，后另授权新24次真实请求；本轮13（诊断9+复测4），余11停止不转用，旧余3/C2余2未用。分支codex/product-d4-followup；诊断基线c1ef757。[报告](docs/product/product-d4-followup.md)、[可移植结果](evaluation/results/product-d4-followup-20261029.json)。固定output/product-d4-followup-20261029/budget.json，模型deepseek-flash非思考/2048/默认temperature，13次均返回用量（input69880/output2327），不估费用。
 
 只跑原失败3策略：DD01/M本次成功5调用/c3/283.383Wh，旧invalid_advice未复现，不能追认原因/根治。DD05/S1新失败3调用，静态诊断$.plan.keep_entity_ids/goal_drift；DD06/M新失败1调用，$.options/missing。分别补选择阶段原样复制Goal keep/protect、目标阶段完整clarify options要求，schema/门禁/物理/预算未放宽，不修raw或隐藏重试。原始精确模板/原文/金标/模型不变，各一次复测：DD05 3调用/c1实际550Wh成功；DD06 1调用合法waiting_input/空options/准确恢复窗户读数/0动作。DD06仅首轮，未执行温控，两专家及最终协调未运行；开发助手问题SHA绑定语义核对另存semantic-audit，非独立人工标注，原自动待核对评分不覆盖。

@@ -1,8 +1,12 @@
 # HomeMind
 
-目标定位：**将生活意图转为可解释、可核验联动任务的智能家居 AI 助手（仿真验证版）**。当前应用v0.4.0，产品D3已实现增强单Agent与多Agent温控实验的预测、确认和实测闭环。注册后获得自己的两房十二实体模板，可以修改配置、控制设备、保存偏好，并执行回家、睡眠、离家规则或自然语言任务。
+**基于 React、FastAPI 与 LangGraph 的智能家居 AI 任务助手（仿真验证版）。** 将自然语言需求转成可解释计划，经程序校验、必要确认后执行，再分别核验设备动作与目标时刻温度。应用v0.4.0，默认两房十二实体可编辑，每账号拥有独立家庭，支持规则、标准助手、增强单Agent和多Agent温控实验。
 
-LangGraph为主、LangChain为辅；规划Agent只读、程序校验后统一执行和读回。已有[44个开发案例](docs/product/product-c-cases.md)、[首轮真实批次](docs/product/product-c-evaluation.md)及[C2复测/勘误](docs/product/product-c2-evaluation.md)。C2新增字段级拒绝诊断和重复选项保护，互斥需求可原任务自由回答；2个实际交互问题各复测一次通过。设备/环境/时间仍为仿真，多Agent、独立保留集和用户研究待开展。
+LangGraph为主、LangChain为辅；Agent只读事实，两位专家并行提出建议，由协调角色选择，统一执行器负责写设备。设备、环境、时间和Wh为确定性仿真，真实模型接DeepSeek官方API；无真实硬件、线上用户或现实节电效果声明。
+
+[AI全栈简历项目介绍](docs/resume/homemind-ai-fullstack.md) · [系统与技术方案](docs/superpowers/specs/2026-10-28-product-d1-design.md) · [真实开发对照](docs/product/product-d4-evaluation.md) · [错误诊断与定向调优](docs/product/product-d4-followup.md) · [GitHub](https://github.com/yaowcui-ai/homemind)
+
+最终候选已完成 [D5 冻结新集验收](docs/product/product-d5-evaluation.md)：12 新例、3 例事先选定重复，共 36 次运行／98 次真实请求。首轮 S1 9/12、M 6/12，未证明多 Agent 优势；保留全部失败、未知用量及[公开任务证据](evaluation/results/product-d5-public-evidence-20261029.json)。这是同作者小范围新集，不是外部独立基准或线上准确率。工程交付与实际云端 CI 见[最终验证](docs/verification/final-delivery.md)。
 
 后续按用户确认的产品阶段 A—E 推进，优先形成完整任务体验与真实效果证据，再验证按需多 Agent 的收益。阶段 A 产品定义材料：[PRD](docs/product/prd.md)、[需求证据与验证计划](docs/product/validation-plan.md)、[产品决策与迭代](docs/product/decision-iteration-log.md)。材料中的规划与假设不代表已实现或已验证。
 
@@ -10,7 +14,7 @@ D1完成[全栈方案与分阶段交付](docs/product/product-d-delivery-plan.md
 
 ## 项目边界与技术栈
 
-本目录是独立Git仓库，当前分支`codex/product-d2-forecast`。父工作区通过本地`.git/info/exclude`忽略本目录，旧项目不纳入本仓库。
+本目录是独立Git仓库，只包含HomeMind的源码与文档。密钥、本机配置、测试账号数据库和原始运行文件不入库；评测摘要保留源码/原件哈希，开发与新集、首次与复测分栏。
 
 - 前端：React、TypeScript、Vite、Ant Design、TanStack Query。
 - API：Python 3.12、FastAPI、Pydantic Settings、Uvicorn。
@@ -35,15 +39,25 @@ D1完成[全栈方案与分阶段交付](docs/product/product-d-delivery-plan.md
 
 按“Docker → 数据库 → API → 网页”的顺序启动。先打开 Docker Desktop，等待 Linux 引擎就绪；前后端使用两个独立 PowerShell 终端，运行期间保持打开。
 
+首次获取源码（已有项目目录则跳过）：
+
+```powershell
+git clone https://github.com/yaowcui-ai/homemind.git
+Set-Location homemind
+```
+
+下文命令从克隆后的 `homemind` 根目录执行，不依赖开发者的本机绝对路径。
+
 ### 首次准备或依赖变更后
 
 安装锁文件指定的后端与前端依赖，等每条命令成功结束后再继续：
 
 ```powershell
-Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind'
+python -m pip install uv==0.12.5
 python -m uv sync --project backend --frozen
 Set-Location frontend
 npm.cmd ci --include=dev --include=optional --bin-links=true
+Set-Location ..
 ```
 
 Vite 属于开发依赖，必须安装；Windows 使用 `npm.cmd`。不要在安装尚未完成时同时启动网页。正常日常启动无需重复安装依赖。
@@ -53,18 +67,19 @@ Vite 属于开发依赖，必须安装；Windows 使用 `npm.cmd`。不要在安
 终端一：在项目根目录检查/启动数据库、完成迁移，再启动 API：
 
 ```powershell
-Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind'
+# 在 homemind 根目录执行
 python scripts/setup_mysql.py
 Set-Location backend
 python -m uv run --frozen python -m homemind
 ```
 
-数据库准备成功会显示“应用库与独立测试库迁移完成。”；本机 API 显示 `Uvicorn running on http://127.0.0.1:8110`。代码默认端口仍为8100，但本机已有容器占用8100，本项目的 `backend/.env`、允许来源及 `frontend/.env` 代理已配套改为8110。如果数据库准备失败，先处理终端报错，再启动 API。
+数据库准备成功会显示“应用库与独立测试库迁移完成。”；新克隆默认API为`http://127.0.0.1:8100`。开发者本机8100已占用，原有配置使用8110并配套修改前端代理；这份本机配置不上传。端口冲突时选择空闲端口，同时修改`backend/.env`的`HOMEMIND_API_PORT`和`frontend/.env`的`HOMEMIND_API_PROXY_TARGET`，重启两端，不停止其他项目。数据库准备失败时先处理终端报错，再启动API。
 
 终端二：启动网页：
 
 ```powershell
-Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind\frontend'
+# 新终端先进入 homemind 根目录
+Set-Location frontend
 npm.cmd run dev
 ```
 
@@ -103,7 +118,7 @@ docker compose --project-name homemind --env-file .local/mysql.env --file deploy
 先在本项目网页终端按 `Ctrl+C` 停止开发服务，再执行以下命令；每条成功后再执行下一条：
 
 ```powershell
-Set-Location 'C:\Users\86139\Documents\ChatGPT\实习项目\homemind\frontend'
+# 在 homemind/frontend 目录执行
 npm.cmd ci --include=dev --include=optional --bin-links=true
 npm.cmd run dev -- --help
 npm.cmd run build
@@ -239,9 +254,9 @@ npm.cmd run test:e2e:agent
 
 原始失败/通过日志、重启证明和截图位于忽略的 `output/`。阶段证据见 [M3 验证记录](docs/verification/m3-accounts-persistence.md)，历史记录见 [M2](docs/verification/m2-simulation.md)、[M1](docs/verification/m1-foundation.md)。GitHub Actions 已配置相同迁移和测试，只有实际远端运行后才可声称远端 CI 通过。
 
-## 下一阶段
+## 当前交付与后续边界
 
-C两轮、D3全栈闭环、D4真实开发对照和定向定位已交付。下一轮冻结候选与D5独立新集，真实请求另定最小预算；旧批次余3和本轮余11均不转用。再完成核心Figma流程、独立启动/演示、AI全栈与AI产品简历问答。SSE、后台时钟、用户取消/自动重规划、图恢复、硬件/公网部署仍未做，也不是当前简历交付前必需项。
+C两轮、D3全栈闭环、D4开发调优、D5冻结验收、独立进程重启验证、公开源码与单项目AI全栈简历已交付。D5余22次请求停止，旧余额不转用。Figma新增核心状态和可点击连线因Starter工具额度仍未完成，见[本轮核对记录](docs/verification/figma-final.md)；React核心流程可运行。求职材料只保留AI全栈Markdown，不生成AI产品简历/面试问答。SSE、后台时钟、用户取消/自动重规划、图恢复、真实硬件和公网应用部署仍未做，不为简历扩展这些功能。
 
 在根目录运行 `backend/.venv/Scripts/python.exe scripts/product_eval.py` 只显示案例数，不读取模型配置或联网。C首轮授权的40次真实请求已用满；`--real`、`--resume`或`--retest C04`不会重置同一账本。不要删除账本、换目录或把此开发批次当未见保留集；后续真实批次需先确定新样本和预算。中断遗留的`batch.lock`会保守阻断，先核实无存活评测进程再处理锁，保留已有账本和案例原件。
 

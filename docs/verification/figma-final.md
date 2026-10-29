@@ -1,6 +1,6 @@
 # HomeMind Figma 核心闭环补齐：本轮受限记录
 
-日期：2026-10-29（Asia/Shanghai）。状态：**未完成；本轮没有成功的画布读取或写入。**
+日期：2026-10-29（Asia/Shanghai）。状态：**未完成；根任务只成功读取文件目录，随后详细画布读取被额度拒绝，本轮无写入。**
 
 目标文件：[HomeMind · 浅色科技控制台](https://www.figma.com/design/Bo7Jqfnh4NNRQiMwNvXc2O)。复用主任务已创建的会话 `64ed287d-7737-4a48-afe2-82d3336c2e04`，未创建新文件、库或替代会话。
 

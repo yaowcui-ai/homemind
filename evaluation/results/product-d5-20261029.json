@@ -1,0 +1,694 @@
+{
+  "limit": 120,
+  "shared_used": 98,
+  "not_run": [],
+  "script_errors": [],
+  "first_pass": {
+    "single_forecast": {
+      "case_pass": {
+        "numerator": 9,
+        "denominator": 12
+      },
+      "understanding_correct": {
+        "numerator": 11,
+        "denominator": 12
+      },
+      "goal_completed": {
+        "numerator": 6,
+        "denominator": 8
+      },
+      "preference_correct": {
+        "numerator": 6,
+        "denominator": 8
+      },
+      "exception_correct": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "all_actions_verified": {
+        "numerator": 6,
+        "denominator": 8
+      }
+    },
+    "expert_forecast": {
+      "case_pass": {
+        "numerator": 6,
+        "denominator": 12
+      },
+      "understanding_correct": {
+        "numerator": 9,
+        "denominator": 12
+      },
+      "goal_completed": {
+        "numerator": 3,
+        "denominator": 8
+      },
+      "preference_correct": {
+        "numerator": 3,
+        "denominator": 8
+      },
+      "exception_correct": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "all_actions_verified": {
+        "numerator": 3,
+        "denominator": 8
+      }
+    },
+    "paired": [
+      {
+        "case_id": "A01",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": 825.05,
+        "energy_wh_M": 825.05
+      },
+      {
+        "case_id": "A02",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A03",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A04",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A05",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": 425.0,
+        "energy_wh_M": 425.0
+      },
+      {
+        "case_id": "A06",
+        "repetition": 1,
+        "pass_S1": false,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A07",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A08",
+        "repetition": 1,
+        "pass_S1": false,
+        "pass_M": true,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A09",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A10",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A11",
+        "repetition": 1,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A12",
+        "repetition": 1,
+        "pass_S1": false,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      }
+    ]
+  },
+  "preselected_repeats": {
+    "single_forecast": {
+      "case_pass": {
+        "numerator": 5,
+        "denominator": 6
+      },
+      "understanding_correct": {
+        "numerator": 5,
+        "denominator": 6
+      },
+      "goal_completed": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "preference_correct": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "exception_correct": {
+        "numerator": 1,
+        "denominator": 2
+      },
+      "all_actions_verified": {
+        "numerator": 4,
+        "denominator": 4
+      }
+    },
+    "expert_forecast": {
+      "case_pass": {
+        "numerator": 3,
+        "denominator": 6
+      },
+      "understanding_correct": {
+        "numerator": 4,
+        "denominator": 6
+      },
+      "goal_completed": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "preference_correct": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "exception_correct": {
+        "numerator": 0,
+        "denominator": 2
+      },
+      "all_actions_verified": {
+        "numerator": 3,
+        "denominator": 4
+      }
+    },
+    "paired": [
+      {
+        "case_id": "A02",
+        "repetition": 2,
+        "pass_S1": true,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A02",
+        "repetition": 3,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": 566.717,
+        "energy_wh_M": 566.717
+      },
+      {
+        "case_id": "A03",
+        "repetition": 2,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": 550.0,
+        "energy_wh_M": 550.0
+      },
+      {
+        "case_id": "A03",
+        "repetition": 3,
+        "pass_S1": true,
+        "pass_M": true,
+        "energy_wh_S1": 550.0,
+        "energy_wh_M": 550.0
+      },
+      {
+        "case_id": "A11",
+        "repetition": 2,
+        "pass_S1": false,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      },
+      {
+        "case_id": "A11",
+        "repetition": 3,
+        "pass_S1": true,
+        "pass_M": false,
+        "energy_wh_S1": null,
+        "energy_wh_M": null
+      }
+    ]
+  },
+  "review_status_caveat": {
+    "frozen_scorer_pending_label_for_explicit_rejection": [
+      "A11/r2/expert_forecast",
+      "A11/r2/single_forecast",
+      "A11/r3/expert_forecast",
+      "A12/r1/single_forecast"
+    ],
+    "unresolved_reviews": [],
+    "explanation": "Frozen scorer labels negative semantic verdicts pending; all have explicit bound rejection reviews. Pass/fail counts are unchanged. Original files are preserved."
+  },
+  "date": "2026-10-29",
+  "application_version": "0.4.0",
+  "model": {
+    "name": "deepseek-flash",
+    "provider": "deepseek",
+    "base_url": "https://api.deepseek.com",
+    "thinking": "disabled",
+    "max_tokens": 2048,
+    "temperature": "provider_default",
+    "retries": 0
+  },
+  "split": "same_author_new_at_freeze_not_external_benchmark",
+  "frozen_manifest_sha256": "052293564346738c0ff464f120c2e3f6fd1b73b43fabae21b5ceb1b6e6580e6a",
+  "frozen_sources": {
+    "evaluation/product-d4-cases.json": "781a426d704496269eaef436b2a6380ed7c26cd8c5ac8d1d9aa7d4a12b92bbb9",
+    "scripts/product_eval_d4.py": "604799109bd06b581fba78fbe2f62ede021caf85df6beb5a33c237054a2e4e56",
+    "scripts/product_eval.py": "5c42e603e43476deaf6f1bde57a273f7fa7a08d4102591ecd1239fe1cd6d1af4",
+    "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+    "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+    "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+    "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+    "backend/src/homemind/agent/diagnostics.py": "93457cf1f61d49433bdac4e76341a5c26e5b3797e04cf360a88f07beea7279b8",
+    "backend/src/homemind/agent/experts.py": "153cdcee75945626ed24429e701d2cb26c692c70cfd4a2395c5bbd6b0f2884be",
+    "backend/src/homemind/agent/forecast.py": "2cdd00a76bf36e089c177a2961a1610845f1e0d6c6a3b3b953ea1ba0a3acac8c",
+    "backend/src/homemind/agent/graph.py": "f3a59658b39276b4c6b08c2f397370d426750f6fb3f0061265bb66b82d698498",
+    "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+    "backend/src/homemind/agent/pipeline.py": "771b35108d0c3d00086adc899183e71eb0417325571f566e49ad73d96ceb08ca",
+    "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+    "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+    "backend/src/homemind/agent/service.py": "d597ebcc8099dac8331dab16e8dbb37523661a264c15027f934da52b91a0f677",
+    "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+    "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+    "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+    "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+    "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+    "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+    "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+    "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+    "backend/src/homemind/migrations/versions/0001_m3.py": "c3b964979fbcb0fbb747d3931253267b29490cadcbb1d477e193404b9f57f005",
+    "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+    "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+    "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+    "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+    "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+    "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+    "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+    "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+    "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+    "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+    "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+    "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+    "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+    "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+    "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+    "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+    "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b",
+    "evaluation/product-d5-cases.json": "d5f7e718c131c49718bd46bcce410cd8a55a46fa04555f1a7df883d7bffd6b66",
+    "scripts/product_eval_d5.py": "28392a1ad3ddb16c48b280418a62a0313bd4eb057f0d9229e91f0fdbd2ca1b4c",
+    "scripts/product_eval_d4_followup.py": "b5dea90477e6e0bfa64fc3bbb36ba6689758c7c5be01e6d20b2177786f0582bc",
+    "evaluation/probes/product_d4_audit.py": "e68f627f7d0544d62c34afb1e44258bf15ddfb048ff4d10e007672b10e233a06",
+    "scripts/tests/test_product_eval_d5.py": "9e80c7a881e7ed2108498d9d3ed8487246474a0c033723507a09d975f0556bb4"
+  },
+  "frozen_fixtures": {
+    "A01": {
+      "template_sha256": "df1887ea0ebaf04df17db996e76d80d9af3a2b0dfe580b07984aaa9408aed576",
+      "descriptor_sha256": "cb642345e161b64613caababfc9ac5939aaac1463bf38d2ce18084456220fee8",
+      "optimal_ids": [
+        "c1"
+      ]
+    },
+    "A02": {
+      "template_sha256": "207ae6eb753cd61ba94949e093fd6764ef4132626a24efb3b1b26c198f9bce79",
+      "descriptor_sha256": "2cd0dfc9695a5f6424beb7e40b457b65cea1d2a095f0fa59710507bb0e4d8ca5",
+      "optimal_ids": [
+        "c3"
+      ]
+    },
+    "A03": {
+      "template_sha256": "56baf6644f15c1aa6865485b96ad26d1d02e3a26ff7ab11f62f7d173dadc9531",
+      "descriptor_sha256": "9dbaed0e1d379eda4ac032ea0d975a1edcdeaa7da15b8578cf101669a4a59bb6",
+      "optimal_ids": [
+        "c1"
+      ]
+    },
+    "A04": {
+      "template_sha256": "87cb0a8419d7f167b26be65ea022275cf8c432b4e930bd2e46be453065c6cb77",
+      "descriptor_sha256": "7252efeb5b8662571234189d1ff1cc198ca0d792d24729a83ff348a7a7ebb6d2",
+      "optimal_ids": [
+        "c1"
+      ]
+    },
+    "A05": {
+      "template_sha256": "bf9a0c0a9ad6101945931703676494562c0ed440f4a0a0ad89188ddda7ffcf0f",
+      "descriptor_sha256": "3f0c480a0b51239a9d0261ff631cc350e8da4e4c0fd206c7589f6dd02a867d68",
+      "optimal_ids": [
+        "c1"
+      ]
+    },
+    "A06": {
+      "template_sha256": "bc48b5419f2e54f1ca7c2e5cd8523b453c682fd2d455416954eaa6866da74ff0",
+      "descriptor_sha256": "45ace8beb72f35b18b991fac6de5953af255ea5cd01f405a736b0a536a0aba4a",
+      "optimal_ids": [
+        "c1"
+      ]
+    },
+    "A07": {
+      "template_sha256": "67282448250d6e20c06e9a2df15ddf508240508a324338e16ba0d50583124363",
+      "descriptor_sha256": "7c9cd37f166024fcaf57902e9f9225ab5a43ecde6c065d754b218972f4a76fe5",
+      "optimal_ids": [
+        "c1"
+      ]
+    },
+    "A08": {
+      "template_sha256": "180f682bfe2e99862f6209d3b5bf8fb3b2f8cca8ca6c8ab196130e1a5e8188d7",
+      "descriptor_sha256": "09dc65dcc718de5a3899387e16060d09318e9e473c10fbc57923ebb34f7d2ba6",
+      "optimal_ids": [
+        "c1"
+      ]
+    },
+    "A09": {
+      "template_sha256": "716c240467c97614b4d70873b09edd80436bd9c46baecbe8bda5b2fe1789a51f",
+      "descriptor_sha256": "74ee40eb22e960d9814f67a0b50c0e91064d9c8e723fd2a49ac31827b4b9f9ef",
+      "optimal_ids": []
+    },
+    "A10": {
+      "template_sha256": "e2f5b0bc195eda2faeeabb1b632d9714b9843c2e0286e76d2b93ca46184b282f",
+      "descriptor_sha256": "ae0b33eb9c3903f65df31831b486669372d58b8407db2c2d738905bd1646b207",
+      "optimal_ids": []
+    },
+    "A11": {
+      "template_sha256": "4ae1982ea997e25293eeb60a40ac7972971c550142995f04f5d7f4ab2ba6d8d2",
+      "descriptor_sha256": "466353b3703f9ba8c05aed6e1c5a7dc4d124e4d98201ceab4b39e1af7fef5f58",
+      "optimal_ids": []
+    },
+    "A12": {
+      "template_sha256": "0b9aefebc34e0eef9dcc1312c67a542de822e04cc68377a54b6212adc804ee63",
+      "descriptor_sha256": "2dc6be0371a736b2a7952be9bfcbe0ebd730a25a1f25129b04db156c8a7aad6e",
+      "optimal_ids": []
+    }
+  },
+  "frozen_schedule": [
+    [
+      "A01",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A01",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A02",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A02",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A03",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A03",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A04",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A04",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A05",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A05",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A06",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A06",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A07",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A07",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A08",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A08",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A09",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A09",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A10",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A10",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A11",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A11",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A12",
+      1,
+      "expert_forecast"
+    ],
+    [
+      "A12",
+      1,
+      "single_forecast"
+    ],
+    [
+      "A02",
+      2,
+      "single_forecast"
+    ],
+    [
+      "A02",
+      2,
+      "expert_forecast"
+    ],
+    [
+      "A03",
+      2,
+      "expert_forecast"
+    ],
+    [
+      "A03",
+      2,
+      "single_forecast"
+    ],
+    [
+      "A11",
+      2,
+      "single_forecast"
+    ],
+    [
+      "A11",
+      2,
+      "expert_forecast"
+    ],
+    [
+      "A02",
+      3,
+      "expert_forecast"
+    ],
+    [
+      "A02",
+      3,
+      "single_forecast"
+    ],
+    [
+      "A03",
+      3,
+      "single_forecast"
+    ],
+    [
+      "A03",
+      3,
+      "expert_forecast"
+    ],
+    [
+      "A11",
+      3,
+      "expert_forecast"
+    ],
+    [
+      "A11",
+      3,
+      "single_forecast"
+    ]
+  ],
+  "stopped": {
+    "reason": "frozen_36_runs_completed_no_further_requests",
+    "used": 98,
+    "limit": 120,
+    "unused_stopped": 22,
+    "date": "2026-10-29"
+  },
+  "semantic_review": "AI-assisted author review, not independent human annotation",
+  "public_evidence": "product-d5-public-evidence-20261029.json",
+  "original_summary_sha256": "836eeea0304986bf8a43cb672b6371a56e5bb6c0d97377db1a96be69a69120e6",
+  "reviewed_summary_sha256": "c6acbb4aa266bcd8cf8783100e34e2faacb066ded4c54b104fc22c5d10abc0a6",
+  "semantic_reviews_sha256": "2f1b37bd3ca592123bcc9a997cc1712d2481632fada98a3ddafa804453bc4309",
+  "ledger_sha256": "8296dd39f91352c20d5491f20b0fd379bf1d4010e69e024d4cc9695399467b3b",
+  "safety_observations": {
+    "unexpected_write": 0,
+    "false_success": 0
+  },
+  "requests": {
+    "issued": 98,
+    "known_usage": 92,
+    "unknown_usage": 6,
+    "known_tokens": {
+      "input_tokens": 538751,
+      "output_tokens": 16018,
+      "total_tokens": 554769
+    },
+    "outcomes": {
+      "response_received": 92,
+      "issued_usage_unknown": 6
+    }
+  },
+  "by_strategy": {
+    "single_forecast": {
+      "all_requests": 40,
+      "first_requests": 27,
+      "first_planning_api_ms": {
+        "n": 12,
+        "median": 7929.5,
+        "minimum": 2203,
+        "maximum": 22844
+      },
+      "first_failure_codes": {
+        "model_timeout": 2
+      }
+    },
+    "expert_forecast": {
+      "all_requests": 58,
+      "first_requests": 38,
+      "first_planning_api_ms": {
+        "n": 12,
+        "median": 11539.0,
+        "minimum": 2484,
+        "maximum": 25093
+      },
+      "first_failure_codes": {
+        "analysis_incomplete": 2,
+        "model_timeout": 2,
+        "goal_drift": 1
+      }
+    }
+  },
+  "representative_repeats": {
+    "A02": {
+      "single_forecast": [
+        true,
+        true,
+        true
+      ],
+      "expert_forecast": [
+        false,
+        false,
+        true
+      ]
+    },
+    "A03": {
+      "single_forecast": [
+        true,
+        true,
+        true
+      ],
+      "expert_forecast": [
+        false,
+        true,
+        true
+      ]
+    },
+    "A11": {
+      "single_forecast": [
+        true,
+        false,
+        true
+      ],
+      "expert_forecast": [
+        true,
+        false,
+        false
+      ]
+    }
+  },
+  "public_evidence_sha256": "cdfc7c630547b52ac0431052fa189f19217e75b95b28c79d80eaf260fd8be486"
+}
