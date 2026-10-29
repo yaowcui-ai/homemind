@@ -340,7 +340,15 @@ def score(case, task, gold, forecast, initial, final, confirmation):
 
 
 def run_trial(
-    case, strategy, pair, model, *, source="controlled_test", phase="phase1", capture=None
+    case,
+    strategy,
+    pair,
+    model,
+    *,
+    source="controlled_test",
+    phase="phase1",
+    capture=None,
+    approve_plan=None,
 ):
     path = Path(pair["directory"]) / (phase + "-" + strategy + ".sqlite")
     backup(pair["template"], path)
@@ -373,7 +381,9 @@ def run_trial(
         confirmation = task["status"] == "waiting_confirmation"
         # The same scripted reviewer approves every hard-valid original choice,
         # including preference-suboptimal choices. Never substitute the oracle choice.
-        if confirmation and hard_plan_matches(task, pair["gold"], pair["forecast"]):
+        if confirmation and (approve_plan or hard_plan_matches)(
+            task, pair["gold"], pair["forecast"]
+        ):
             task = base.checked(
                 client.post(
                     f"/tasks/{task['id']}/confirm",

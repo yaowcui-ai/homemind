@@ -93,13 +93,22 @@ def check_creation_replay(task, digest):
         raise SimulationError(409, "idempotency_conflict", "此幂等键已用于不同请求或模式")
 
 
-def mark_failure(task, code, message="本次方案未执行，请查看原因并重新提交", *, diagnostic=None):
+def mark_failure(
+    task,
+    code,
+    message="本次方案未执行，请查看原因并重新提交",
+    *,
+    diagnostic=None,
+    public_record=None,
+):
     task.status = "failed"
     task.message = message[:255]
     run = deepcopy(task.agent_run)
     run["failure_code"] = code
     if diagnostic is not None:
         run["diagnostic"] = diagnostic
+    if public_record is not None:
+        run["records"].append(public_record)
     run["records"].append({"stage": "failed", "message": message})
     task.agent_run = run
     task.updated_at = int(time.time())
@@ -446,7 +455,11 @@ async def plan_round(app, home_id, task_id, exact=None):
                         add_timing(task, "execution", execution_started)
             except SimulationError as error:
                 mark_failure(
-                    task, error.code, error.message, diagnostic=getattr(error, "diagnostic", None)
+                    task,
+                    error.code,
+                    error.message,
+                    diagnostic=getattr(error, "diagnostic", None),
+                    public_record=getattr(error, "public_record", None),
                 )
         task.final_snapshot = engine.snapshot()
         await session.flush()
@@ -508,6 +521,7 @@ async def confirm_agent(request, task_id, body, key):
                         error.code,
                         error.message,
                         diagnostic=getattr(error, "diagnostic", None),
+                        public_record=getattr(error, "public_record", None),
                     )
             task.final_snapshot = engine.snapshot()
             task.updated_at = int(time.time())

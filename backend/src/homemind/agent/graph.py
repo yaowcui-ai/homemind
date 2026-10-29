@@ -9,6 +9,7 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, Tool
 from langgraph.graph import END, START, StateGraph
 from langsmith import tracing_context
 
+from homemind.agent.diagnostics import schema_records
 from homemind.agent.model import ModelFailure
 from homemind.agent.schemas import OUTPUT
 from homemind.agent.tools import EmptyArguments, frozen_tools
@@ -238,8 +239,19 @@ async def run_planner(
         try:
             output = output_adapter.validate_json(state["messages"][-1].content).model_dump()
             return {"output": output}
-        except (ValueError, TypeError):
-            return {"failure_code": "invalid_output"}
+        except (ValueError, TypeError) as error:
+            role = (
+                "coordinator_goal"
+                if goal_stage
+                else public_context.get("role")
+                if public_context and public_context.get("role") in {"comfort", "energy"}
+                else "coordinator_plan"
+                if public_context is not None
+                else "planner"
+            )
+            records = state["records"] + schema_records(error, output_adapter, role)
+            progress["records"] = records
+            return {"failure_code": "invalid_output", "records": records}
 
     graph = StateGraph(PlannerState)
     graph.add_node("model", call_model)

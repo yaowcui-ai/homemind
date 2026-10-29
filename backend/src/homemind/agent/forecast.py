@@ -7,6 +7,7 @@ from copy import deepcopy
 from decimal import Decimal
 from threading import BoundedSemaphore, Event
 
+from homemind.agent.diagnostics import failure_record
 from homemind.agent.schemas import GoalContract
 from homemind.simulation.models import ControlRequest, EntityType, FaultMode, SimulationError
 from homemind.simulation.physics import energy_wh
@@ -242,18 +243,33 @@ def validate_selection(engine, selection, goal, forecast, request):
     if candidate is None or not candidate["deadline_met"]:
         raise SimulationError(422, "invalid_selection", "选择不存在或不满足硬期限的候选，未执行")
     plan = selection["plan"]
-    if (
-        plan["scenario"] != "homecoming"
-        or plan["room_ids"] != [goal["room_id"]]
-        or plan["temperatures"]
-        != [dict(room_id=goal["room_id"], target=goal["target_temperature_c"])]
-        or plan["ready_in_minutes"] != goal["ready_in_minutes"]
-        or set(plan["keep_entity_ids"]) != set(goal["keep_entity_ids"])
-        or set(plan["protected_room_ids"]) != set(goal["protected_room_ids"])
-        or sorted(plan["actions"], key=lambda a: a["entity_id"])
-        != sorted(candidate["actions"], key=lambda a: a["entity_id"])
-    ):
-        raise SimulationError(422, "goal_drift", "方案动作、目标、期限或保留条件与目标及候选不一致")
+    comparisons = [
+        ("$.plan.scenario", plan["scenario"] == "homecoming"),
+        ("$.plan.room_ids", plan["room_ids"] == [goal["room_id"]]),
+        (
+            "$.plan.temperatures",
+            plan["temperatures"]
+            == [dict(room_id=goal["room_id"], target=goal["target_temperature_c"])],
+        ),
+        ("$.plan.ready_in_minutes", plan["ready_in_minutes"] == goal["ready_in_minutes"]),
+        ("$.plan.keep_entity_ids", set(plan["keep_entity_ids"]) == set(goal["keep_entity_ids"])),
+        (
+            "$.plan.protected_room_ids",
+            set(plan["protected_room_ids"]) == set(goal["protected_room_ids"]),
+        ),
+        (
+            "$.plan.actions",
+            sorted(plan["actions"], key=lambda a: a["entity_id"])
+            == sorted(candidate["actions"], key=lambda a: a["entity_id"]),
+        ),
+    ]
+    for path, matches in comparisons:
+        if not matches:
+            error = SimulationError(
+                422, "goal_drift", "方案动作、目标、期限或保留条件与目标及候选不一致"
+            )
+            error.public_record = failure_record("coordinator_plan", path, "goal_drift")
+            raise error
     feasible = [c for c in forecast["candidates"] if c["deadline_met"]]
 
     def score(c):

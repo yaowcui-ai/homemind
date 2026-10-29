@@ -10,7 +10,8 @@ from langsmith import tracing_context
 
 from homemind.agent import graph as planner_graph
 from homemind.agent.budget import CallBudget
-from homemind.agent.experts import ROLES, skipped_role, validate_advice
+from homemind.agent.diagnostics import failure_record
+from homemind.agent.experts import ROLES, advice_failure, skipped_role
 from homemind.agent.forecast import run_forecast, validate_goal
 from homemind.agent.graph import PlannerCancelled, run_planner
 from homemind.agent.schemas import ADVICE_OUTPUT, GOAL_OUTPUT, SELECTION_OUTPUT
@@ -80,7 +81,9 @@ async def run_pipeline(model, snapshot, preferences, conversation, engine, reque
         except PlannerCancelled as error:
             stage, cancelled = error.result, True
         if role in {"comfort", "energy"} and not stage["failure_code"]:
-            if not validate_advice(stage["output"], role, result["forecast"]):
+            diagnostic = advice_failure(stage["output"], role, result["forecast"])
+            if diagnostic is not None:
+                stage["records"].append(failure_record(role, *diagnostic))
                 stage["output"] = None
                 stage["failure_code"] = "invalid_advice"
         for record in stage["records"]:

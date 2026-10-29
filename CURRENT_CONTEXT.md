@@ -4,6 +4,14 @@
 
 ## 当前授权与进度
 
+**D4遗留定位/定向复测进行中。** 用户2026-10-29“开始，并先介绍进度与简历前缺项”授权本阶段，随后明确最多24新真实请求。分支codex/product-d4-followup，基线2b33557。新固定output/product-d4-followup-20261029/budget.json共享24，仅DD01/expert、DD05/single、DD06/expert首次诊断+必要修复后各一次；旧余3/C2余2不转用。脚本scripts/product_eval_d4_followup.py，原始D4精确模板只读复用，默认不加载配置/不联网。
+
+已完成有限records诊断：schema白名单字段+静态错误类别（最多3条），专家role/引用/候选错误和selection静态字段漂移；不存raw/未知字段/非法ID，不放宽解析/执行。8项诊断RED/GREEN、4项新入口测试通过；相关后端161passed/91.22s、根脚本55passed/29.73s，Ruff过。审阅指出repair不能续跑，已修同源码/模型/目标resume，已发无记录仍拒绝重放，复审批准。真实调用即将开始，先读新账本/原件，不重复--real创建或删目录绕额。旧失败确切字段仍未知，不能用新诊断反推。
+
+简历交付剩余：[最小清单](docs/product/resume-delivery-checklist.md)。必要顺序为遗留定位/开发复测→稳定候选与独立新集→E核心Figma流程/演示/启动/双方向简历面试材料；已有PRD/AI方案/迭代不重写，硬件/SSE/自动路由/公开部署非简历前必要项。当前阶段不要提前做D5/E或新增无关页面。
+
+## D4首轮历史（本轮以上方为准）
+
 **D4首轮真实对照与一次定向调优已交付（2026-10-29），遗留待修。** 用户“开始下一步，注意目标、不必要步骤”授权D4，随后明确最多40次真实请求。分支codex/product-d4-evaluation，基线74cec0f；工具/6例在80b95c7冻结。[真实报告](docs/product/product-d4-evaluation.md)、[逐例数据与哈希](evaluation/results/product-d4-20261029.json)。共用固定output/product-d4-real-20261029/budget.json，实际37（首次29+复测8），余3停止，不能自动转用；C2余2同样不能用。6例×S1/M是E端到端开发集，DD04不可行/DD06未知读数仅首轮，无补答恢复/P层/独立集。
 
 首次原评分S1 3/6、M2/6；审计后S1 4/6、M3/6，不能把勘误增分称模型提升。精确SQLite备份同ID/世界/初态、AB/BA，金标只在评分侧，合法偏好次优照原选执行。DD05/M因cover_constraint keep与keep列表冗余表示被评分门禁误挡，原task/原Plan/4次调用不变，在禁用模型app续确认/推进成功，550Wh，账本字节不变；总elapsed_ms=null不假造连续耗时。DD06/S1准确要求恢复窗户读数，开发助手逐字复核并绑定问题SHA，非独立人工研究。原件phase1不覆盖，另存audit-v2与semantic-reviews.json。

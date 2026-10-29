@@ -2,7 +2,72 @@
 
 from contextlib import contextmanager
 
+from pydantic import ValidationError
+
 from homemind.simulation.models import SimulationError
+
+SCHEMA_CODES = frozenset(
+    {
+        "missing",
+        "extra_forbidden",
+        "literal_error",
+        "int_type",
+        "int_parsing",
+        "less_than_equal",
+        "greater_than_equal",
+        "list_type",
+        "dict_type",
+        "string_type",
+        "string_too_short",
+        "string_too_long",
+        "union_tag_invalid",
+        "union_tag_not_found",
+        "json_invalid",
+        "model_type",
+        "value_error",
+        "too_long",
+        "too_short",
+        "bool_type",
+    }
+)
+
+
+def failure_record(role, path, category):
+    return {"stage": "validation_detail", "message": f"role={role} | path={path} | type={category}"}
+
+
+def schema_records(error, adapter, role):
+    """Only schema-owned field names, bounded indexes and static error categories."""
+    fields = set()
+
+    def collect(value):
+        if isinstance(value, dict):
+            fields.update(value.get("properties", {}))
+            for child in value.values():
+                collect(child)
+        elif isinstance(value, list):
+            for child in value:
+                collect(child)
+
+    collect(adapter.json_schema())
+    errors = (
+        error.errors(include_input=False, include_context=False, include_url=False)[:3]
+        if isinstance(error, ValidationError)
+        else [{"type": "validation_error", "loc": ()}]
+    )
+    records = []
+    for item in errors:
+        path = "$"
+        for index, segment in enumerate(item["loc"][:6]):
+            if index == 0 and segment in {"goal", "selection", "plan", "clarify", "refuse"}:
+                continue
+            if isinstance(segment, int):
+                path += f"[{segment}]" if 0 <= segment < 100 else "[*]"
+            else:
+                path += "." + (segment if segment in fields else "<field>")
+        code = item["type"] if item["type"] in SCHEMA_CODES else "validation_error"
+        records.append(failure_record(role, path, code))
+    return records
 
 
 @contextmanager
