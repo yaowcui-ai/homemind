@@ -87,6 +87,7 @@ def stop_owned(process, pid_file, nonce):
 
 @contextmanager
 def server(env, phase):
+    (ROOT / "output").mkdir(parents=True, exist_ok=True)
     nonce = uuid4().hex
     pid_file = LOCAL / f"m3-api-{nonce}.json"
     log_path = ROOT / "output" / f"m3-restart-api-{phase}.log"
