@@ -31,6 +31,13 @@ async function submit(page: Page, text: string) {
   return task;
 }
 const detailRegion = (page: Page) => page.getByRole('region', { name: '任务详情' });
+async function expectViewportFits(page: Page, width: number) {
+  // Viewport changes can report a previous frame's layout; persistent overflow still fails.
+  await expect.poll(() => page.evaluate((target) => {
+    const root = document.documentElement;
+    return root.clientWidth === target && root.scrollWidth <= root.clientWidth;
+  }, width), { timeout: 2000, intervals: [16, 50, 100] }).toBe(true);
+}
 test.beforeEach(async ({ page, request }) => { await registerAgent(request, page); });
 
 test('产品D3：专家不同意见、协调原选、确认实际核验与刷新恢复', async ({ page, request }) => {
@@ -57,10 +64,7 @@ test('产品D3：专家不同意见、协调原选、确认实际核验与刷新
   await roles.getByText('阶段调用记录', { exact: true }).first().click();
   for (const width of [360, 390]) {
     await page.setViewportSize({ width, height: 900 });
-    // Chromium can expose the previous frame's width immediately after a viewport resize.
-    // Wait for reflow; persistent overflow still fails without retrying the test or task.
-    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth),
-      { timeout: 2000, intervals: [16, 50, 100] }).toBeLessThanOrEqual(width);
+    await expectViewportFits(page, width);
     await roles.screenshot({ path: path.resolve(`../output/product-d3-roles-${width}.png`) });
   }
   const confirm = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/confirm`) && r.request().method() === 'POST');
@@ -151,8 +155,7 @@ test('产品D2受控模型：预测不写家庭，确认执行后独立核验并
   await detailRegion(page).screenshot({ path: path.resolve('../output/product-d2-forecast-desktop.png') });
   for (const width of [360, 390]) {
     await page.setViewportSize({ width, height: 900 });
-    const geometry = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
-    expect(geometry.scroll).toBeLessThanOrEqual(geometry.client);
+    await expectViewportFits(page, width);
     await detailRegion(page).screenshot({ path: path.resolve(`../output/product-d2-forecast-${width}.png`) });
   }
   const confirm = page.waitForResponse((r) => r.url().endsWith(`/tasks/${task.id}/confirm`) && r.request().method() === 'POST');

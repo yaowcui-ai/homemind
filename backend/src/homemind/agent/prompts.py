@@ -86,6 +86,11 @@ def forecast_prompt(adapter, public_context, *, goal_stage=False, role_instructi
     elif goal_stage:
         instructions = (
             "Extract GoalContract, or clarify/refuse, before any forecast is available. "
+            "For a supported temperature request, extract the requested goal even if the "
+            "deadline looks very short. Never estimate cooling rates or refuse for physical "
+            "infeasibility in this stage: only the forecast engine decides feasibility and "
+            "then asks which constraint to relax. Refuse unsupported capabilities, not a "
+            "supported temperature goal whose feasibility has not been computed. "
             "Preserve explicit temperature, deadline, allowed fans, cover constraints, keep "
             "entities and protected rooms. Do not infer priority from preferences or word order. "
             "A soft preference is NOT a hard constraint: '兼顾舒适和省电', '都重要', or merely "

@@ -1,0 +1,1199 @@
+{
+  "scope": "Single separate development regression",
+  "record": {
+    "run_id": "A09/infeasible-patch/single_forecast",
+    "case_id": "A09",
+    "strategy": "single_forecast",
+    "revision": "infeasible-goal-patch",
+    "split": "development_regression_recheck",
+    "text": "练琴室八分钟内必须从现在的温度降到26度以内，只能低风、帘子维持全开，也不能自己改截止时间或目标；尽早达到优先，电量第二。灯保留，客厅整间不动。做不到就先问我放宽什么。",
+    "gold": {
+      "kind": "goal",
+      "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+      "climate_entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+      "cover_entity_id": "cover-e3957ffe182f4262865bb60e50a39c87",
+      "target_temperature_c": 26,
+      "ready_in_minutes": 8,
+      "priority": "comfort_first",
+      "allowed_fan_modes": [
+        "low"
+      ],
+      "cover_constraint": "keep",
+      "keep_entity_ids": [
+        "light-143e8c3c73d94011a7cbd8df34591f7a"
+      ],
+      "protected_room_ids": [
+        "room-aa66b827e4c84afc9eeff5ac23c0bbb3"
+      ]
+    },
+    "oracle_forecast": {
+      "model_version": "m2-decimal-minute-v1",
+      "source": {
+        "world_id": "3c1e4c63d9844b4ab3e16b44ba63f592",
+        "revision": 13,
+        "config_revision": 7,
+        "simulated_minutes": 0
+      },
+      "energy_scope_entity_ids": [
+        "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+        "cover-e3957ffe182f4262865bb60e50a39c87"
+      ],
+      "candidates": [
+        {
+          "id": "c1",
+          "fan_mode": "low",
+          "cover_position_pct": 100,
+          "end_temperature_c": 30.2,
+          "first_observed_goal_minute": null,
+          "deadline_met": false,
+          "energy_wh": 73.333,
+          "actions": [
+            {
+              "entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+              "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+              "action": "set_climate",
+              "parameters": {
+                "mode": "cool",
+                "fan_mode": "low",
+                "target_temperature_c": 26
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "initial_snapshot": {
+      "home_id": "9421a3e989b645acbf488c9811f64330",
+      "world_id": "3c1e4c63d9844b4ab3e16b44ba63f592",
+      "revision": 13,
+      "config_revision": 7,
+      "simulated_minutes": 0,
+      "model_version": "m2-decimal-minute-v1",
+      "outdoor_temperature_c": 32.0,
+      "energy_wh": 0.0,
+      "rooms": [
+        {
+          "id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅",
+          "primary_temperature_entity_id": "temperature-9b611501f72344aab51839441507176c",
+          "primary_occupancy_entity_id": "occupancy-c7de7a6e65fc4304941337fa5d6ede7f",
+          "temperature_c": 28.0,
+          "occupied": false,
+          "window_open": false
+        },
+        {
+          "id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室",
+          "primary_temperature_entity_id": "temperature-05f643f6a32d4d909242cfc83882b671",
+          "primary_occupancy_entity_id": "occupancy-4b13070910f242f8b59e8f61468928c2",
+          "temperature_c": 31.0,
+          "occupied": true,
+          "window_open": false
+        }
+      ],
+      "entities": [
+        {
+          "id": "light-1447120bed084b099365f75bd25b9c58",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅主灯",
+          "type": "light",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "power": true,
+            "brightness_pct": 65
+          },
+          "config": {
+            "default_brightness_pct": 60
+          },
+          "version": 2,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "climate-3f538bf746564ad880777155555cfcde",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅空调",
+          "type": "climate",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "mode": "off",
+            "target_temperature_c": 26,
+            "fan_mode": "auto",
+            "hvac_action": "off"
+          },
+          "config": {
+            "initial_target_temperature_c": 26
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "cover-ac2daec2b9754fc6a2b3baa6bbeb2842",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅电动窗帘",
+          "type": "cover",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "position_pct": 100
+          },
+          "config": {
+            "initial_position_pct": 100
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "temperature-9b611501f72344aab51839441507176c",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅温度传感器",
+          "type": "temperature",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "temperature_c": 28.0
+          },
+          "config": {},
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "occupancy-c7de7a6e65fc4304941337fa5d6ede7f",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅有人传感器",
+          "type": "occupancy",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "occupied": false
+          },
+          "config": {
+            "initial_occupied": false
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "window-9a3b14e3f76b48d8a0b7625de602d80f",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅窗户传感器",
+          "type": "window",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "window_open": false
+          },
+          "config": {
+            "initial_open": false
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "light-143e8c3c73d94011a7cbd8df34591f7a",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室主灯",
+          "type": "light",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "power": true,
+            "brightness_pct": 37
+          },
+          "config": {
+            "default_brightness_pct": 30
+          },
+          "version": 3,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室空调",
+          "type": "climate",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "mode": "off",
+            "target_temperature_c": 28,
+            "fan_mode": "low",
+            "hvac_action": "off"
+          },
+          "config": {
+            "initial_target_temperature_c": 27
+          },
+          "version": 4,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "cover-e3957ffe182f4262865bb60e50a39c87",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室电动窗帘",
+          "type": "cover",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "position_pct": 100
+          },
+          "config": {
+            "initial_position_pct": 100
+          },
+          "version": 2,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "temperature-05f643f6a32d4d909242cfc83882b671",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室温度传感器",
+          "type": "temperature",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "temperature_c": 31.0
+          },
+          "config": {},
+          "version": 4,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "occupancy-4b13070910f242f8b59e8f61468928c2",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室有人传感器",
+          "type": "occupancy",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "occupied": true
+          },
+          "config": {
+            "initial_occupied": false
+          },
+          "version": 3,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "window-59bed8164a73440bafc41a16b825c894",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室窗户传感器",
+          "type": "window",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "window_open": false
+          },
+          "config": {
+            "initial_open": false
+          },
+          "version": 2,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        }
+      ],
+      "archived_count": 0,
+      "recent_events": [
+        {
+          "sequence": 1,
+          "at_minutes": 0,
+          "kind": "room_updated",
+          "message": "已更新房间 练琴室",
+          "entity_id": null
+        },
+        {
+          "sequence": 2,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "客厅主灯：动作已执行并读回核验",
+          "entity_id": "light-1447120bed084b099365f75bd25b9c58"
+        },
+        {
+          "sequence": 3,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室主灯",
+          "entity_id": "light-143e8c3c73d94011a7cbd8df34591f7a"
+        },
+        {
+          "sequence": 4,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "练琴室主灯：动作已执行并读回核验",
+          "entity_id": "light-143e8c3c73d94011a7cbd8df34591f7a"
+        },
+        {
+          "sequence": 5,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室空调",
+          "entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f"
+        },
+        {
+          "sequence": 6,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室电动窗帘",
+          "entity_id": "cover-e3957ffe182f4262865bb60e50a39c87"
+        },
+        {
+          "sequence": 7,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室温度传感器",
+          "entity_id": "temperature-05f643f6a32d4d909242cfc83882b671"
+        },
+        {
+          "sequence": 8,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室有人传感器",
+          "entity_id": "occupancy-4b13070910f242f8b59e8f61468928c2"
+        },
+        {
+          "sequence": 9,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室窗户传感器",
+          "entity_id": "window-59bed8164a73440bafc41a16b825c894"
+        },
+        {
+          "sequence": 10,
+          "at_minutes": 0,
+          "kind": "simulation_event",
+          "message": "已模拟 练琴室温度传感器 的环境或质量变化",
+          "entity_id": "temperature-05f643f6a32d4d909242cfc83882b671"
+        },
+        {
+          "sequence": 11,
+          "at_minutes": 0,
+          "kind": "simulation_event",
+          "message": "已模拟 练琴室有人传感器 的环境或质量变化",
+          "entity_id": "occupancy-4b13070910f242f8b59e8f61468928c2"
+        },
+        {
+          "sequence": 12,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "练琴室电动窗帘：动作已执行并读回核验",
+          "entity_id": "cover-e3957ffe182f4262865bb60e50a39c87"
+        },
+        {
+          "sequence": 13,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "练琴室空调：动作已执行并读回核验",
+          "entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f"
+        }
+      ]
+    },
+    "final_snapshot": {
+      "home_id": "9421a3e989b645acbf488c9811f64330",
+      "world_id": "3c1e4c63d9844b4ab3e16b44ba63f592",
+      "revision": 13,
+      "config_revision": 7,
+      "simulated_minutes": 0,
+      "model_version": "m2-decimal-minute-v1",
+      "outdoor_temperature_c": 32.0,
+      "energy_wh": 0.0,
+      "rooms": [
+        {
+          "id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅",
+          "primary_temperature_entity_id": "temperature-9b611501f72344aab51839441507176c",
+          "primary_occupancy_entity_id": "occupancy-c7de7a6e65fc4304941337fa5d6ede7f",
+          "temperature_c": 28.0,
+          "occupied": false,
+          "window_open": false
+        },
+        {
+          "id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室",
+          "primary_temperature_entity_id": "temperature-05f643f6a32d4d909242cfc83882b671",
+          "primary_occupancy_entity_id": "occupancy-4b13070910f242f8b59e8f61468928c2",
+          "temperature_c": 31.0,
+          "occupied": true,
+          "window_open": false
+        }
+      ],
+      "entities": [
+        {
+          "id": "light-1447120bed084b099365f75bd25b9c58",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅主灯",
+          "type": "light",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "power": true,
+            "brightness_pct": 65
+          },
+          "config": {
+            "default_brightness_pct": 60
+          },
+          "version": 2,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "climate-3f538bf746564ad880777155555cfcde",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅空调",
+          "type": "climate",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "mode": "off",
+            "target_temperature_c": 26,
+            "fan_mode": "auto",
+            "hvac_action": "off"
+          },
+          "config": {
+            "initial_target_temperature_c": 26
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "cover-ac2daec2b9754fc6a2b3baa6bbeb2842",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅电动窗帘",
+          "type": "cover",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "position_pct": 100
+          },
+          "config": {
+            "initial_position_pct": 100
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "temperature-9b611501f72344aab51839441507176c",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅温度传感器",
+          "type": "temperature",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "temperature_c": 28.0
+          },
+          "config": {},
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "occupancy-c7de7a6e65fc4304941337fa5d6ede7f",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅有人传感器",
+          "type": "occupancy",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "occupied": false
+          },
+          "config": {
+            "initial_occupied": false
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "window-9a3b14e3f76b48d8a0b7625de602d80f",
+          "room_id": "room-aa66b827e4c84afc9eeff5ac23c0bbb3",
+          "name": "客厅窗户传感器",
+          "type": "window",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "window_open": false
+          },
+          "config": {
+            "initial_open": false
+          },
+          "version": 1,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "light-143e8c3c73d94011a7cbd8df34591f7a",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室主灯",
+          "type": "light",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "power": true,
+            "brightness_pct": 37
+          },
+          "config": {
+            "default_brightness_pct": 30
+          },
+          "version": 3,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室空调",
+          "type": "climate",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "mode": "off",
+            "target_temperature_c": 28,
+            "fan_mode": "low",
+            "hvac_action": "off"
+          },
+          "config": {
+            "initial_target_temperature_c": 27
+          },
+          "version": 4,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "cover-e3957ffe182f4262865bb60e50a39c87",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室电动窗帘",
+          "type": "cover",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "position_pct": 100
+          },
+          "config": {
+            "initial_position_pct": 100
+          },
+          "version": 2,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "temperature-05f643f6a32d4d909242cfc83882b671",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室温度传感器",
+          "type": "temperature",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "temperature_c": 31.0
+          },
+          "config": {},
+          "version": 4,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "occupancy-4b13070910f242f8b59e8f61468928c2",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室有人传感器",
+          "type": "occupancy",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "occupied": true
+          },
+          "config": {
+            "initial_occupied": false
+          },
+          "version": 3,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        },
+        {
+          "id": "window-59bed8164a73440bafc41a16b825c894",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "name": "练琴室窗户传感器",
+          "type": "window",
+          "enabled": true,
+          "available": true,
+          "known": true,
+          "state": {
+            "window_open": false
+          },
+          "config": {
+            "initial_open": false
+          },
+          "version": 2,
+          "observed_at_minutes": 0,
+          "energy_wh": 0.0,
+          "fault": {
+            "mode": "none",
+            "delay_minutes": 2
+          },
+          "pending_until_minutes": null
+        }
+      ],
+      "archived_count": 0,
+      "recent_events": [
+        {
+          "sequence": 1,
+          "at_minutes": 0,
+          "kind": "room_updated",
+          "message": "已更新房间 练琴室",
+          "entity_id": null
+        },
+        {
+          "sequence": 2,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "客厅主灯：动作已执行并读回核验",
+          "entity_id": "light-1447120bed084b099365f75bd25b9c58"
+        },
+        {
+          "sequence": 3,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室主灯",
+          "entity_id": "light-143e8c3c73d94011a7cbd8df34591f7a"
+        },
+        {
+          "sequence": 4,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "练琴室主灯：动作已执行并读回核验",
+          "entity_id": "light-143e8c3c73d94011a7cbd8df34591f7a"
+        },
+        {
+          "sequence": 5,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室空调",
+          "entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f"
+        },
+        {
+          "sequence": 6,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室电动窗帘",
+          "entity_id": "cover-e3957ffe182f4262865bb60e50a39c87"
+        },
+        {
+          "sequence": 7,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室温度传感器",
+          "entity_id": "temperature-05f643f6a32d4d909242cfc83882b671"
+        },
+        {
+          "sequence": 8,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室有人传感器",
+          "entity_id": "occupancy-4b13070910f242f8b59e8f61468928c2"
+        },
+        {
+          "sequence": 9,
+          "at_minutes": 0,
+          "kind": "entity_updated",
+          "message": "已更新实体 练琴室窗户传感器",
+          "entity_id": "window-59bed8164a73440bafc41a16b825c894"
+        },
+        {
+          "sequence": 10,
+          "at_minutes": 0,
+          "kind": "simulation_event",
+          "message": "已模拟 练琴室温度传感器 的环境或质量变化",
+          "entity_id": "temperature-05f643f6a32d4d909242cfc83882b671"
+        },
+        {
+          "sequence": 11,
+          "at_minutes": 0,
+          "kind": "simulation_event",
+          "message": "已模拟 练琴室有人传感器 的环境或质量变化",
+          "entity_id": "occupancy-4b13070910f242f8b59e8f61468928c2"
+        },
+        {
+          "sequence": 12,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "练琴室电动窗帘：动作已执行并读回核验",
+          "entity_id": "cover-e3957ffe182f4262865bb60e50a39c87"
+        },
+        {
+          "sequence": 13,
+          "at_minutes": 0,
+          "kind": "control_verified",
+          "message": "练琴室空调：动作已执行并读回核验",
+          "entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f"
+        }
+      ]
+    },
+    "issued_requests": 1,
+    "original_record_sha256": "72175cf35cf7a50626421efed543f8b0cf7cd834c83a0b88eaec18ed0d83c756",
+    "score": {
+      "case_pass": true,
+      "understanding_correct": true,
+      "goal_completed": null,
+      "preference_correct": null,
+      "exception_correct": true,
+      "all_actions_verified": null,
+      "confirmation_observed": false,
+      "unexpected_write": false,
+      "false_success": false,
+      "review_status": "accepted",
+      "semantic_review_required": true,
+      "structural_exception_correct": true
+    },
+    "semantic_review": {
+      "question_sha256": "8701c3b31e974165701bc222b0f6a10a0d0ac0139324cec4f88a833c3c4f8fa9",
+      "evidence_sha256": "e6fc0a35e65a094eaefba6696b6df8a87d681e757db28889b6a7f0ceadaec19b",
+      "correct": true,
+      "reason": "保留原8分钟/26℃/低风/帘全开，交给真实预测器确认全部不可行，明确询问可放宽哪项硬约束；0动作。",
+      "reviewer": "development_assistant_author_review",
+      "limitation": "AI-assisted author audit, not independent human annotation"
+    },
+    "first_task": {
+      "mode": "single_agent",
+      "scenario": "local",
+      "status": "waiting_input",
+      "message": "需要补充信息后继续同一任务",
+      "plan": {
+        "actions": [],
+        "constraints": [],
+        "temperatures": [],
+        "due_at_minutes": null
+      },
+      "agent_run": {
+        "turn": 0,
+        "max_replies": 3,
+        "question": "本轮所有允许的方案都无法在指定期限内达到目标。请明确是否修改温度、期限或允许的风速？",
+        "options": [],
+        "proposed_plan": null,
+        "rationale": null,
+        "model_calls": 1,
+        "tool_calls": 0,
+        "usage": {
+          "input_tokens": 3227,
+          "output_tokens": 180
+        },
+        "records": [
+          {
+            "stage": "model",
+            "message": "模型响应已收到",
+            "elapsed_ms": 2468
+          },
+          {
+            "stage": "forecast",
+            "message": "隔离仿真预测已完成，未改变家庭状态",
+            "duration_ms": 0
+          },
+          {
+            "stage": "validation",
+            "message": "方案程序校验已结束",
+            "duration_ms": 0
+          }
+        ],
+        "rounds": [
+          {
+            "model_calls": 1,
+            "tool_calls": 0,
+            "usage": {
+              "input_tokens": 3227,
+              "output_tokens": 180
+            },
+            "elapsed_ms": 2468,
+            "turn": 0
+          }
+        ],
+        "timings": {
+          "planning_ms": 2468,
+          "validation_ms": 0,
+          "execution_ms": 0
+        },
+        "failure_code": null,
+        "operations": {},
+        "conversation": [
+          {
+            "role": "user",
+            "text": "练琴室八分钟内必须从现在的温度降到26度以内，只能低风、帘子维持全开，也不能自己改截止时间或目标；尽早达到优先，电量第二。灯保留，客厅整间不动。做不到就先问我放宽什么。",
+            "keep_entity_ids": [],
+            "protected_room_ids": []
+          },
+          {
+            "role": "assistant",
+            "text": "本轮所有允许的方案都无法在指定期限内达到目标。请明确是否修改温度、期限或允许的风速？",
+            "options": []
+          }
+        ],
+        "strategy": "single_forecast",
+        "pipeline_version": "d2-forecast-v1",
+        "goal": {
+          "kind": "goal",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "climate_entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+          "cover_entity_id": "cover-e3957ffe182f4262865bb60e50a39c87",
+          "target_temperature_c": 26,
+          "ready_in_minutes": 8,
+          "priority": "comfort_first",
+          "allowed_fan_modes": [
+            "low"
+          ],
+          "cover_constraint": "keep",
+          "keep_entity_ids": [
+            "light-143e8c3c73d94011a7cbd8df34591f7a"
+          ],
+          "protected_room_ids": [
+            "room-aa66b827e4c84afc9eeff5ac23c0bbb3"
+          ]
+        },
+        "forecast": {
+          "model_version": "m2-decimal-minute-v1",
+          "source": {
+            "world_id": "3c1e4c63d9844b4ab3e16b44ba63f592",
+            "revision": 13,
+            "config_revision": 7,
+            "simulated_minutes": 0
+          },
+          "energy_scope_entity_ids": [
+            "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+            "cover-e3957ffe182f4262865bb60e50a39c87"
+          ],
+          "candidates": [
+            {
+              "id": "c1",
+              "fan_mode": "low",
+              "cover_position_pct": 100,
+              "end_temperature_c": 30.2,
+              "first_observed_goal_minute": null,
+              "deadline_met": false,
+              "energy_wh": 73.333,
+              "actions": [
+                {
+                  "entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+                  "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+                  "action": "set_climate",
+                  "parameters": {
+                    "mode": "cool",
+                    "fan_mode": "low",
+                    "target_temperature_c": 26
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "selected_candidate_id": null,
+        "preference_optimal": null,
+        "actual_model": "deepseek-flash"
+      },
+      "verification": {
+        "due_at_minutes": null,
+        "checked_at_minutes": 0,
+        "conditions": []
+      },
+      "actions": [],
+      "advance_records": []
+    },
+    "final_task": {
+      "mode": "single_agent",
+      "scenario": "local",
+      "status": "waiting_input",
+      "message": "需要补充信息后继续同一任务",
+      "plan": {
+        "actions": [],
+        "constraints": [],
+        "temperatures": [],
+        "due_at_minutes": null
+      },
+      "agent_run": {
+        "turn": 0,
+        "max_replies": 3,
+        "question": "本轮所有允许的方案都无法在指定期限内达到目标。请明确是否修改温度、期限或允许的风速？",
+        "options": [],
+        "proposed_plan": null,
+        "rationale": null,
+        "model_calls": 1,
+        "tool_calls": 0,
+        "usage": {
+          "input_tokens": 3227,
+          "output_tokens": 180
+        },
+        "records": [
+          {
+            "stage": "model",
+            "message": "模型响应已收到",
+            "elapsed_ms": 2468
+          },
+          {
+            "stage": "forecast",
+            "message": "隔离仿真预测已完成，未改变家庭状态",
+            "duration_ms": 0
+          },
+          {
+            "stage": "validation",
+            "message": "方案程序校验已结束",
+            "duration_ms": 0
+          }
+        ],
+        "rounds": [
+          {
+            "model_calls": 1,
+            "tool_calls": 0,
+            "usage": {
+              "input_tokens": 3227,
+              "output_tokens": 180
+            },
+            "elapsed_ms": 2468,
+            "turn": 0
+          }
+        ],
+        "timings": {
+          "planning_ms": 2468,
+          "validation_ms": 0,
+          "execution_ms": 0
+        },
+        "failure_code": null,
+        "operations": {},
+        "conversation": [
+          {
+            "role": "user",
+            "text": "练琴室八分钟内必须从现在的温度降到26度以内，只能低风、帘子维持全开，也不能自己改截止时间或目标；尽早达到优先，电量第二。灯保留，客厅整间不动。做不到就先问我放宽什么。",
+            "keep_entity_ids": [],
+            "protected_room_ids": []
+          },
+          {
+            "role": "assistant",
+            "text": "本轮所有允许的方案都无法在指定期限内达到目标。请明确是否修改温度、期限或允许的风速？",
+            "options": []
+          }
+        ],
+        "strategy": "single_forecast",
+        "pipeline_version": "d2-forecast-v1",
+        "goal": {
+          "kind": "goal",
+          "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+          "climate_entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+          "cover_entity_id": "cover-e3957ffe182f4262865bb60e50a39c87",
+          "target_temperature_c": 26,
+          "ready_in_minutes": 8,
+          "priority": "comfort_first",
+          "allowed_fan_modes": [
+            "low"
+          ],
+          "cover_constraint": "keep",
+          "keep_entity_ids": [
+            "light-143e8c3c73d94011a7cbd8df34591f7a"
+          ],
+          "protected_room_ids": [
+            "room-aa66b827e4c84afc9eeff5ac23c0bbb3"
+          ]
+        },
+        "forecast": {
+          "model_version": "m2-decimal-minute-v1",
+          "source": {
+            "world_id": "3c1e4c63d9844b4ab3e16b44ba63f592",
+            "revision": 13,
+            "config_revision": 7,
+            "simulated_minutes": 0
+          },
+          "energy_scope_entity_ids": [
+            "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+            "cover-e3957ffe182f4262865bb60e50a39c87"
+          ],
+          "candidates": [
+            {
+              "id": "c1",
+              "fan_mode": "low",
+              "cover_position_pct": 100,
+              "end_temperature_c": 30.2,
+              "first_observed_goal_minute": null,
+              "deadline_met": false,
+              "energy_wh": 73.333,
+              "actions": [
+                {
+                  "entity_id": "climate-030ebf7b6d8341e1a29b8026e5bdd43f",
+                  "room_id": "room-49034f80b44c4bb3bbbfc8936cf8ac02",
+                  "action": "set_climate",
+                  "parameters": {
+                    "mode": "cool",
+                    "fan_mode": "low",
+                    "target_temperature_c": 26
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "selected_candidate_id": null,
+        "preference_optimal": null,
+        "actual_model": "deepseek-flash"
+      },
+      "verification": {
+        "due_at_minutes": null,
+        "checked_at_minutes": 0,
+        "conditions": []
+      },
+      "actions": [],
+      "advance_records": []
+    }
+  },
+  "requests": [
+    {
+      "number": 1,
+      "case_id": "A09/infeasible-patch/single_forecast",
+      "outcome": "response_received",
+      "usage": {
+        "input_tokens": 3227,
+        "output_tokens": 180,
+        "total_tokens": 3407
+      },
+      "model": "deepseek-flash"
+    }
+  ]
+}

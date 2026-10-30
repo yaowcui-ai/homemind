@@ -6,7 +6,9 @@ LangGraph为主、LangChain为辅；Agent只读事实，两位专家并行提出
 
 [AI全栈简历项目介绍](docs/resume/homemind-ai-fullstack.md) · [系统与技术方案](docs/superpowers/specs/2026-10-28-product-d1-design.md) · [真实开发对照](docs/product/product-d4-evaluation.md) · [错误诊断与定向调优](docs/product/product-d4-followup.md) · [GitHub](https://github.com/yaowcui-ai/homemind)
 
-最终候选已完成 [D5 冻结新集验收](docs/product/product-d5-evaluation.md)：12 新例、3 例事先选定重复，共 36 次运行／98 次真实请求。首轮 S1 9/12、M 6/12，未证明多 Agent 优势；保留全部失败、未知用量及[公开任务证据](evaluation/results/product-d5-public-evidence-20261029.json)。这是同作者小范围新集，不是外部独立基准或线上准确率。工程交付与实际云端 CI 见[最终验证](docs/verification/final-delivery.md)。
+最新[定向质量调优](docs/product/product-quality-tuning.md)修复优先级误判、目标字段漂移和证据引用问题，移除冗余读取：6组固定场景对照中，M通过数由3/6变为6/6，目标提取输入Token减少33.06%；4个预冻结新场景的S1/M均通过。首轮S1仍5/6，新增的不可行目标拒绝回归已另补1次验证通过，原失败未覆盖。这些是小范围定向结果，不能当作产品总体准确率或M普遍优势。75/80次请求已停止，完整[逐例证据](evaluation/results/product-quality-public-evidence-20261030.json)保留。
+
+前一轮 [D5 冻结新集验收](docs/product/product-d5-evaluation.md)：首轮 S1 9/12、M 6/12，原数据及[证据](evaluation/results/product-d5-public-evidence-20261029.json)保持不变。工程交付与历史云端 CI 见[验证记录](docs/verification/final-delivery.md)。
 
 后续按用户确认的产品阶段 A—E 推进，优先形成完整任务体验与真实效果证据，再验证按需多 Agent 的收益。阶段 A 产品定义材料：[PRD](docs/product/prd.md)、[需求证据与验证计划](docs/product/validation-plan.md)、[产品决策与迭代](docs/product/decision-iteration-log.md)。材料中的规划与假设不代表已实现或已验证。
 
@@ -24,6 +26,8 @@ D1完成[全栈方案与分阶段交付](docs/product/product-d-delivery-plan.md
 - AI：LangGraph 显式模型/只读工具/解析图，LangChain Core 消息与工具；DeepSeek 官方非思考 Chat Completions，关闭自动重试和远程追踪。
 
 后续开发先读 [接续记录](CURRENT_CONTEXT.md) 和 [阶段路线](docs/homemind-development-roadmap.md)。接口和状态语义见 [M3 实施设计](docs/superpowers/specs/2026-10-27-m3-accounts-persistence-design.md)。
+
+本轮调优没有新依赖或数据库迁移。更新源码后重启后端即可应用；运行中的旧进程不会自动加载新提示。旧模型批次和本轮账本均已停止，不要删除账本或换路径重跑。
 
 前端已按用户批准的 [Figma 浅色控制台设计](https://www.figma.com/design/Bo7Jqfnh4NNRQiMwNvXc2O) 同步：浅色侧栏、紧凑页标题、房间感知/设备控制分组、规则任务、家庭配置、偏好与登录/注册，适配桌面和 360/390px 手机。开关和时钟排版已在 React 修复；Figma 稿因 Starter 工具额度限制尚未回写修正。实际检查、截图及差异见 [设计记录](docs/verification/figma-redesign.md)。
 

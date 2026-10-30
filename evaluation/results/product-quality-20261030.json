@@ -1,0 +1,652 @@
+{
+  "limit": 80,
+  "issued_requests": 74,
+  "groups": {
+    "development/baseline/single_forecast": {
+      "runs": 6,
+      "issued_requests": 14,
+      "planning_api_ms_median": 8055.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "understanding_correct": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "goal_completed": {
+          "numerator": 3,
+          "denominator": 3
+        },
+        "preference_correct": {
+          "numerator": 3,
+          "denominator": 3
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 3
+        },
+        "all_actions_verified": {
+          "numerator": 3,
+          "denominator": 3
+        }
+      }
+    },
+    "development/baseline/expert_forecast": {
+      "runs": 6,
+      "issued_requests": 20,
+      "planning_api_ms_median": 8211.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 3,
+          "denominator": 6
+        },
+        "understanding_correct": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "goal_completed": {
+          "numerator": 1,
+          "denominator": 3
+        },
+        "preference_correct": {
+          "numerator": 1,
+          "denominator": 3
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 3
+        },
+        "all_actions_verified": {
+          "numerator": 1,
+          "denominator": 3
+        }
+      }
+    },
+    "development/candidate/single_forecast": {
+      "runs": 6,
+      "issued_requests": 9,
+      "planning_api_ms_median": 4180.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "understanding_correct": {
+          "numerator": 5,
+          "denominator": 6
+        },
+        "goal_completed": {
+          "numerator": 3,
+          "denominator": 3
+        },
+        "preference_correct": {
+          "numerator": 3,
+          "denominator": 3
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 3
+        },
+        "all_actions_verified": {
+          "numerator": 3,
+          "denominator": 3
+        }
+      }
+    },
+    "development/candidate/expert_forecast": {
+      "runs": 6,
+      "issued_requests": 15,
+      "planning_api_ms_median": 5578.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 6,
+          "denominator": 6
+        },
+        "understanding_correct": {
+          "numerator": 6,
+          "denominator": 6
+        },
+        "goal_completed": {
+          "numerator": 3,
+          "denominator": 3
+        },
+        "preference_correct": {
+          "numerator": 3,
+          "denominator": 3
+        },
+        "exception_correct": {
+          "numerator": 3,
+          "denominator": 3
+        },
+        "all_actions_verified": {
+          "numerator": 3,
+          "denominator": 3
+        }
+      }
+    },
+    "new_cases/candidate/single_forecast": {
+      "runs": 4,
+      "issued_requests": 6,
+      "planning_api_ms_median": 4016.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 4,
+          "denominator": 4
+        },
+        "understanding_correct": {
+          "numerator": 4,
+          "denominator": 4
+        },
+        "goal_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "preference_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "all_actions_verified": {
+          "numerator": 2,
+          "denominator": 2
+        }
+      }
+    },
+    "new_cases/candidate/expert_forecast": {
+      "runs": 4,
+      "issued_requests": 10,
+      "planning_api_ms_median": 4921.5,
+      "metrics": {
+        "case_pass": {
+          "numerator": 4,
+          "denominator": 4
+        },
+        "understanding_correct": {
+          "numerator": 4,
+          "denominator": 4
+        },
+        "goal_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "preference_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "all_actions_verified": {
+          "numerator": 2,
+          "denominator": 2
+        }
+      }
+    }
+  },
+  "not_run": [],
+  "script_errors": [],
+  "pending_semantic_review": [],
+  "baseline_commit": "53b9e3084e3a10b11554334edb196c69184c8db5",
+  "candidate_commit": "a5d61d2f2e2ceaed4a19dc5f3ec0f837fb39bbe4",
+  "semantic_review_limitation": "AI-assisted author audit, not independent human annotation",
+  "legacy_score_status_caveat": "Negative reviews may still have the frozen scorer pending label; resolved_semantic_status records the explicit bound rejection. Pass counts are unchanged.",
+  "safety_observations": {
+    "unexpected_write": 0,
+    "false_success": 0
+  },
+  "usage": {
+    "known_requests": 74,
+    "unknown_requests": 0,
+    "known_input_tokens": 338723,
+    "known_output_tokens": 13307
+  },
+  "paired_goal_input_tokens": {
+    "pairs": [
+      {
+        "case_id": "A02",
+        "strategy": "single_forecast",
+        "baseline": 4647,
+        "candidate": 3104
+      },
+      {
+        "case_id": "A02",
+        "strategy": "expert_forecast",
+        "baseline": 4647,
+        "candidate": 3104
+      },
+      {
+        "case_id": "A06",
+        "strategy": "single_forecast",
+        "baseline": 4727,
+        "candidate": 3178
+      },
+      {
+        "case_id": "A06",
+        "strategy": "expert_forecast",
+        "baseline": 4727,
+        "candidate": 3178
+      },
+      {
+        "case_id": "A07",
+        "strategy": "single_forecast",
+        "baseline": 4656,
+        "candidate": 3105
+      },
+      {
+        "case_id": "A07",
+        "strategy": "expert_forecast",
+        "baseline": 4656,
+        "candidate": 3105
+      },
+      {
+        "case_id": "A09",
+        "strategy": "single_forecast",
+        "baseline": 4726,
+        "candidate": 3162
+      },
+      {
+        "case_id": "A09",
+        "strategy": "expert_forecast",
+        "baseline": 4726,
+        "candidate": 3162
+      },
+      {
+        "case_id": "A11",
+        "strategy": "single_forecast",
+        "baseline": 5001,
+        "candidate": 3365
+      },
+      {
+        "case_id": "A11",
+        "strategy": "expert_forecast",
+        "baseline": 5001,
+        "candidate": 3365
+      },
+      {
+        "case_id": "A12",
+        "strategy": "single_forecast",
+        "baseline": 4680,
+        "candidate": 3123
+      },
+      {
+        "case_id": "A12",
+        "strategy": "expert_forecast",
+        "baseline": 4680,
+        "candidate": 3123
+      }
+    ],
+    "baseline_total": 56874,
+    "candidate_total": 38074,
+    "reduction_pct": 33.06,
+    "scope": "First request = goal extraction, matched same initial facts/text, known provider usage only; not whole-task cost or all-stage token reduction."
+  },
+  "development_overall": {
+    "baseline": {
+      "passed": 8,
+      "runs": 12
+    },
+    "candidate": {
+      "passed": 11,
+      "runs": 12
+    }
+  },
+  "date": "2026-10-30",
+  "frozen_manifest_sha256": "b757339c1683add9170c3e1f7c46b45a4c51ef65aa45ac2c4485b19b13e6f43b",
+  "frozen_hashes": {
+    "evaluation/product-d4-cases.json": "781a426d704496269eaef436b2a6380ed7c26cd8c5ac8d1d9aa7d4a12b92bbb9",
+    "scripts/product_eval_d4.py": "604799109bd06b581fba78fbe2f62ede021caf85df6beb5a33c237054a2e4e56",
+    "scripts/product_eval.py": "5c42e603e43476deaf6f1bde57a273f7fa7a08d4102591ecd1239fe1cd6d1af4",
+    "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+    "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+    "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+    "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+    "backend/src/homemind/agent/diagnostics.py": "93457cf1f61d49433bdac4e76341a5c26e5b3797e04cf360a88f07beea7279b8",
+    "backend/src/homemind/agent/experts.py": "153cdcee75945626ed24429e701d2cb26c692c70cfd4a2395c5bbd6b0f2884be",
+    "backend/src/homemind/agent/forecast.py": "2cdd00a76bf36e089c177a2961a1610845f1e0d6c6a3b3b953ea1ba0a3acac8c",
+    "backend/src/homemind/agent/graph.py": "b4840ebbf7e3f476408df1d5a1f1067b1ff15d3eaf1b54de0b4fbb13b1165e3e",
+    "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+    "backend/src/homemind/agent/pipeline.py": "2011e3462c4db6574b09eb43958f61c1ddc0f66a652a9470d726ac1710e41d9c",
+    "backend/src/homemind/agent/prompts.py": "c94b92d02882612220ed0b40159122ed0b3863b9b6a049bbe8b42f2be11c6ea9",
+    "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+    "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+    "backend/src/homemind/agent/service.py": "d597ebcc8099dac8331dab16e8dbb37523661a264c15027f934da52b91a0f677",
+    "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+    "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+    "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+    "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+    "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+    "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+    "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+    "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+    "backend/src/homemind/migrations/versions/0001_m3.py": "c3b964979fbcb0fbb747d3931253267b29490cadcbb1d477e193404b9f57f005",
+    "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+    "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+    "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+    "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+    "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+    "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+    "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+    "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+    "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+    "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+    "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+    "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+    "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+    "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+    "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+    "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+    "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b",
+    "evaluation/product-d5-cases.json": "d5f7e718c131c49718bd46bcce410cd8a55a46fa04555f1a7df883d7bffd6b66",
+    "scripts/product_eval_d5.py": "5cb66872ebc5ab18236f4bf600b1297cded6d74ed452d8aa94758809f1cbe650",
+    "scripts/product_eval_d4_followup.py": "b5dea90477e6e0bfa64fc3bbb36ba6689758c7c5be01e6d20b2177786f0582bc",
+    "evaluation/probes/product_d4_audit.py": "e68f627f7d0544d62c34afb1e44258bf15ddfb048ff4d10e007672b10e233a06",
+    "scripts/tests/test_product_eval_d5.py": "9e80c7a881e7ed2108498d9d3ed8487246474a0c033723507a09d975f0556bb4",
+    "scripts/product_eval_quality.py": "b42f1ad323ea9235a9a972dc188a54a8ed3a2c7bd3093b77c0461661ddbe6479",
+    "evaluation/product-quality-cases.json": "f10cc70ef9f19e2dbb7062855c288138656c1d4a01ecbeb7f90d1e710c3dd844",
+    "scripts/tests/test_product_eval_quality.py": "9a25c994c7e1f9c59a64f5e8c23d9db89feca178333e57fbe8507817857f8635"
+  },
+  "fixtures": {
+    "A02": {
+      "template_sha256": "207ae6eb753cd61ba94949e093fd6764ef4132626a24efb3b1b26c198f9bce79",
+      "descriptor_sha256": "c10c1c5a3b9d636e9efb6d82d06910170bcb51cb9a7ec7e743677273df56df73"
+    },
+    "A06": {
+      "template_sha256": "bc48b5419f2e54f1ca7c2e5cd8523b453c682fd2d455416954eaa6866da74ff0",
+      "descriptor_sha256": "fea37e94fd246b1c15753f2be2c9db812645bce1b681056c65afffbb8fb0c013"
+    },
+    "A07": {
+      "template_sha256": "67282448250d6e20c06e9a2df15ddf508240508a324338e16ba0d50583124363",
+      "descriptor_sha256": "5b53fa44252ce5caf4de1fae3116db783bb38b86599459c9964645f3a431fa89"
+    },
+    "A09": {
+      "template_sha256": "716c240467c97614b4d70873b09edd80436bd9c46baecbe8bda5b2fe1789a51f",
+      "descriptor_sha256": "662cd323da59c0d67ffa8449912a1725b5210b19c1e821dc671d6cc7bb1dc534"
+    },
+    "A11": {
+      "template_sha256": "4ae1982ea997e25293eeb60a40ac7972971c550142995f04f5d7f4ab2ba6d8d2",
+      "descriptor_sha256": "5e9a561cd305d63111f04abfd4484ddc655c74979490c2591236d4d2eaf97f0a"
+    },
+    "A12": {
+      "template_sha256": "0b9aefebc34e0eef9dcc1312c67a542de822e04cc68377a54b6212adc804ee63",
+      "descriptor_sha256": "206243160c695458cca596546d06e6c6d099c733790528f1e6f12365d1e74dc7"
+    },
+    "Q01": {
+      "template_sha256": "fcb17b803f7c404a2579ae98e11e68bf1249502c9d167c2198ea878d5c64946d",
+      "descriptor_sha256": "0b24eb961df74b397149d808791ec365edff8fab6c98aaa41e096da2e4824099"
+    },
+    "Q02": {
+      "template_sha256": "7092c3347c9159a8663c6f51856b5183e948e4d2e09ed469742e119b414f2190",
+      "descriptor_sha256": "daed7f364b67b2ab8ff5f6556c430e060b656a6d6370c9805e0b34a846e317c7"
+    },
+    "Q03": {
+      "template_sha256": "2356146f41494c7f327c7bf0018703a031eb6040be09d51bc59e141b3ff5a47a",
+      "descriptor_sha256": "165c32062412897b130604f464c64afc1eec492fcb3238f0cea8715e45f85f5d"
+    },
+    "Q04": {
+      "template_sha256": "1ab270da14d8604ab6d901d28e3320743c3cb2339d34a75d8ecc6b3ba1c87d5e",
+      "descriptor_sha256": "b76b514c17305c5dd02eb10ef2efd8731b3a3224d2a6e10fcdc9fb94c8b3cdcd"
+    }
+  },
+  "schedule": [
+    [
+      "A02",
+      "baseline",
+      "single_forecast"
+    ],
+    [
+      "A02",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "A02",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "A02",
+      "baseline",
+      "expert_forecast"
+    ],
+    [
+      "A06",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "A06",
+      "baseline",
+      "expert_forecast"
+    ],
+    [
+      "A06",
+      "baseline",
+      "single_forecast"
+    ],
+    [
+      "A06",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "A07",
+      "baseline",
+      "single_forecast"
+    ],
+    [
+      "A07",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "A07",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "A07",
+      "baseline",
+      "expert_forecast"
+    ],
+    [
+      "A09",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "A09",
+      "baseline",
+      "expert_forecast"
+    ],
+    [
+      "A09",
+      "baseline",
+      "single_forecast"
+    ],
+    [
+      "A09",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "A11",
+      "baseline",
+      "single_forecast"
+    ],
+    [
+      "A11",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "A11",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "A11",
+      "baseline",
+      "expert_forecast"
+    ],
+    [
+      "A12",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "A12",
+      "baseline",
+      "expert_forecast"
+    ],
+    [
+      "A12",
+      "baseline",
+      "single_forecast"
+    ],
+    [
+      "A12",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "Q01",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "Q01",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "Q02",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "Q02",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "Q03",
+      "candidate",
+      "single_forecast"
+    ],
+    [
+      "Q03",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "Q04",
+      "candidate",
+      "expert_forecast"
+    ],
+    [
+      "Q04",
+      "candidate",
+      "single_forecast"
+    ]
+  ],
+  "model": {
+    "name": "deepseek-flash",
+    "provider": "deepseek",
+    "base_url": "https://api.deepseek.com",
+    "thinking": "disabled",
+    "max_tokens": 2048,
+    "temperature": "provider_default",
+    "retries": 0
+  },
+  "stopped": {
+    "used": 74,
+    "unused": 6,
+    "reason": "fixed_schedule_completed_or_insufficient_round_headroom"
+  },
+  "public_evidence": "product-quality-public-evidence-20261030.json",
+  "public_evidence_sha256": "8e76791a0423a0194a4cfdcb422a84fc096cf66c932c75c3ff0fc4e3ad61d668",
+  "ledger_sha256": "c26b5e03534c471620841b8efd94687d5ae38a0249a32b767398c2fad767a229",
+  "semantic_reviews_sha256": "0cee11178ad78c88d78ba22bcdd61064432e8e294fe713d867d841329b70736f",
+  "supplemental_regression": {
+    "run_id": "A09/infeasible-patch/single_forecast",
+    "passed": true,
+    "issued_requests": 1,
+    "source_hashes": {
+      "evaluation/product-d4-cases.json": "781a426d704496269eaef436b2a6380ed7c26cd8c5ac8d1d9aa7d4a12b92bbb9",
+      "scripts/product_eval_d4.py": "604799109bd06b581fba78fbe2f62ede021caf85df6beb5a33c237054a2e4e56",
+      "scripts/product_eval.py": "5c42e603e43476deaf6f1bde57a273f7fa7a08d4102591ecd1239fe1cd6d1af4",
+      "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+      "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+      "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+      "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+      "backend/src/homemind/agent/diagnostics.py": "93457cf1f61d49433bdac4e76341a5c26e5b3797e04cf360a88f07beea7279b8",
+      "backend/src/homemind/agent/experts.py": "153cdcee75945626ed24429e701d2cb26c692c70cfd4a2395c5bbd6b0f2884be",
+      "backend/src/homemind/agent/forecast.py": "2cdd00a76bf36e089c177a2961a1610845f1e0d6c6a3b3b953ea1ba0a3acac8c",
+      "backend/src/homemind/agent/graph.py": "b4840ebbf7e3f476408df1d5a1f1067b1ff15d3eaf1b54de0b4fbb13b1165e3e",
+      "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+      "backend/src/homemind/agent/pipeline.py": "2011e3462c4db6574b09eb43958f61c1ddc0f66a652a9470d726ac1710e41d9c",
+      "backend/src/homemind/agent/prompts.py": "d0091c2be9565854c1b8fc3c8a5cdebfca8ad2d4f2dd0ce6093d9fb2e582e7d9",
+      "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+      "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+      "backend/src/homemind/agent/service.py": "d597ebcc8099dac8331dab16e8dbb37523661a264c15027f934da52b91a0f677",
+      "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+      "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+      "backend/src/homemind/app.py": "df402585b610cae8d7c86700b6e895258dfad3cd52063ca3a4e95541238f36c1",
+      "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+      "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+      "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+      "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+      "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+      "backend/src/homemind/migrations/versions/0001_m3.py": "c3b964979fbcb0fbb747d3931253267b29490cadcbb1d477e193404b9f57f005",
+      "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+      "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+      "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+      "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+      "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+      "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+      "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+      "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+      "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+      "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+      "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+      "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+      "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+      "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+      "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+      "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+      "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b",
+      "evaluation/product-d5-cases.json": "d5f7e718c131c49718bd46bcce410cd8a55a46fa04555f1a7df883d7bffd6b66",
+      "scripts/product_eval_d5.py": "5cb66872ebc5ab18236f4bf600b1297cded6d74ed452d8aa94758809f1cbe650",
+      "scripts/product_eval_d4_followup.py": "b5dea90477e6e0bfa64fc3bbb36ba6689758c7c5be01e6d20b2177786f0582bc",
+      "evaluation/probes/product_d4_audit.py": "e68f627f7d0544d62c34afb1e44258bf15ddfb048ff4d10e007672b10e233a06",
+      "scripts/tests/test_product_eval_d5.py": "9e80c7a881e7ed2108498d9d3ed8487246474a0c033723507a09d975f0556bb4",
+      "scripts/product_eval_quality.py": "b42f1ad323ea9235a9a972dc188a54a8ed3a2c7bd3093b77c0461661ddbe6479",
+      "evaluation/product-quality-cases.json": "f10cc70ef9f19e2dbb7062855c288138656c1d4a01ecbeb7f90d1e710c3dd844",
+      "scripts/tests/test_product_eval_quality.py": "9a25c994c7e1f9c59a64f5e8c23d9db89feca178333e57fbe8507817857f8635"
+    },
+    "original_record_sha256": "72175cf35cf7a50626421efed543f8b0cf7cd834c83a0b88eaec18ed0d83c756",
+    "question": "本轮所有允许的方案都无法在指定期限内达到目标。请明确是否修改温度、期限或允许的风速？",
+    "semantic_review": {
+      "question_sha256": "8701c3b31e974165701bc222b0f6a10a0d0ac0139324cec4f88a833c3c4f8fa9",
+      "evidence_sha256": "e6fc0a35e65a094eaefba6696b6df8a87d681e757db28889b6a7f0ceadaec19b",
+      "correct": true,
+      "reason": "保留原8分钟/26℃/低风/帘全开，交给真实预测器确认全部不可行，明确询问可放宽哪项硬约束；0动作。",
+      "reviewer": "development_assistant_author_review",
+      "limitation": "AI-assisted author audit, not independent human annotation"
+    },
+    "note": "New-patch one-case verification; excluded from original32 pass rates and token comparison."
+  },
+  "total_authorized_usage": {
+    "limit": 80,
+    "initial_comparison": 74,
+    "supplemental": 1,
+    "used": 75,
+    "unused_stopped": 5
+  }
+}
