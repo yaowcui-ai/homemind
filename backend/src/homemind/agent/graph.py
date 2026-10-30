@@ -88,6 +88,12 @@ async def run_planner(
         + json.dumps(output_adapter.json_schema(), ensure_ascii=False)
     )
     if public_context is not None or role_instructions is not None:
+        if goal_stage:
+            public_context = dict(public_context or {}) | {
+                "user_request_history": [
+                    item["text"] for item in conversation if item["role"] == "user"
+                ]
+            }
         prompt = forecast_prompt(
             output_adapter,
             public_context,

@@ -19,6 +19,7 @@ services:
     extends:
       file: ./deploy/compose.mysql.yaml
       service: mysql
+    restart: unless-stopped
 
   migrate:
     <<: *app

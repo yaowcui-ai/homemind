@@ -7,8 +7,10 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, Tool
 
 
 class ModelFailure(Exception):
-    def __init__(self, code):
+    def __init__(self, code, *, http_status=None, transport_error=None):
         self.code = code
+        self.http_status = http_status
+        self.transport_error = transport_error
         super().__init__(code)
 
 
@@ -68,7 +70,7 @@ class DeepSeekModel:
                     },
                 )
                 if response.status_code != 200:
-                    raise ModelFailure("model_unavailable")
+                    raise ModelFailure("model_unavailable", http_status=response.status_code)
                 body = response.json()
                 raw = body["choices"][0]["message"]
                 calls = [
@@ -96,8 +98,10 @@ class DeepSeekModel:
                     ),
                 )
         except httpx.TimeoutException:
-            raise ModelFailure("model_timeout") from None
+            raise ModelFailure("model_timeout", transport_error="timeout") from None
         except ModelFailure:
             raise
-        except (httpx.HTTPError, ValueError, KeyError, TypeError):
-            raise ModelFailure("model_unavailable") from None
+        except httpx.HTTPError:
+            raise ModelFailure("model_unavailable", transport_error="http_error") from None
+        except (ValueError, KeyError, TypeError):
+            raise ModelFailure("model_unavailable", transport_error="invalid_response") from None
