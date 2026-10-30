@@ -11,16 +11,12 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 
 
-@pytest.mark.skipif(
-    shutil.which("docker") is None, reason="Requires Compose CLI, not its engine"
-)
+@pytest.mark.skipif(shutil.which("docker") is None, reason="Requires Compose CLI, not its engine")
 def test_quoted_model_key_is_unquoted_in_both_container_environments(tmp_path):
     (tmp_path / "backend").mkdir()
     (tmp_path / "deploy").mkdir()
     shutil.copyfile(ROOT / "compose.yaml", tmp_path / "compose.yaml")
-    shutil.copyfile(
-        ROOT / "deploy/compose.mysql.yaml", tmp_path / "deploy/compose.mysql.yaml"
-    )
+    shutil.copyfile(ROOT / "deploy/compose.mysql.yaml", tmp_path / "deploy/compose.mysql.yaml")
     (tmp_path / "backend/.env").write_text(
         'HOMEMIND_MODEL_API_KEY="synthetic_quoted_model_key"\n', encoding="utf-8"
     )
@@ -42,11 +38,7 @@ def test_quoted_model_key_is_unquoted_in_both_container_environments(tmp_path):
             "json",
         ],
         cwd=tmp_path,
-        env={
-            k: v
-            for k, v in os.environ.items()
-            if not k.startswith(("HOMEMIND_", "COMPOSE_"))
-        },
+        env={k: v for k, v in os.environ.items() if not k.startswith(("HOMEMIND_", "COMPOSE_"))},
         check=True,
         capture_output=True,
         text=True,
@@ -55,6 +47,5 @@ def test_quoted_model_key_is_unquoted_in_both_container_environments(tmp_path):
     services = json.loads(result.stdout)["services"]
     for name in ("api", "migrate"):
         assert (
-            services[name]["environment"]["HOMEMIND_MODEL_API_KEY"]
-            == "synthetic_quoted_model_key"
+            services[name]["environment"]["HOMEMIND_MODEL_API_KEY"] == "synthetic_quoted_model_key"
         )

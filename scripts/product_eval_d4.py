@@ -243,7 +243,8 @@ def hard_plan_matches(task, gold, forecast):
         and sorted(plan.get("actions", []), key=lambda a: a["entity_id"])
         == sorted(selected["actions"], key=lambda a: a["entity_id"])
         and plan.get("ready_in_minutes") == gold["ready_in_minutes"]
-        and plan.get("temperatures") == [dict(room_id=gold["room_id"], target=26)]
+        and plan.get("temperatures")
+        == [dict(room_id=gold["room_id"], target=gold["target_temperature_c"])]
         and set(plan.get("keep_entity_ids", [])) == set(run["goal"]["keep_entity_ids"])
         and set(plan.get("protected_room_ids", [])) == set(gold["protected_room_ids"])
     )
@@ -310,7 +311,7 @@ def score(case, task, gold, forecast, initial, final, confirmation):
             and evidence.get("checked_at_minutes") == due
             and evidence.get("outcome") == "verified"
             and room["temperature_c"] is not None
-            and room["temperature_c"] <= 26
+            and room["temperature_c"] <= gold["target_temperature_c"]
         )
         result["goal_completed"] = completed
         result["case_pass"] = completed and result["preference_correct"]
@@ -349,6 +350,7 @@ def run_trial(
     phase="phase1",
     capture=None,
     approve_plan=None,
+    follow_up=None,
 ):
     path = Path(pair["directory"]) / (phase + "-" + strategy + ".sqlite")
     backup(pair["template"], path)
@@ -378,6 +380,12 @@ def run_trial(
                 final_task=task,
                 planning_api_ms=planning_ms,
             )
+        journey = None
+        if follow_up is not None:
+            task, extra_ms, journey = follow_up(client, task)
+            planning_ms += extra_ms
+            if capture is not None:
+                capture.update(final_task=task, planning_api_ms=planning_ms, journey=journey)
         confirmation = task["status"] == "waiting_confirmation"
         # The same scripted reviewer approves every hard-valid original choice,
         # including preference-suboptimal choices. Never substitute the oracle choice.
@@ -444,6 +452,7 @@ def run_trial(
             oracle_failure=pair["oracle_failure"],
             initial_snapshot=initial,
             first_task=first,
+            journey=journey,
             final_task=task,
             final_snapshot=final,
             scope_energy_wh=scope_energy,

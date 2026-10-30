@@ -79,7 +79,7 @@ def gold_from_snapshot(case, snapshot):
         room_id=room_id,
         climate_entity_id=entities["climate"],
         cover_entity_id=entities["cover"],
-        target_temperature_c=26,
+        target_temperature_c=case.get("target_temperature_c", 26),
         ready_in_minutes=case["minutes"],
         priority=case["priority"],
         allowed_fan_modes=case["fans"],
@@ -89,7 +89,7 @@ def gold_from_snapshot(case, snapshot):
     )
 
 
-def prepare_pair(case, directory):
+def prepare_pair(case, directory, *, setup=None):
     """Private exact SQLite template and oracle; neither is given to the model."""
     sys.path.insert(0, str(ROOT / "backend/src"))
     from homemind.agent.forecast import forecast_plan
@@ -177,6 +177,8 @@ def prepare_pair(case, directory):
             d4.base.checked(
                 client.post("/simulation/events", json={"entity_id": secondary, "known": False})
             )
+        if setup is not None:
+            setup(client, devices, room_id)
         initial = d4.base.checked(client.get("/simulation"))
         gold = gold_from_snapshot(case, initial)
         username = d4.base.checked(client.get("/auth/session"))["user"]["username"]
