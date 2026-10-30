@@ -35,4 +35,10 @@ docker compose --env-file .local/mysql.env up -d --build --wait
 
 ## 发布
 
-发布前检查本安装实际密钥/口令与Git历史、追踪文件，排除本机配置、账号数据库、私有文档。公开源码及GitHub Actions的实际结果待完成后补记，不提前计通过。
+发布前扫描Git历史及暂存索引607个blob，本安装实际模型密钥、数据库口令、alice重置密码和合成验收密码无匹配；追踪文件没有本机配置、账号数据库或私有文档。源码、92例目录、148次安全投影及简历已正常推送公开main，发布提交1faa956；远端简历已读取核对。
+
+首轮[云端检查](https://github.com/yaowcui-ai/homemind/actions/runs/41061897592)后端344项通过，根脚本100过1失败：默认浅检出缺固定基线491df1f，无法执行真实Git版本隔离测试。保留原失败，只将checkout设fetch-depth:0；没有跳过测试或更改基线。相关测试本机1项通过，修复提交6e931b8已推送，新的完整CI待结束后补记。
+
+代码与证据另行只读审查：23项相关离线测试通过，无Critical/Important问题。审查指出补测入口未检查已保存的父manifest/描述符哈希，冻结依赖清单也未完全覆盖传递导入的评分文件；这是下次实验前应加强的协议防改检查。此次另核对全部48个初态及pair.json与原manifest哈希一致，所有实际配对gold/oracle相同，不影响当前成绩。为保留已封账源码的原始哈希，本轮不改旧运行入口或重跑模型；不能称协议已防御所有本地文件篡改。
+
+最终修复提交6e931b8的[完整云端CI](https://github.com/yaowcui-ai/homemind/actions/runs/41062449178)实际全绿：真实MySQL迁移/后端344 passed（100.45秒）、脚本101 passed（48.15秒）、Ruff/format与兼容性、真实API进程重启及任务/幂等保持、前端93项测试/lint/build、普通浏览器21 passed、受控Agent浏览器17 passed。没有真实模型调用。本段及最终接续仅Markdown补记，不改变已验源码或封账数据，不再触发全套CI。

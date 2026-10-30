@@ -2,6 +2,8 @@
 
 更新日期：2026-10-30（Asia/Shanghai）
 
+**本轮交付完成：** 最新源码6e931b8已公开推送，修复CI浅检出后[完整云端检查](https://github.com/yaowcui-ai/homemind/actions/runs/41062449178)实际通过（后端344、脚本101、前端93、浏览器21+17及实际重启）。Docker仍运行最终V2并保留原家庭；案例/真实对照/简历已同步，360请求封账。不自动扩展功能，Figma原额度缺口不变。[验收](verification/expanded-evaluation-delivery.md)。下方发布进行中为历史过程记录。
+
 当前追加：[扩充评测与调优](product/expanded-evaluation.md)真实运行已结束。目录92例；本轮48不同场景/148运行/360请求封账，24开发同条件S1 19→21/24、M21→23/24；另12新例两组均通过。原H接口失败与V1回归保留，不夸大M收益。最新V2已在Docker重建并通过浏览器、原数据保留及API重启核验；[AI全栈简历](resume/homemind-ai-fullstack.md)更新。公开发布/云端CI进行中，完成后补记；Figma缺口不变，不自动扩展功能。
 
 最新追加：[本机完整 Docker 部署](verification/local-docker.md)已完成。新增 React/Nginx、FastAPI、受保护迁移与原 MySQL 的一键 Compose；默认网页18080。真实构建、浏览器操作、API及整套停止重启和原数据保留验证通过，模型配置仅运行时注入，无新增模型调用。属于本机部署，不代表公网或旧M10完整上线。
