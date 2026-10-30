@@ -207,7 +207,8 @@ def test_public_ledger_facts_disagreement_and_confirm_replay(client, monkeypatch
     assert "SECRET" not in str(task) and "PRIVATE-PROVIDER" not in str(task)
     facts = {role: data for role, _messages, _tools, data in model.calls}
     for role in ("comfort", "energy"):
-        assert facts[role]["home"] == before and facts[role]["goal"] == contract
+        assert facts[role]["home"] == {k: v for k, v in before.items() if k != "recent_events"}
+        assert facts[role]["goal"] == contract
         assert len(facts[role]["forecast"]["candidates"]) == 4
         assert "advice" not in facts[role]
         sent = next(call for call in model.calls if call[0] == role)
@@ -485,38 +486,33 @@ def test_cancellation_waits_for_all_parallel_role_accounting(client, completed_p
     assert home(client) == before
 
 
-def test_round_six_and_task_twelve_request_limits_and_reply_clears_current_roles(client):
+def test_four_call_rounds_respect_task_limit_and_reply_clears_current_roles(client):
     before = home(client)
-    count = 0
-
-    async def coordinator():
-        nonlocal count
-        count += 1
-        return (
-            dict(kind="clarify", question="请补充偏好", options=[])
-            if count % 3 == 0
-            else read_message()
-        )
-
-    model = ExpertModel(before, coordinator=coordinator)
+    model = ExpertModel(before, coordinator=dict(kind="clarify", question="请补充偏好", options=[]))
     task = expert(client, model).json()
-    assert task["status"] == "waiting_input" and task["agent_run"]["model_calls"] == 6
+    assert task["status"] == "waiting_input" and task["agent_run"]["model_calls"] == 4
     task = client.post(
         f"/tasks/{task['id']}/reply",
         json={"text": "能耗优先", "expected_turn": 0},
         headers={"Idempotency-Key": "d3-budget-reply-1"},
     ).json()
-    assert task["status"] == "waiting_input" and task["agent_run"]["model_calls"] == 12
+    assert task["status"] == "waiting_input" and task["agent_run"]["model_calls"] == 8
     task = client.post(
         f"/tasks/{task['id']}/reply",
         json={"text": "能耗优先", "expected_turn": 1},
         headers={"Idempotency-Key": "d3-budget-reply-2"},
     ).json()
+    assert task["status"] == "waiting_input" and task["agent_run"]["model_calls"] == 12
+    task = client.post(
+        f"/tasks/{task['id']}/reply",
+        json={"text": "能耗优先", "expected_turn": 2},
+        headers={"Idempotency-Key": "d3-budget-reply-3"},
+    ).json()
     run = task["agent_run"]
     assert task["status"] == "failed" and run["failure_code"] == "task_model_budget"
     assert len(model.calls) == 12 and run["model_calls"] == 12
     assert run["goal"] is None and run["forecast"] is None
-    assert [r["model_calls"] for r in run["rounds"]] == [6, 6, 0]
+    assert [r["model_calls"] for r in run["rounds"]] == [4, 4, 4, 0]
     assert all(r["status"] == "skipped" and r["advice"] is None for r in run["role_runs"])
     assert task["actions"] == [] and home(client) == before
 
@@ -568,33 +564,23 @@ def test_atomic_budget_insufficiency_never_counts_unissued_phantom_call(used, ex
 
 def test_zero_call_round_preserves_known_task_usage(client):
     before = home(client)
-    count = 0
-
-    async def coordinator():
-        nonlocal count
-        count += 1
-        return (
-            message(dict(kind="clarify", question="请补充", options=[]))
-            if count % 3 == 0
-            else read_message()
-        )
 
     model = ExpertModel(
         before,
         goal=message(goal(before)),
         comfort=message(advice("comfort")),
         energy=message(advice("energy")),
-        coordinator=coordinator,
+        coordinator=message(dict(kind="clarify", question="请补充", options=[])),
     )
     task = expert(client, model).json()
-    for turn in range(2):
+    for turn in range(3):
         task = client.post(
             f"/tasks/{task['id']}/reply",
             json={"text": "能耗优先", "expected_turn": turn},
             headers={"Idempotency-Key": f"known-budget-reply-{turn}"},
         ).json()
     assert task["agent_run"]["model_calls"] == 12
-    assert task["agent_run"]["usage"] == dict(input_tokens=92, output_tokens=20)
+    assert task["agent_run"]["usage"] == dict(input_tokens=120, output_tokens=24)
 
 
 @pytest.mark.parametrize("drift", ["revision", "model_version"])

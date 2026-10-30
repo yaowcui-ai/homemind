@@ -334,8 +334,8 @@ def review_binding(record):
     )
 
 
-def score_record(record, review=None):
-    case = next(c for c in load_cases() if c["id"] == record["case_id"])
+def score_record(record, review=None, *, case=None):
+    case = case or next(c for c in load_cases() if c["id"] == record["case_id"])
     if case["kind"] == "execute":
         normalized = deepcopy(record["final_task"])
         run = normalized.get("agent_run") or {}

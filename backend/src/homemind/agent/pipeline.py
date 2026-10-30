@@ -168,6 +168,11 @@ async def run_pipeline(model, snapshot, preferences, conversation, engine, reque
 
     async def expert(role):
         # Each branch owns its context, messages and result slot. Neither sees peer Advice.
+        criterion = (
+            "minimize (first_observed_goal_minute, energy_wh)"
+            if role == "comfort"
+            else "minimize (energy_wh, first_observed_goal_minute)"
+        )
         await invoke_stage(
             role,
             output_adapter=ADVICE_OUTPUT,
@@ -182,8 +187,10 @@ async def run_pipeline(model, snapshot, preferences, conversation, engine, reque
                 "If original text conflicts with the goal, clarify. Refuse unsupported requests. "
                 "Recommend deadline_met candidates. Evidence is goal or candidate:<actual id>; "
                 "recommendations must cite their candidate. Clarify/refuse require null candidate. "
-                "Comfort evaluates first observed goal time; energy evaluates same-scope Wh. "
-                "Provide a short public explanation, never private reasoning."
+                f"Your specialist criterion is {criterion} among ALL deadline_met candidates. "
+                "The coordinator resolves tradeoffs using the user's priority. "
+                "Provide at most two short public sentences citing forecast numbers, "
+                "never private reasoning."
             ),
         )
         return {role + "_done": True}
@@ -218,6 +225,7 @@ async def run_pipeline(model, snapshot, preferences, conversation, engine, reque
             "coordinator_plan",
             output_adapter=SELECTION_OUTPUT,
             model_budget=stage_budget,
+            allow_tools=False,
             public_context=context,
         )
         result["output"], result["failure_code"] = stage["output"], stage["failure_code"]

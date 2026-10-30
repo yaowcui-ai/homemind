@@ -437,7 +437,7 @@ def test_experimental_creation_key_conflicts_with_standard(client):
     assert response.status_code == 409
 
 
-def test_experimental_round_task_budgets_and_unknown_usage(client):
+def test_experimental_rejects_redundant_tool_with_unknown_goal_usage(client):
     from langchain_core.messages import AIMessage
 
     before = home(client)
@@ -447,44 +447,37 @@ def test_experimental_round_task_budgets_and_unknown_usage(client):
         tool_calls=[dict(id="read", name="read_home", args={}, type="tool_call")],
         usage_metadata=dict(input_tokens=10, output_tokens=2, total_tokens=12),
     )
-    # Goal + 5 issued planner requests per round; final planner read cannot trigger a sixth.
+    # All frozen facts are supplied; a redundant tool must not start an extra model round.
     model = ScriptedModel(contract, read, read, read, read, read)
     task = experimental(client, model).json()
-    assert task["status"] == "failed" and task["agent_run"]["model_calls"] == 6
+    assert task["status"] == "failed" and task["agent_run"]["model_calls"] == 2
     assert (
-        task["agent_run"]["failure_code"] == "model_budget" and task["agent_run"]["usage"] is None
+        task["agent_run"]["failure_code"] == "invalid_tool" and task["agent_run"]["usage"] is None
     )
     assert task["actions"] == [] and home(client) == before
 
 
-def test_experimental_cumulative_budget_stops_before_thirteenth_request(client):
-    from langchain_core.messages import AIMessage
+def test_experimental_exhausted_task_budget_issues_no_request():
+    from homemind.agent.pipeline import run_pipeline
+    from homemind.simulation.service import SimulationService
 
-    before = home(client)
-    contract = goal(before)
-    read = AIMessage(
-        content="", tool_calls=[dict(id="r", name="read_home", args={}, type="tool_call")]
+    engine = SimulationService()
+    before = engine.snapshot()
+    model = ScriptedModel(goal(before))
+    result = asyncio.run(
+        run_pipeline(
+            model,
+            before,
+            {},
+            [{"role": "user", "text": "energy first"}],
+            engine,
+            dict(text="energy first", strategy="single_forecast"),
+            12,
+        )
     )
-    question = dict(kind="clarify", question="Please specify preference", options=[])
-    model = ScriptedModel(
-        contract, read, read, read, read, question, contract, read, read, read, read, question
-    )
-    task = experimental(client, model).json()
-    assert task["status"] == "waiting_input" and task["agent_run"]["model_calls"] == 6
-    task = client.post(
-        f"/tasks/{task['id']}/reply",
-        json=dict(text="energy first", expected_turn=0),
-        headers={"Idempotency-Key": "d2-budget-reply-1"},
-    ).json()
-    assert task["status"] == "waiting_input" and task["agent_run"]["model_calls"] == 12
-    task = client.post(
-        f"/tasks/{task['id']}/reply",
-        json=dict(text="energy first", expected_turn=1),
-        headers={"Idempotency-Key": "d2-budget-reply-2"},
-    ).json()
-    assert task["status"] == "failed" and task["agent_run"]["model_calls"] == 12
-    assert task["agent_run"]["failure_code"] == "task_model_budget" and len(model.calls) == 12
-    assert task["agent_run"]["goal"] is None and task["agent_run"]["forecast"] is None
+    assert result["failure_code"] == "task_model_budget" and not model.calls
+    assert result["model_calls"] == 0 and result["goal"] is None and result["forecast"] is None
+    assert engine.snapshot() == before
 
 
 @pytest.mark.parametrize("phase", ["goal", "planner"])
