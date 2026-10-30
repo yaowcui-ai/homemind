@@ -6,7 +6,9 @@ LangGraph为主、LangChain为辅；Agent只读事实，两位专家并行提出
 
 [AI全栈简历项目介绍](docs/resume/homemind-ai-fullstack.md) · [系统与技术方案](docs/superpowers/specs/2026-10-28-product-d1-design.md) · [真实开发对照](docs/product/product-d4-evaluation.md) · [错误诊断与定向调优](docs/product/product-d4-followup.md) · [GitHub](https://github.com/yaowcui-ai/homemind)
 
-最新[定向质量调优](docs/product/product-quality-tuning.md)修复优先级误判、目标字段漂移和证据引用问题，移除冗余读取：6组固定场景对照中，M通过数由3/6变为6/6，目标提取输入Token减少33.06%；4个预冻结新场景的S1/M均通过。首轮S1仍5/6，新增的不可行目标拒绝回归已另补1次验证通过，原失败未覆盖。这些是小范围定向结果，不能当作产品总体准确率或M普遍优势。75/80次请求已停止，完整[逐例证据](evaluation/results/product-quality-public-evidence-20261030.json)保留。
+最新[扩充评测与调优](docs/product/expanded-evaluation.md)：案例目录92例（68开发/24验证），本轮实际覆盖48个不同合成场景、148次运行。24个固定开发场景中，S1由19/24变21/24，M由21/24变23/24；另12个最终版冻结新场景两策略均12/12。通过房间实体索引、精确候选对比、专家证据白名单及用户约束历史修复真实失败。原验证集遇到连续接口异常，2/12与3/12的原结果完整保留，不用新集覆盖，也不宣称M普遍优势。[逐例结果表](docs/product/expanded-evaluation-matrix.md) · [48例输入与预期](docs/product/expanded-evaluation-cases.md) · [最终12例](docs/product/final-validation-cases.md) · [148次任务证据](evaluation/results/product-expanded-public-evidence-20261030.json)。本轮360次真实请求已停止。
+
+上一轮[小范围质量调优](docs/product/product-quality-tuning.md)及其75次请求、33.06%目标阶段输入Token下降作为历史保留，不移作本轮指标。
 
 前一轮 [D5 冻结新集验收](docs/product/product-d5-evaluation.md)：首轮 S1 9/12、M 6/12，原数据及[证据](evaluation/results/product-d5-public-evidence-20261029.json)保持不变。工程交付与历史云端 CI 见[验证记录](docs/verification/final-delivery.md)。
 
@@ -67,6 +69,8 @@ docker compose --env-file .local/mysql.env stop
 ```
 
 重新打开仍用同一条 `up -d --build --wait` 命令。更新源码后也用该命令重新构建；不要加 `-v` 删除数据卷。不要在同一家庭同时使用本机 API 与容器 API 执行任务，当前执行占用仍是单 API 进程语义。
+
+MySQL、API和网页均配置`unless-stopped`，避免Docker引擎重启后只有API/网页恢复、数据库仍停止；手动`stop`后仍需执行上述启动命令。迁移是一次性容器，成功后显示Exited(0)正常。最新提示、数据保留、浏览器及重启检查见[本轮部署验收](docs/verification/expanded-evaluation-delivery.md)。
 
 排错：`docker compose --env-file .local/mysql.env logs --tail 80 migrate api web`。若出现缺少本地配置，先完成首次准备；若迁移失败，检查安装标识和数据库状态，不能删卷绕过。18080 端口被占用时先核对占用来源，不停止其他项目；更换网页端口需同步修改 Compose 中的端口与 `HOMEMIND_ALLOWED_ORIGINS`。不要把 `docker compose config` 的完整输出发到聊天，它可能展开凭据；只检查配置可用 `config --quiet`。
 

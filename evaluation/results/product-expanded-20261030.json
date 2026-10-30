@@ -1,0 +1,5069 @@
+{
+  "date": "2026-10-30",
+  "model": {
+    "name": "deepseek-flash",
+    "provider": "deepseek",
+    "base_url": "https://api.deepseek.com",
+    "thinking": "disabled",
+    "max_tokens": 2048,
+    "temperature": "provider_default",
+    "retries": 0
+  },
+  "total_runs": 148,
+  "unique_cases": 48,
+  "real_requests": 360,
+  "limit": 360,
+  "groups": {
+    "baseline/single_forecast": {
+      "runs": 24,
+      "passed": 19,
+      "issued_requests": 45,
+      "known_usage_requests": 45,
+      "unknown_usage_requests": 0,
+      "input_tokens": 162479,
+      "output_tokens": 10480,
+      "planning_api_ms_median": 7054.5,
+      "metrics": {
+        "case_pass": {
+          "numerator": 19,
+          "denominator": 24
+        },
+        "understanding_correct": {
+          "numerator": 20,
+          "denominator": 24
+        },
+        "goal_completed": {
+          "numerator": 16,
+          "denominator": 17
+        },
+        "preference_correct": {
+          "numerator": 15,
+          "denominator": 17
+        },
+        "exception_correct": {
+          "numerator": 8,
+          "denominator": 11
+        },
+        "all_actions_verified": {
+          "numerator": 16,
+          "denominator": 17
+        },
+        "journey_completed": {
+          "numerator": 4,
+          "denominator": 4
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 24
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 24
+        }
+      },
+      "failed_run_ids": [
+        "baseline/X01/single_forecast",
+        "baseline/X08/single_forecast",
+        "baseline/X14/single_forecast",
+        "baseline/X15/single_forecast",
+        "baseline/X16/single_forecast"
+      ],
+      "family": {
+        "不可行约束": {
+          "passed": 1,
+          "runs": 4
+        },
+        "保留与保护": {
+          "passed": 4,
+          "runs": 4
+        },
+        "偏好排序": {
+          "passed": 3,
+          "runs": 4
+        },
+        "多轮澄清": {
+          "passed": 4,
+          "runs": 4
+        },
+        "目标与单位": {
+          "passed": 3,
+          "runs": 4
+        },
+        "读数完整性": {
+          "passed": 4,
+          "runs": 4
+        }
+      }
+    },
+    "baseline/expert_forecast": {
+      "runs": 24,
+      "passed": 21,
+      "issued_requests": 78,
+      "known_usage_requests": 78,
+      "unknown_usage_requests": 0,
+      "input_tokens": 277615,
+      "output_tokens": 13642,
+      "planning_api_ms_median": 10616.5,
+      "metrics": {
+        "case_pass": {
+          "numerator": 21,
+          "denominator": 24
+        },
+        "understanding_correct": {
+          "numerator": 23,
+          "denominator": 24
+        },
+        "goal_completed": {
+          "numerator": 16,
+          "denominator": 17
+        },
+        "preference_correct": {
+          "numerator": 15,
+          "denominator": 17
+        },
+        "exception_correct": {
+          "numerator": 10,
+          "denominator": 11
+        },
+        "all_actions_verified": {
+          "numerator": 16,
+          "denominator": 17
+        },
+        "journey_completed": {
+          "numerator": 3,
+          "denominator": 4
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 24
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 24
+        }
+      },
+      "failed_run_ids": [
+        "baseline/X01/expert_forecast",
+        "baseline/X14/expert_forecast",
+        "baseline/X23/expert_forecast"
+      ],
+      "family": {
+        "不可行约束": {
+          "passed": 3,
+          "runs": 4
+        },
+        "保留与保护": {
+          "passed": 4,
+          "runs": 4
+        },
+        "偏好排序": {
+          "passed": 4,
+          "runs": 4
+        },
+        "多轮澄清": {
+          "passed": 3,
+          "runs": 4
+        },
+        "目标与单位": {
+          "passed": 3,
+          "runs": 4
+        },
+        "读数完整性": {
+          "passed": 4,
+          "runs": 4
+        }
+      }
+    },
+    "candidate/single_forecast": {
+      "runs": 24,
+      "passed": 21,
+      "issued_requests": 43,
+      "known_usage_requests": 41,
+      "unknown_usage_requests": 2,
+      "input_tokens": 162832,
+      "output_tokens": 8636,
+      "planning_api_ms_median": 6507.5,
+      "metrics": {
+        "case_pass": {
+          "numerator": 21,
+          "denominator": 24
+        },
+        "understanding_correct": {
+          "numerator": 21,
+          "denominator": 24
+        },
+        "goal_completed": {
+          "numerator": 14,
+          "denominator": 17
+        },
+        "preference_correct": {
+          "numerator": 14,
+          "denominator": 17
+        },
+        "exception_correct": {
+          "numerator": 10,
+          "denominator": 11
+        },
+        "all_actions_verified": {
+          "numerator": 14,
+          "denominator": 17
+        },
+        "journey_completed": {
+          "numerator": 3,
+          "denominator": 4
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 24
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 24
+        }
+      },
+      "failed_run_ids": [
+        "candidate/X06/single_forecast",
+        "candidate/X07/single_forecast",
+        "candidate/X24/single_forecast"
+      ],
+      "family": {
+        "不可行约束": {
+          "passed": 4,
+          "runs": 4
+        },
+        "保留与保护": {
+          "passed": 4,
+          "runs": 4
+        },
+        "偏好排序": {
+          "passed": 2,
+          "runs": 4
+        },
+        "多轮澄清": {
+          "passed": 3,
+          "runs": 4
+        },
+        "目标与单位": {
+          "passed": 4,
+          "runs": 4
+        },
+        "读数完整性": {
+          "passed": 4,
+          "runs": 4
+        }
+      }
+    },
+    "candidate/expert_forecast": {
+      "runs": 24,
+      "passed": 23,
+      "issued_requests": 79,
+      "known_usage_requests": 78,
+      "unknown_usage_requests": 1,
+      "input_tokens": 305062,
+      "output_tokens": 13267,
+      "planning_api_ms_median": 10625.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 23,
+          "denominator": 24
+        },
+        "understanding_correct": {
+          "numerator": 23,
+          "denominator": 24
+        },
+        "goal_completed": {
+          "numerator": 17,
+          "denominator": 17
+        },
+        "preference_correct": {
+          "numerator": 17,
+          "denominator": 17
+        },
+        "exception_correct": {
+          "numerator": 10,
+          "denominator": 11
+        },
+        "all_actions_verified": {
+          "numerator": 17,
+          "denominator": 17
+        },
+        "journey_completed": {
+          "numerator": 4,
+          "denominator": 4
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 24
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 24
+        }
+      },
+      "failed_run_ids": [
+        "candidate/X16/expert_forecast"
+      ],
+      "family": {
+        "不可行约束": {
+          "passed": 3,
+          "runs": 4
+        },
+        "保留与保护": {
+          "passed": 4,
+          "runs": 4
+        },
+        "偏好排序": {
+          "passed": 4,
+          "runs": 4
+        },
+        "多轮澄清": {
+          "passed": 4,
+          "runs": 4
+        },
+        "目标与单位": {
+          "passed": 4,
+          "runs": 4
+        },
+        "读数完整性": {
+          "passed": 4,
+          "runs": 4
+        }
+      }
+    },
+    "holdout/single_forecast": {
+      "runs": 12,
+      "passed": 2,
+      "issued_requests": 15,
+      "known_usage_requests": 5,
+      "unknown_usage_requests": 10,
+      "input_tokens": 20469,
+      "output_tokens": 1233,
+      "planning_api_ms_median": 5227.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 2,
+          "denominator": 12
+        },
+        "understanding_correct": {
+          "numerator": 3,
+          "denominator": 12
+        },
+        "goal_completed": {
+          "numerator": 2,
+          "denominator": 8
+        },
+        "preference_correct": {
+          "numerator": 2,
+          "denominator": 8
+        },
+        "exception_correct": {
+          "numerator": 0,
+          "denominator": 6
+        },
+        "all_actions_verified": {
+          "numerator": 2,
+          "denominator": 8
+        },
+        "journey_completed": {
+          "numerator": 0,
+          "denominator": 2
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 12
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 12
+        }
+      },
+      "failed_run_ids": [
+        "holdout/H02/single_forecast",
+        "holdout/H04/single_forecast",
+        "holdout/H05/single_forecast",
+        "holdout/H06/single_forecast",
+        "holdout/H07/single_forecast",
+        "holdout/H08/single_forecast",
+        "holdout/H09/single_forecast",
+        "holdout/H10/single_forecast",
+        "holdout/H11/single_forecast",
+        "holdout/H12/single_forecast"
+      ],
+      "family": {
+        "不可行约束": {
+          "passed": 0,
+          "runs": 2
+        },
+        "保留与保护": {
+          "passed": 0,
+          "runs": 2
+        },
+        "偏好排序": {
+          "passed": 1,
+          "runs": 2
+        },
+        "多轮澄清": {
+          "passed": 0,
+          "runs": 2
+        },
+        "目标与单位": {
+          "passed": 1,
+          "runs": 2
+        },
+        "读数完整性": {
+          "passed": 0,
+          "runs": 2
+        }
+      }
+    },
+    "holdout/expert_forecast": {
+      "runs": 12,
+      "passed": 3,
+      "issued_requests": 24,
+      "known_usage_requests": 15,
+      "unknown_usage_requests": 9,
+      "input_tokens": 59726,
+      "output_tokens": 2696,
+      "planning_api_ms_median": 5242.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 3,
+          "denominator": 12
+        },
+        "understanding_correct": {
+          "numerator": 4,
+          "denominator": 12
+        },
+        "goal_completed": {
+          "numerator": 3,
+          "denominator": 8
+        },
+        "preference_correct": {
+          "numerator": 3,
+          "denominator": 8
+        },
+        "exception_correct": {
+          "numerator": 0,
+          "denominator": 6
+        },
+        "all_actions_verified": {
+          "numerator": 3,
+          "denominator": 8
+        },
+        "journey_completed": {
+          "numerator": 0,
+          "denominator": 2
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 12
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 12
+        }
+      },
+      "failed_run_ids": [
+        "holdout/H04/expert_forecast",
+        "holdout/H05/expert_forecast",
+        "holdout/H06/expert_forecast",
+        "holdout/H07/expert_forecast",
+        "holdout/H08/expert_forecast",
+        "holdout/H09/expert_forecast",
+        "holdout/H10/expert_forecast",
+        "holdout/H11/expert_forecast",
+        "holdout/H12/expert_forecast"
+      ],
+      "family": {
+        "不可行约束": {
+          "passed": 0,
+          "runs": 2
+        },
+        "保留与保护": {
+          "passed": 0,
+          "runs": 2
+        },
+        "偏好排序": {
+          "passed": 1,
+          "runs": 2
+        },
+        "多轮澄清": {
+          "passed": 0,
+          "runs": 2
+        },
+        "目标与单位": {
+          "passed": 2,
+          "runs": 2
+        },
+        "读数完整性": {
+          "passed": 0,
+          "runs": 2
+        }
+      }
+    },
+    "dialogue-recheck/single_forecast": {
+      "runs": 2,
+      "passed": 2,
+      "issued_requests": 6,
+      "known_usage_requests": 6,
+      "unknown_usage_requests": 0,
+      "input_tokens": 24325,
+      "output_tokens": 1053,
+      "planning_api_ms_median": 10226.5,
+      "metrics": {
+        "case_pass": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "understanding_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "goal_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "preference_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "all_actions_verified": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "journey_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 2
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 2
+        }
+      },
+      "failed_run_ids": [],
+      "family": {
+        "多轮澄清": {
+          "passed": 2,
+          "runs": 2
+        }
+      }
+    },
+    "dialogue-recheck/expert_forecast": {
+      "runs": 2,
+      "passed": 2,
+      "issued_requests": 10,
+      "known_usage_requests": 10,
+      "unknown_usage_requests": 0,
+      "input_tokens": 39768,
+      "output_tokens": 1529,
+      "planning_api_ms_median": 12422.5,
+      "metrics": {
+        "case_pass": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "understanding_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "goal_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "preference_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "exception_correct": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "all_actions_verified": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "journey_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 2
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 2
+        }
+      },
+      "failed_run_ids": [],
+      "family": {
+        "多轮澄清": {
+          "passed": 2,
+          "runs": 2
+        }
+      }
+    },
+    "final-validation/single_forecast": {
+      "runs": 12,
+      "passed": 12,
+      "issued_requests": 22,
+      "known_usage_requests": 22,
+      "unknown_usage_requests": 0,
+      "input_tokens": 89076,
+      "output_tokens": 4410,
+      "planning_api_ms_median": 5571.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 12,
+          "denominator": 12
+        },
+        "understanding_correct": {
+          "numerator": 12,
+          "denominator": 12
+        },
+        "goal_completed": {
+          "numerator": 8,
+          "denominator": 8
+        },
+        "preference_correct": {
+          "numerator": 8,
+          "denominator": 8
+        },
+        "exception_correct": {
+          "numerator": 6,
+          "denominator": 6
+        },
+        "all_actions_verified": {
+          "numerator": 8,
+          "denominator": 8
+        },
+        "journey_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 12
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 12
+        }
+      },
+      "failed_run_ids": [],
+      "family": {
+        "不可行约束": {
+          "passed": 2,
+          "runs": 2
+        },
+        "保留与保护": {
+          "passed": 2,
+          "runs": 2
+        },
+        "偏好排序": {
+          "passed": 2,
+          "runs": 2
+        },
+        "多轮澄清": {
+          "passed": 2,
+          "runs": 2
+        },
+        "目标与单位": {
+          "passed": 2,
+          "runs": 2
+        },
+        "读数完整性": {
+          "passed": 2,
+          "runs": 2
+        }
+      }
+    },
+    "final-validation/expert_forecast": {
+      "runs": 12,
+      "passed": 12,
+      "issued_requests": 38,
+      "known_usage_requests": 38,
+      "unknown_usage_requests": 0,
+      "input_tokens": 149684,
+      "output_tokens": 6216,
+      "planning_api_ms_median": 8508.0,
+      "metrics": {
+        "case_pass": {
+          "numerator": 12,
+          "denominator": 12
+        },
+        "understanding_correct": {
+          "numerator": 12,
+          "denominator": 12
+        },
+        "goal_completed": {
+          "numerator": 8,
+          "denominator": 8
+        },
+        "preference_correct": {
+          "numerator": 8,
+          "denominator": 8
+        },
+        "exception_correct": {
+          "numerator": 6,
+          "denominator": 6
+        },
+        "all_actions_verified": {
+          "numerator": 8,
+          "denominator": 8
+        },
+        "journey_completed": {
+          "numerator": 2,
+          "denominator": 2
+        },
+        "unexpected_write": {
+          "numerator": 0,
+          "denominator": 12
+        },
+        "false_success": {
+          "numerator": 0,
+          "denominator": 12
+        }
+      },
+      "failed_run_ids": [],
+      "family": {
+        "不可行约束": {
+          "passed": 2,
+          "runs": 2
+        },
+        "保留与保护": {
+          "passed": 2,
+          "runs": 2
+        },
+        "偏好排序": {
+          "passed": 2,
+          "runs": 2
+        },
+        "多轮澄清": {
+          "passed": 2,
+          "runs": 2
+        },
+        "目标与单位": {
+          "passed": 2,
+          "runs": 2
+        },
+        "读数完整性": {
+          "passed": 2,
+          "runs": 2
+        }
+      }
+    }
+  },
+  "manifests": {
+    "principal": {
+      "source_sha256": "b12704e4d1a0f1ed015629ba2928fcd5601b2ec6e05245ed54c286e0fbb45c37",
+      "manifest": {
+        "date": "2026-10-30",
+        "baseline": "491df1fa31d910d43ff56e14d09ff3e9c7a6933f",
+        "limit": 360,
+        "model": {
+          "name": "deepseek-flash",
+          "provider": "deepseek",
+          "base_url": "https://api.deepseek.com",
+          "thinking": "disabled",
+          "max_tokens": 2048,
+          "temperature": "provider_default",
+          "retries": 0
+        },
+        "protocol_hashes": {
+          "scripts/product_eval_expanded.py": "a89b6e46742a0fa2f93f5cd36eb752f262a559739b4418bae7d581778fa941ec",
+          "evaluation/product-expanded-cases.json": "4d01f0f8f4bda6a99359441b5a80a42334cfc83da82f1f423b83907863c91646",
+          "scripts/product_eval.py": "5c42e603e43476deaf6f1bde57a273f7fa7a08d4102591ecd1239fe1cd6d1af4",
+          "scripts/product_eval_d4.py": "00cafdf19af2d4dff97d06e42902350f4edde1ad10dd3365fd8bcd94cb5bf8b3",
+          "scripts/product_eval_d5.py": "1d9333b9a9fd0175400dec6b770144303dbdf718b170f1a6cb625535558efbfd",
+          "scripts/product_eval_d4_followup.py": "b5dea90477e6e0bfa64fc3bbb36ba6689758c7c5be01e6d20b2177786f0582bc",
+          "evaluation/probes/product_d4_audit.py": "e68f627f7d0544d62c34afb1e44258bf15ddfb048ff4d10e007672b10e233a06"
+        },
+        "baseline_source": {
+          "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+          "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+          "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+          "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+          "backend/src/homemind/agent/diagnostics.py": "93457cf1f61d49433bdac4e76341a5c26e5b3797e04cf360a88f07beea7279b8",
+          "backend/src/homemind/agent/experts.py": "153cdcee75945626ed24429e701d2cb26c692c70cfd4a2395c5bbd6b0f2884be",
+          "backend/src/homemind/agent/forecast.py": "2cdd00a76bf36e089c177a2961a1610845f1e0d6c6a3b3b953ea1ba0a3acac8c",
+          "backend/src/homemind/agent/graph.py": "b4840ebbf7e3f476408df1d5a1f1067b1ff15d3eaf1b54de0b4fbb13b1165e3e",
+          "backend/src/homemind/agent/model.py": "fece3800ca4c9de0b97171cff12404e83270c509b10eb53c8a98fbabfe52ec09",
+          "backend/src/homemind/agent/pipeline.py": "2011e3462c4db6574b09eb43958f61c1ddc0f66a652a9470d726ac1710e41d9c",
+          "backend/src/homemind/agent/prompts.py": "d0091c2be9565854c1b8fc3c8a5cdebfca8ad2d4f2dd0ce6093d9fb2e582e7d9",
+          "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+          "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+          "backend/src/homemind/agent/service.py": "d597ebcc8099dac8331dab16e8dbb37523661a264c15027f934da52b91a0f677",
+          "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+          "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+          "backend/src/homemind/app.py": "7f9f25b6b728d5d9fbad139a134078994c92f81f1fb4ae9dbe6bd90afdfe7420",
+          "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+          "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+          "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+          "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+          "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+          "backend/src/homemind/migrations/versions/0001_m3.py": "c3b964979fbcb0fbb747d3931253267b29490cadcbb1d477e193404b9f57f005",
+          "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+          "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+          "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+          "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+          "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+          "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+          "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+          "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+          "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+          "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+          "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+          "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+          "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+          "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+          "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+          "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+          "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b"
+        },
+        "fixtures": {
+          "X01": {
+            "template_sha256": "f682c9eeaa73a4ced2956186ce8d83a48807a9684b2c50d2ba9d4bfb7c0601c7",
+            "descriptor_sha256": "4e816c1d5b3d61e72bf729324a0c580fc908ce1bf7b8cf99fad992de78b509d7"
+          },
+          "X02": {
+            "template_sha256": "4d687ab4f6fdae0d7709550705768571543a0dda2d44103df6b66007388ca017",
+            "descriptor_sha256": "2a89f494b49e62b3f55d8c4d01a4a96e9bcf443127dfe5f4addd36657b2cb525"
+          },
+          "X03": {
+            "template_sha256": "4cecc8fc1fc71b7b1858fb6b939e2be6dd7c1f3f98d3e0d560a40088c35cdc79",
+            "descriptor_sha256": "52835f2f202962a7ade0fa1b0355279c3c7db18b0efa833ba3da0ed253cb9255"
+          },
+          "X04": {
+            "template_sha256": "41397a7ba4d443baede5c3a87888e161e79c8135c4d3365805c8bdd97275c0b1",
+            "descriptor_sha256": "fdd33ecac4dacb66c648deab6c715e0fbadaf7675f15f2301754417d15715adc"
+          },
+          "X05": {
+            "template_sha256": "b30b9eee5259cc2d8997442f6c414d7f7d1cc3734b5a0c85208a9d7e90d1f2ac",
+            "descriptor_sha256": "cf962c19348046cead36c8252555288241524c39f21dfe6de90521e5d86dd3d4"
+          },
+          "X06": {
+            "template_sha256": "081a761869547f85cbc8fca9f0472c9a04a3b0f33a4eecf0b7f2f05d7bf87468",
+            "descriptor_sha256": "63b60225988c8b8893203e742f0ea2072fe818bd9f23aa0569724dd170edea8b"
+          },
+          "X07": {
+            "template_sha256": "89413ef3d8651be84833919dcebac031294babd4ed624150feb06c0580fab5fe",
+            "descriptor_sha256": "32739eac80131ea03d7e7d576ae310542016574b2b210f8b80c00c73ee598471"
+          },
+          "X08": {
+            "template_sha256": "8681b2a21f5456774c50c134671001ab01bf7d949cdc19b30277eb058ce18864",
+            "descriptor_sha256": "7839a527db6c995a9f662d0831dcb25acb902509ac448a483b940d1479408ed1"
+          },
+          "X09": {
+            "template_sha256": "30c091a9b28c25e4b07f8343e5ad5806b060fcfb55e468766810cf35df74bf8f",
+            "descriptor_sha256": "1ae2dd7e0649af21cad2bb6adcdd9e08a12c29b1901b213502f779bff9dd134c"
+          },
+          "X10": {
+            "template_sha256": "d0bd22b8876a640a8980dbd43ef8f26ef9954a2ddde8e905a4a7fcd5afcb3d48",
+            "descriptor_sha256": "788238688df78156a85b660ee631b385bd024658f3481cb5d40f8ae7d8a40d8e"
+          },
+          "X11": {
+            "template_sha256": "cfd138c9c2545957c5adfe422248d567379ee74aa0666aad8cf22aa27b17f4d2",
+            "descriptor_sha256": "a57c9d168931822324595371a278e0ef891aaa370de5dd3526730f88eabf7ea7"
+          },
+          "X12": {
+            "template_sha256": "e6c02c067ded3e726fb90f1079731085151f8a4b1004e28450563d4a129e63e7",
+            "descriptor_sha256": "e4acce411a949469790b1aa06338435177574d1bdf6713a9de1c5ed40ae385cb"
+          },
+          "X13": {
+            "template_sha256": "283e65a3a8eaacb2cb6d8cd2dcce2fd705b80bb1c807323af35064abb603aada",
+            "descriptor_sha256": "509ed23da9b6d24c54a6347b2680da297aaf7c48b432f99d3e6442f7b44487ad"
+          },
+          "X14": {
+            "template_sha256": "ba550594d3021fdff3f1b57fc031882a694b4ccd2af49a84054ffecac06e2baf",
+            "descriptor_sha256": "9821992de1ca71394f0f747afe767bb64565db0e5637f751fb5fea2e70b8b166"
+          },
+          "X15": {
+            "template_sha256": "43d0c1d448ef2c5b928fbc094c2934db8fa44bdd46c86b4795136e86051e3618",
+            "descriptor_sha256": "a425ca46b208324b380f05396c52398286004bf9ecd603791102f680e50740bf"
+          },
+          "X16": {
+            "template_sha256": "c6de63e1af472fb2cf3fb10f91dd9df442d0e0f2946289f7bb223990400051d8",
+            "descriptor_sha256": "a771f3280351fcf3ac6b93788904e5151ec91eaf36b9775f98e551d7af479dce"
+          },
+          "X17": {
+            "template_sha256": "172bae9241221855e028d08d0e2e53e9c08d66fded588b1c015b751a6eedf8c5",
+            "descriptor_sha256": "3b38c541741a10cbef12c2a8c9041b2d48ac463ea336e791f2680cfa2414a3b0"
+          },
+          "X18": {
+            "template_sha256": "f2d53228853cb7d7b914781cb1bf6d90fde79f1591cade49b5eaa6eb4ffee520",
+            "descriptor_sha256": "16fc5c1767bdc3486a63ce46cf0f08b90c8e56c34be52c56f62e1e5db4a06343"
+          },
+          "X19": {
+            "template_sha256": "ee3aca1a6f5e6572a0c6168198936733576f0440ecc747e51e638dc1526df39c",
+            "descriptor_sha256": "7592d709ea2865f43cef48bde026d976f1450faf3b9dab3f77ff7271afb694e4"
+          },
+          "X20": {
+            "template_sha256": "3c162391602245549e73dbc11fb377cd407b77873117251dfc53b9a0bc8c978a",
+            "descriptor_sha256": "93a9d0ed58235c05a0056bdc579ddd6c22de9f5249c108410c6cd6d1b68902c8"
+          },
+          "X21": {
+            "template_sha256": "4fc2f3854b488e5d6433aa86b7b3579e8445762d3f9093184ccab5533371e905",
+            "descriptor_sha256": "0fe7a750c8060f0b27f74cff1be77b0275d89c624d1a2b0462fbc57133a841c2"
+          },
+          "X22": {
+            "template_sha256": "c0ae64807eec3ea7eae2b752bc7c02a639c5c9e1d8224d2e46ad5328e7161c52",
+            "descriptor_sha256": "21fe5dc38b9231e6d6ea07d0fc9a3eadf333d032e197e53eacf26900017cb706"
+          },
+          "X23": {
+            "template_sha256": "711924bac21e8b341181524a25280003c7b8de2582d82e069e5e763c438cd939",
+            "descriptor_sha256": "0d731c2174e8d66ec4d775ad25beb12f653fe6b4494088ef304b45fd653897b2"
+          },
+          "X24": {
+            "template_sha256": "73d805db22f9dfc4cc560710bfd2693d990eb34f753a991302c841a06c72706b",
+            "descriptor_sha256": "ae4742275a52aa56e46377f4a2dfa274fcbf92291991b42cd516d1e3fb6dd425"
+          },
+          "H01": {
+            "template_sha256": "56959889ada713b9786257f546403eef85b41134faed833799d2e26bd60f7eed",
+            "descriptor_sha256": "a7f859a2c6b94bbcf68e5074f7dff30a04553a771d912f06a00aada91f995617"
+          },
+          "H02": {
+            "template_sha256": "2d9ea612c6e27ec65e8430713bd11bba506c8b9939461ea7935ff42d958911ee",
+            "descriptor_sha256": "203ef4be6be2b50d4fd27c7c107bc433f73868b60c42e4a4fb5ed9652eeb62ef"
+          },
+          "H03": {
+            "template_sha256": "973da865fa83ec18fab39dcc09156aa989a6536249e75037bc1475c41af3a5ee",
+            "descriptor_sha256": "6d555846e9fe26b12ac23ea9601b0ba7634e053e3963f15b2ed4838ba9ab6eeb"
+          },
+          "H04": {
+            "template_sha256": "bfaf4cf27b4b8c883a6c17bb66a472b022a9cdf740a0eaa27d3f0e58cdb3d165",
+            "descriptor_sha256": "dd4a8c99393db9ddf7dfc6b093dc7c3e753ee72e93cbe7ad57fd2e30bdfec51c"
+          },
+          "H05": {
+            "template_sha256": "02cf3175fa7a9a7052907eabb65a7907a62bb089e5419299780f8a3b89c27fa1",
+            "descriptor_sha256": "db14504a0cdb4ad3c3292732a05dda3fe25991ddf6d82523d338d41f0cdd8d00"
+          },
+          "H06": {
+            "template_sha256": "be09de50a00d10192afc584ac0284d236e228145d8452e9308cd7147044762a7",
+            "descriptor_sha256": "de8cd5b084ca7ee08862a4043bad68b8e33aca942c8bf72cd63ad589c5b1ce80"
+          },
+          "H07": {
+            "template_sha256": "ae394a28b9704fc4f351f61b1e0faf5c6d86e889d2391ef6874ece0ca7e89907",
+            "descriptor_sha256": "de2112067a4c77bfe811b30e594db01ca4914b31eeccb5df2e46288f05d8ccca"
+          },
+          "H08": {
+            "template_sha256": "f11c5683a4cf65e71f04ec4325b4e1140498b1e2166f2d639dd0918e44775dda",
+            "descriptor_sha256": "628271c2e681fa61acfb1bd1c0801ac3a079d40873ce868b14c8a1a3b2d91256"
+          },
+          "H09": {
+            "template_sha256": "6bfc727f1ad22305415de989cf40dac76941f66560df752e017221acca90be42",
+            "descriptor_sha256": "8942c4936293fedb2cc96865afaacae9737c0171a93be7a05ae987c1584543a8"
+          },
+          "H10": {
+            "template_sha256": "8f928d9e5facc564b510f64d1a4724755b247e56ef725896a3ac038955648d10",
+            "descriptor_sha256": "be42b2a43073592dc1e535ae0df3135025dbcf65114e70320a8309a0f346c123"
+          },
+          "H11": {
+            "template_sha256": "1e0791f39335867484375fc7f4ff5bb4816b6494e7a344d66ce275d1b607f5bc",
+            "descriptor_sha256": "aa59029b0e3cf17bf37113fddeea59e099bcf76328edffee3302aa54f423dd1b"
+          },
+          "H12": {
+            "template_sha256": "837ef61f08b617093ac2e4615ccb3c91c484443123290275d155c5853e7e8e09",
+            "descriptor_sha256": "cb2ca5a455e9facaccc2d26604d2846ded5b12067c18b11b01bba69b2380348f"
+          }
+        },
+        "limitation": "same-author synthetic scenarios; phase timing not randomized across revisions"
+      }
+    },
+    "dialogue_recheck": {
+      "source_sha256": "3a5cb750ffac12f871d401a3b1047846e5415db28c78867a7f00c852ba8abbf3",
+      "manifest": {
+        "limit": 16,
+        "total_limit": 360,
+        "parent_used": 284,
+        "parent_ledger_sha256": "d49b4c61989ad2dada88ecf56e54af4c07e92a1c9704241cb58a475411311be5",
+        "parent_manifest_sha256": "b12704e4d1a0f1ed015629ba2928fcd5601b2ec6e05245ed54c286e0fbb45c37",
+        "source_hashes": {
+          "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+          "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+          "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+          "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+          "backend/src/homemind/agent/diagnostics.py": "93457cf1f61d49433bdac4e76341a5c26e5b3797e04cf360a88f07beea7279b8",
+          "backend/src/homemind/agent/experts.py": "153cdcee75945626ed24429e701d2cb26c692c70cfd4a2395c5bbd6b0f2884be",
+          "backend/src/homemind/agent/forecast.py": "2cdd00a76bf36e089c177a2961a1610845f1e0d6c6a3b3b953ea1ba0a3acac8c",
+          "backend/src/homemind/agent/graph.py": "a06f757f5019e0a8ff01a52db2f965ffb1d0457e30381ea0d8b0e07abb663383",
+          "backend/src/homemind/agent/model.py": "d8e39fdab5309cd078cddeb7a72418e3a8d77674a1b73733de631cc97b127acf",
+          "backend/src/homemind/agent/pipeline.py": "2011e3462c4db6574b09eb43958f61c1ddc0f66a652a9470d726ac1710e41d9c",
+          "backend/src/homemind/agent/prompts.py": "d05e7781ae80020a004e765c1caaf7faa26db82fb4c1067b760ffd095c94d7ca",
+          "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+          "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+          "backend/src/homemind/agent/service.py": "d597ebcc8099dac8331dab16e8dbb37523661a264c15027f934da52b91a0f677",
+          "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+          "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+          "backend/src/homemind/app.py": "7f9f25b6b728d5d9fbad139a134078994c92f81f1fb4ae9dbe6bd90afdfe7420",
+          "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+          "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+          "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+          "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+          "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+          "backend/src/homemind/migrations/versions/0001_m3.py": "c3b964979fbcb0fbb747d3931253267b29490cadcbb1d477e193404b9f57f005",
+          "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+          "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+          "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+          "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+          "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+          "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+          "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+          "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+          "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+          "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+          "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+          "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+          "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+          "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+          "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+          "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+          "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b",
+          "scripts/product_eval_expanded_recheck.py": "68373deeb21f942cbbbcdb782cb87807b9becb95e93a7ab3c88de8c15c738c6b",
+          "scripts/product_eval_expanded.py": "a89b6e46742a0fa2f93f5cd36eb752f262a559739b4418bae7d581778fa941ec",
+          "scripts/product_eval_d4.py": "00cafdf19af2d4dff97d06e42902350f4edde1ad10dd3365fd8bcd94cb5bf8b3",
+          "scripts/product_eval_d5.py": "1d9333b9a9fd0175400dec6b770144303dbdf718b170f1a6cb625535558efbfd"
+        },
+        "targets": [
+          [
+            "X24",
+            "single_forecast"
+          ],
+          [
+            "X24",
+            "expert_forecast"
+          ],
+          [
+            "X21",
+            "expert_forecast"
+          ],
+          [
+            "X21",
+            "single_forecast"
+          ]
+        ],
+        "model": {
+          "name": "deepseek-flash",
+          "provider": "deepseek",
+          "base_url": "https://api.deepseek.com",
+          "thinking": "disabled",
+          "max_tokens": 2048,
+          "temperature": "provider_default",
+          "retries": 0
+        },
+        "source_commit": "b7f1c4a24bd1f1820eaf461637a446c9fcd7bf1f",
+        "fixture_sha256": {
+          "X24": "73d805db22f9dfc4cc560710bfd2693d990eb34f753a991302c841a06c72706b",
+          "X21": "4fc2f3854b488e5d6433aa86b7b3579e8445762d3f9093184ccab5533371e905"
+        }
+      }
+    },
+    "final_validation": {
+      "source_sha256": "1aba7a6d5582cc8c622b523731947ec5325a9d1227149fa213a566fe7b8c2b0d",
+      "manifest": {
+        "parent_used": 300,
+        "parent_hashes": {
+          "output/product-expanded-real-20261030/budget.json": "d49b4c61989ad2dada88ecf56e54af4c07e92a1c9704241cb58a475411311be5",
+          "output/product-expanded-real-20261030/dialogue-recheck/budget.json": "c13421947b25165d4db3e1947bcd67440a7be990efc76a273ac7e734500edf5e"
+        },
+        "limit": 60,
+        "total_limit": 360,
+        "source_hashes": {
+          "backend/src/homemind/__init__.py": "11d57a9d89c148b44635b777ed1c123ba2de2b5b28ab489d4b8e55895c8ccfcc",
+          "backend/src/homemind/__main__.py": "58d7ab5d4662d04a07d0eaaeb0717aaa1bc538af71d92c8351d68246effad176",
+          "backend/src/homemind/agent/__init__.py": "6c3866ddcf7c32d0de9e536b73b23a101be661583580bd05193192f9fdfb71c6",
+          "backend/src/homemind/agent/budget.py": "8c71b1c1eb2fa82099329eb719b3c46b4ed1cdeb1c0f4f72b2bd99e3f53d8425",
+          "backend/src/homemind/agent/diagnostics.py": "93457cf1f61d49433bdac4e76341a5c26e5b3797e04cf360a88f07beea7279b8",
+          "backend/src/homemind/agent/experts.py": "153cdcee75945626ed24429e701d2cb26c692c70cfd4a2395c5bbd6b0f2884be",
+          "backend/src/homemind/agent/forecast.py": "2cdd00a76bf36e089c177a2961a1610845f1e0d6c6a3b3b953ea1ba0a3acac8c",
+          "backend/src/homemind/agent/graph.py": "a06f757f5019e0a8ff01a52db2f965ffb1d0457e30381ea0d8b0e07abb663383",
+          "backend/src/homemind/agent/model.py": "d8e39fdab5309cd078cddeb7a72418e3a8d77674a1b73733de631cc97b127acf",
+          "backend/src/homemind/agent/pipeline.py": "2011e3462c4db6574b09eb43958f61c1ddc0f66a652a9470d726ac1710e41d9c",
+          "backend/src/homemind/agent/prompts.py": "d05e7781ae80020a004e765c1caaf7faa26db82fb4c1067b760ffd095c94d7ca",
+          "backend/src/homemind/agent/routes.py": "218084a9d32c57b80174067a7015cb824ca8f6e11cc006b556187905cdc03f96",
+          "backend/src/homemind/agent/schemas.py": "ded9737d416b55321c1a2f9e3b6b0114baa3d8800653408d848607c204bfed6f",
+          "backend/src/homemind/agent/service.py": "d597ebcc8099dac8331dab16e8dbb37523661a264c15027f934da52b91a0f677",
+          "backend/src/homemind/agent/tools.py": "28affbc5adcc5a9ad62ab5dc9dabc090ff32f9c8931b304e2e91edfe08a773d0",
+          "backend/src/homemind/agent/validation.py": "2a710c3e5e8e8fe302f517a96bc9f3c49346b8ff7e2b1fb64b042c7ebd358dad",
+          "backend/src/homemind/app.py": "7f9f25b6b728d5d9fbad139a134078994c92f81f1fb4ae9dbe6bd90afdfe7420",
+          "backend/src/homemind/auth.py": "96d77346ebb80b4f87dadf4046cb43f28b274f305029c90539278ff1dc958e58",
+          "backend/src/homemind/config.py": "60e348dbec9bc09a8bd8e8b4fd60f73c986671001f19a41af20d1b9b73a9954f",
+          "backend/src/homemind/executor.py": "582618d30b13833728f557cb47a66553422ffeb89deabd522b3e473aa0d20698",
+          "backend/src/homemind/migrate.py": "9f76fbfc8eb5aeb34985d62eb959d7efe30e0e91c531224079e000741a885532",
+          "backend/src/homemind/migrations/env.py": "f35943dc975c294d7f9edb6a0d145c051270145a2a4fe1e318d7046f83a4c5f5",
+          "backend/src/homemind/migrations/versions/0001_m3.py": "c3b964979fbcb0fbb747d3931253267b29490cadcbb1d477e193404b9f57f005",
+          "backend/src/homemind/migrations/versions/0002_m3.py": "b1c85e5c5b8f5f7b0c8ddc355e3e9f096f4ee20ebc62ad92b98c8d00d208c4c3",
+          "backend/src/homemind/migrations/versions/0003_m4.py": "d1e1abf262c225e4f2c271fb838416d7fb43ae3bba76d9315325365db501e2c6",
+          "backend/src/homemind/migrations/versions/0004_product_c.py": "7b28ddc65ab9f348d483dd5903f77d29119d5aa14cbdb93cc7e29dbd5eaa3f72",
+          "backend/src/homemind/persistence/__init__.py": "78a352c775492d5b4a8c86dbab9e20344f72b9282055518c35a373954bd6239d",
+          "backend/src/homemind/persistence/codec.py": "bc94db74d14c74a1f8b3c0a9e82f0483f9345e201af8f6a3a8e576a1068972e4",
+          "backend/src/homemind/persistence/database.py": "b809d69ae04e9d3ca6b1d7936b13e9ee745c2c1a3f01b5e01a7df247f17773fd",
+          "backend/src/homemind/persistence/models.py": "2e4cd717ad068e1cf515a2ef4c94790af4400f9ceefd444d91e7285015b0dc35",
+          "backend/src/homemind/preferences.py": "350598e97ca34af1aace8deda73a533a4ba79ae5c239f593217802365b5321b9",
+          "backend/src/homemind/rules.py": "584a356f1b3c22fac6eef5d53e7118a08fceb76ee922fb400e44669adba18300",
+          "backend/src/homemind/simulation/__init__.py": "bf14e4f505feeeb55cdd23ab5a7d2a2704d2b071da15b6f299e20c33a53ded3b",
+          "backend/src/homemind/simulation/defaults.py": "e416d78bbf596fac01e53d2620c6a12af0af9d38893e4ec03adf72f5ce9d0df2",
+          "backend/src/homemind/simulation/models.py": "8c7579fd55caa74268e1508bc0227be4005dbf51d20dac1385d1ea31eede8bdf",
+          "backend/src/homemind/simulation/physics.py": "285785406fee4b68b2ca75fb25ee84dd673c8d6ff353078ca0053a36f89cd2dc",
+          "backend/src/homemind/simulation/routes.py": "9d3db8055fdd96f8b96a2bcde0bc8f51cb3ae85646046002ce70dde544caaa91",
+          "backend/src/homemind/simulation/service.py": "4af5174d8cc95c8b75376ac61c13433fae81a437b39ce168a5cfeba2f0fafcf3",
+          "backend/src/homemind/simulation/views.py": "abaefff934630931bc0dda8639d8bccb7a1b3f9a3c0a1fcfca8e870e1a23d1e6",
+          "backend/src/homemind/tasks.py": "7d0a47e5d2f48654d5e969912644ce9990b0897afea135cda6088e3f8fad3f9b",
+          "scripts/product_eval_final_validation.py": "d5364e0a5287169f708183426d863a93bb2b290a8845f670e48afab65c8affb9",
+          "evaluation/product-final-validation-cases.json": "b32eecc24ab143f0893710118d25f2f493c74a8a2f56296370cec5f976ea8978",
+          "scripts/product_eval_expanded.py": "a89b6e46742a0fa2f93f5cd36eb752f262a559739b4418bae7d581778fa941ec",
+          "scripts/product_eval_expanded_recheck.py": "68373deeb21f942cbbbcdb782cb87807b9becb95e93a7ab3c88de8c15c738c6b",
+          "scripts/product_eval.py": "5c42e603e43476deaf6f1bde57a273f7fa7a08d4102591ecd1239fe1cd6d1af4",
+          "scripts/product_eval_d4.py": "00cafdf19af2d4dff97d06e42902350f4edde1ad10dd3365fd8bcd94cb5bf8b3",
+          "scripts/product_eval_d5.py": "1d9333b9a9fd0175400dec6b770144303dbdf718b170f1a6cb625535558efbfd",
+          "scripts/product_eval_d4_followup.py": "b5dea90477e6e0bfa64fc3bbb36ba6689758c7c5be01e6d20b2177786f0582bc"
+        },
+        "source_commit": "b7f1c4a24bd1f1820eaf461637a446c9fcd7bf1f",
+        "model": {
+          "name": "deepseek-flash",
+          "provider": "deepseek",
+          "base_url": "https://api.deepseek.com",
+          "thinking": "disabled",
+          "max_tokens": 2048,
+          "temperature": "provider_default",
+          "retries": 0
+        },
+        "fixtures": {
+          "Z01": {
+            "initial": "4f95e61963f92387b425f49c3f308088f7e103b7b07e49bd7426fd84a1de3acc",
+            "descriptor": "ba5d16158aafb9c255fbba3a8f5177adc26fb10bf62c629b995e4ce8094bf76f"
+          },
+          "Z02": {
+            "initial": "b411d202418d0b1e52ebd8071a91a0f7d2f10a5c3bb0b45f85d0149a76cc4656",
+            "descriptor": "3e18582513280a0123aed5e16c9dd11f09941dfe9adc4673c22d1dde0ea1f3b2"
+          },
+          "Z03": {
+            "initial": "72ab6a4dee677d06ce250ae6ccdc48206dfa97b62527bd0f1c52f7c39950d0f1",
+            "descriptor": "47d27e70dcb3ab713879822d7ace71a4897344d4055e7a0bc46bdbe07974dbb9"
+          },
+          "Z04": {
+            "initial": "424f7ce4bab061571aaade9514c0a05cc072910c7755045655b212500ce12771",
+            "descriptor": "2bb348f38414e767a3c024aa310f2b90630898497339546e5a87a6d72bec92dd"
+          },
+          "Z05": {
+            "initial": "d8672f55992e03170682ed14d70540b2681b45c64e8859c8ae09548c038cd979",
+            "descriptor": "aacbda408c0dfceb8719e7bee9e9cc77d040c1b7e8e28bbf6e7d943207d108f7"
+          },
+          "Z06": {
+            "initial": "0e351653a45b3e3eb0895d78e8aa1f0b4f8ac17cbeea94d20291dfeb59af61fc",
+            "descriptor": "c8b2982c688f68099b4f4b34bea2b1b8555846b08816a2357bf75f2fbaf79898"
+          },
+          "Z07": {
+            "initial": "c1ab0aca11e946b8c688c37c8c5146c2c45437a2d49270692b518bd8417eb1ff",
+            "descriptor": "1fe494d6c59f95bd98334b0ca03459c21cececd3d1442ff9e12e753e553202cb"
+          },
+          "Z08": {
+            "initial": "6b46b2b78577b9ca90df77a4a07880552831285af0d130b6be73e44ee1a45201",
+            "descriptor": "d3acad209839c7e5fad2dc355d7996b9430ce7d8adce3d44749dc39f2d6ff6c7"
+          },
+          "Z09": {
+            "initial": "df0401dfb9359011ffcecf7804c3a657fb2e26648a071a5d0bd1d723b77020c7",
+            "descriptor": "0e87e412a6f04a6673aa31048e219a8b675befd252430cbdda8fc1b9b7b37729"
+          },
+          "Z10": {
+            "initial": "5d30d5e8cd940aa353b4a07a903efe23793d6c15bb6a7d3ea8e73824fc79b69b",
+            "descriptor": "6a852c47a03c7f390c0dd48fc774071711bd277a9731e9e171678a4faa4c04bd"
+          },
+          "Z11": {
+            "initial": "a3614e584a010971940d6b4726dcbb2582ffffe206b51fb83cbaa00f13d29fc1",
+            "descriptor": "b81c74e8c38a7744dcb993dcb04980c767f0939709895d5f871d95cbd09e9b15"
+          },
+          "Z12": {
+            "initial": "2c17992f4354e07c6d67b658d402829401eb69bbc39a12ab08bcfc7d6db0c610",
+            "descriptor": "b4149c763e2dd5fc10db55d2f37c546f7c2ca8aabe04fe79d35c3f9fd3f923c8"
+          }
+        },
+        "limitation": "same-author synthetic validation; service recovery is not prompt benefit"
+      }
+    }
+  },
+  "limitations": [
+    "same-author synthetic cases, author semantic audit, not external independent benchmark",
+    "sequential revisions confounded with provider timing; no general multi-agent superiority",
+    "original holdout failures retained; fresh V2 set reported separately",
+    "X16/S1 canonical duplicate keep representation is a strict-contract failure, not a physical harm"
+  ],
+  "ledgers": {
+    "principal": {
+      "used": 284,
+      "limit": 360,
+      "requests": [
+        {
+          "number": 1,
+          "case_id": "baseline/X01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3147,
+            "output_tokens": 173,
+            "total_tokens": 3320
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 2,
+          "case_id": "baseline/X01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4383,
+            "output_tokens": 334,
+            "total_tokens": 4717
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 3,
+          "case_id": "baseline/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3147,
+            "output_tokens": 173,
+            "total_tokens": 3320
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 4,
+          "case_id": "baseline/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3577,
+            "output_tokens": 107,
+            "total_tokens": 3684
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 5,
+          "case_id": "baseline/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3577,
+            "output_tokens": 88,
+            "total_tokens": 3665
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 6,
+          "case_id": "baseline/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4629,
+            "output_tokens": 389,
+            "total_tokens": 5018
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 7,
+          "case_id": "baseline/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3188,
+            "output_tokens": 173,
+            "total_tokens": 3361
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 8,
+          "case_id": "baseline/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3114,
+            "output_tokens": 73,
+            "total_tokens": 3187
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 9,
+          "case_id": "baseline/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3114,
+            "output_tokens": 98,
+            "total_tokens": 3212
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 10,
+          "case_id": "baseline/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4143,
+            "output_tokens": 308,
+            "total_tokens": 4451
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 11,
+          "case_id": "baseline/X02/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3188,
+            "output_tokens": 173,
+            "total_tokens": 3361
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 12,
+          "case_id": "baseline/X02/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3921,
+            "output_tokens": 278,
+            "total_tokens": 4199
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 13,
+          "case_id": "baseline/X03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3201,
+            "output_tokens": 302,
+            "total_tokens": 3503
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 14,
+          "case_id": "baseline/X03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4330,
+            "output_tokens": 485,
+            "total_tokens": 4815
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 15,
+          "case_id": "baseline/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3201,
+            "output_tokens": 238,
+            "total_tokens": 3439
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 16,
+          "case_id": "baseline/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3330,
+            "output_tokens": 109,
+            "total_tokens": 3439
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 17,
+          "case_id": "baseline/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3330,
+            "output_tokens": 81,
+            "total_tokens": 3411
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 18,
+          "case_id": "baseline/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4443,
+            "output_tokens": 479,
+            "total_tokens": 4922
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 19,
+          "case_id": "baseline/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3195,
+            "output_tokens": 174,
+            "total_tokens": 3369
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 20,
+          "case_id": "baseline/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3599,
+            "output_tokens": 80,
+            "total_tokens": 3679
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 21,
+          "case_id": "baseline/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3599,
+            "output_tokens": 83,
+            "total_tokens": 3682
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 22,
+          "case_id": "baseline/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4622,
+            "output_tokens": 377,
+            "total_tokens": 4999
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 23,
+          "case_id": "baseline/X04/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3195,
+            "output_tokens": 174,
+            "total_tokens": 3369
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 24,
+          "case_id": "baseline/X04/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4408,
+            "output_tokens": 327,
+            "total_tokens": 4735
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 25,
+          "case_id": "baseline/X05/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3206,
+            "output_tokens": 221,
+            "total_tokens": 3427
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 26,
+          "case_id": "baseline/X05/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4564,
+            "output_tokens": 405,
+            "total_tokens": 4969
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 27,
+          "case_id": "baseline/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3206,
+            "output_tokens": 198,
+            "total_tokens": 3404
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 28,
+          "case_id": "baseline/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3680,
+            "output_tokens": 82,
+            "total_tokens": 3762
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 29,
+          "case_id": "baseline/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3680,
+            "output_tokens": 105,
+            "total_tokens": 3785
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 30,
+          "case_id": "baseline/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4756,
+            "output_tokens": 424,
+            "total_tokens": 5180
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 31,
+          "case_id": "baseline/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3152,
+            "output_tokens": 177,
+            "total_tokens": 3329
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 32,
+          "case_id": "baseline/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3604,
+            "output_tokens": 88,
+            "total_tokens": 3692
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 33,
+          "case_id": "baseline/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3604,
+            "output_tokens": 86,
+            "total_tokens": 3690
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 34,
+          "case_id": "baseline/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4638,
+            "output_tokens": 397,
+            "total_tokens": 5035
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 35,
+          "case_id": "baseline/X06/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3152,
+            "output_tokens": 177,
+            "total_tokens": 3329
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 36,
+          "case_id": "baseline/X06/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4413,
+            "output_tokens": 348,
+            "total_tokens": 4761
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 37,
+          "case_id": "baseline/X07/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3205,
+            "output_tokens": 196,
+            "total_tokens": 3401
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 38,
+          "case_id": "baseline/X07/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3990,
+            "output_tokens": 296,
+            "total_tokens": 4286
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 39,
+          "case_id": "baseline/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3205,
+            "output_tokens": 215,
+            "total_tokens": 3420
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 40,
+          "case_id": "baseline/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3178,
+            "output_tokens": 88,
+            "total_tokens": 3266
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 41,
+          "case_id": "baseline/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3178,
+            "output_tokens": 83,
+            "total_tokens": 3261
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 42,
+          "case_id": "baseline/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4250,
+            "output_tokens": 354,
+            "total_tokens": 4604
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 43,
+          "case_id": "baseline/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3207,
+            "output_tokens": 309,
+            "total_tokens": 3516
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 44,
+          "case_id": "baseline/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3780,
+            "output_tokens": 82,
+            "total_tokens": 3862
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 45,
+          "case_id": "baseline/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3780,
+            "output_tokens": 96,
+            "total_tokens": 3876
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 46,
+          "case_id": "baseline/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4954,
+            "output_tokens": 534,
+            "total_tokens": 5488
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 47,
+          "case_id": "baseline/X08/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3207,
+            "output_tokens": 179,
+            "total_tokens": 3386
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 48,
+          "case_id": "baseline/X08/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4465,
+            "output_tokens": 349,
+            "total_tokens": 4814
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 49,
+          "case_id": "baseline/X09/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3170,
+            "output_tokens": 175,
+            "total_tokens": 3345
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 50,
+          "case_id": "baseline/X09/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3777,
+            "output_tokens": 256,
+            "total_tokens": 4033
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 51,
+          "case_id": "baseline/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3170,
+            "output_tokens": 175,
+            "total_tokens": 3345
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 52,
+          "case_id": "baseline/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 2970,
+            "output_tokens": 77,
+            "total_tokens": 3047
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 53,
+          "case_id": "baseline/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 2970,
+            "output_tokens": 84,
+            "total_tokens": 3054
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 54,
+          "case_id": "baseline/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3989,
+            "output_tokens": 299,
+            "total_tokens": 4288
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 55,
+          "case_id": "baseline/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3201,
+            "output_tokens": 170,
+            "total_tokens": 3371
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 56,
+          "case_id": "baseline/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 2987,
+            "output_tokens": 83,
+            "total_tokens": 3070
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 57,
+          "case_id": "baseline/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 2987,
+            "output_tokens": 73,
+            "total_tokens": 3060
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 58,
+          "case_id": "baseline/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4005,
+            "output_tokens": 313,
+            "total_tokens": 4318
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 59,
+          "case_id": "baseline/X10/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3201,
+            "output_tokens": 170,
+            "total_tokens": 3371
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 60,
+          "case_id": "baseline/X10/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3798,
+            "output_tokens": 281,
+            "total_tokens": 4079
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 61,
+          "case_id": "baseline/X11/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3215,
+            "output_tokens": 180,
+            "total_tokens": 3395
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 62,
+          "case_id": "baseline/X11/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4483,
+            "output_tokens": 355,
+            "total_tokens": 4838
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 63,
+          "case_id": "baseline/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3215,
+            "output_tokens": 180,
+            "total_tokens": 3395
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 64,
+          "case_id": "baseline/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3671,
+            "output_tokens": 82,
+            "total_tokens": 3753
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 65,
+          "case_id": "baseline/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3671,
+            "output_tokens": 83,
+            "total_tokens": 3754
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 66,
+          "case_id": "baseline/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4699,
+            "output_tokens": 384,
+            "total_tokens": 5083
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 67,
+          "case_id": "baseline/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3217,
+            "output_tokens": 197,
+            "total_tokens": 3414
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 68,
+          "case_id": "baseline/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3032,
+            "output_tokens": 78,
+            "total_tokens": 3110
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 69,
+          "case_id": "baseline/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3032,
+            "output_tokens": 80,
+            "total_tokens": 3112
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 70,
+          "case_id": "baseline/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4077,
+            "output_tokens": 328,
+            "total_tokens": 4405
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 71,
+          "case_id": "baseline/X12/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3217,
+            "output_tokens": 197,
+            "total_tokens": 3414
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 72,
+          "case_id": "baseline/X12/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3868,
+            "output_tokens": 281,
+            "total_tokens": 4149
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 73,
+          "case_id": "baseline/X13/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3206,
+            "output_tokens": 301,
+            "total_tokens": 3507
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 74,
+          "case_id": "baseline/X13/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3206,
+            "output_tokens": 198,
+            "total_tokens": 3404
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 75,
+          "case_id": "baseline/X14/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3200,
+            "output_tokens": 151,
+            "total_tokens": 3351
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 76,
+          "case_id": "baseline/X14/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3200,
+            "output_tokens": 239,
+            "total_tokens": 3439
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 77,
+          "case_id": "baseline/X15/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3211,
+            "output_tokens": 153,
+            "total_tokens": 3364
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 78,
+          "case_id": "baseline/X15/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3211,
+            "output_tokens": 242,
+            "total_tokens": 3453
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 79,
+          "case_id": "baseline/X16/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3212,
+            "output_tokens": 190,
+            "total_tokens": 3402
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 80,
+          "case_id": "baseline/X16/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3212,
+            "output_tokens": 215,
+            "total_tokens": 3427
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 81,
+          "case_id": "baseline/X17/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3257,
+            "output_tokens": 40,
+            "total_tokens": 3297
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 82,
+          "case_id": "baseline/X17/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3257,
+            "output_tokens": 39,
+            "total_tokens": 3296
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 83,
+          "case_id": "baseline/X18/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3289,
+            "output_tokens": 77,
+            "total_tokens": 3366
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 84,
+          "case_id": "baseline/X18/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3289,
+            "output_tokens": 49,
+            "total_tokens": 3338
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 85,
+          "case_id": "baseline/X19/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3393,
+            "output_tokens": 42,
+            "total_tokens": 3435
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 86,
+          "case_id": "baseline/X19/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3393,
+            "output_tokens": 73,
+            "total_tokens": 3466
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 87,
+          "case_id": "baseline/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3264,
+            "output_tokens": 178,
+            "total_tokens": 3442
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 88,
+          "case_id": "baseline/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3735,
+            "output_tokens": 99,
+            "total_tokens": 3834
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 89,
+          "case_id": "baseline/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3735,
+            "output_tokens": 88,
+            "total_tokens": 3823
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 90,
+          "case_id": "baseline/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4785,
+            "output_tokens": 417,
+            "total_tokens": 5202
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 91,
+          "case_id": "baseline/X20/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3264,
+            "output_tokens": 178,
+            "total_tokens": 3442
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 92,
+          "case_id": "baseline/X20/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4547,
+            "output_tokens": 351,
+            "total_tokens": 4898
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 93,
+          "case_id": "baseline/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3154,
+            "output_tokens": 43,
+            "total_tokens": 3197
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 94,
+          "case_id": "baseline/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3236,
+            "output_tokens": 194,
+            "total_tokens": 3430
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 95,
+          "case_id": "baseline/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4512,
+            "output_tokens": 378,
+            "total_tokens": 4890
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 96,
+          "case_id": "baseline/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3154,
+            "output_tokens": 41,
+            "total_tokens": 3195
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 97,
+          "case_id": "baseline/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3234,
+            "output_tokens": 194,
+            "total_tokens": 3428
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 98,
+          "case_id": "baseline/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3683,
+            "output_tokens": 83,
+            "total_tokens": 3766
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 99,
+          "case_id": "baseline/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3683,
+            "output_tokens": 95,
+            "total_tokens": 3778
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 100,
+          "case_id": "baseline/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4739,
+            "output_tokens": 393,
+            "total_tokens": 5132
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 101,
+          "case_id": "baseline/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3182,
+            "output_tokens": 49,
+            "total_tokens": 3231
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 102,
+          "case_id": "baseline/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3264,
+            "output_tokens": 290,
+            "total_tokens": 3554
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 103,
+          "case_id": "baseline/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3313,
+            "output_tokens": 71,
+            "total_tokens": 3384
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 104,
+          "case_id": "baseline/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3313,
+            "output_tokens": 80,
+            "total_tokens": 3393
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 105,
+          "case_id": "baseline/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4439,
+            "output_tokens": 435,
+            "total_tokens": 4874
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 106,
+          "case_id": "baseline/X22/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3182,
+            "output_tokens": 54,
+            "total_tokens": 3236
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 107,
+          "case_id": "baseline/X22/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3269,
+            "output_tokens": 290,
+            "total_tokens": 3559
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 108,
+          "case_id": "baseline/X22/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4242,
+            "output_tokens": 398,
+            "total_tokens": 4640
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 109,
+          "case_id": "baseline/X23/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3183,
+            "output_tokens": 26,
+            "total_tokens": 3209
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 110,
+          "case_id": "baseline/X23/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3238,
+            "output_tokens": 199,
+            "total_tokens": 3437
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 111,
+          "case_id": "baseline/X23/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4530,
+            "output_tokens": 367,
+            "total_tokens": 4897
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 112,
+          "case_id": "baseline/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3183,
+            "output_tokens": 26,
+            "total_tokens": 3209
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 113,
+          "case_id": "baseline/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3238,
+            "output_tokens": 177,
+            "total_tokens": 3415
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 114,
+          "case_id": "baseline/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3677,
+            "output_tokens": 86,
+            "total_tokens": 3763
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 115,
+          "case_id": "baseline/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3677,
+            "output_tokens": 94,
+            "total_tokens": 3771
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 116,
+          "case_id": "baseline/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3237,
+            "output_tokens": 34,
+            "total_tokens": 3271
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 117,
+          "case_id": "baseline/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3300,
+            "output_tokens": 201,
+            "total_tokens": 3501
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 118,
+          "case_id": "baseline/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3137,
+            "output_tokens": 82,
+            "total_tokens": 3219
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 119,
+          "case_id": "baseline/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3137,
+            "output_tokens": 79,
+            "total_tokens": 3216
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 120,
+          "case_id": "baseline/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4185,
+            "output_tokens": 346,
+            "total_tokens": 4531
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 121,
+          "case_id": "baseline/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3237,
+            "output_tokens": 58,
+            "total_tokens": 3295
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 122,
+          "case_id": "baseline/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3324,
+            "output_tokens": 247,
+            "total_tokens": 3571
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 123,
+          "case_id": "baseline/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4089,
+            "output_tokens": 346,
+            "total_tokens": 4435
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 124,
+          "case_id": "candidate/X01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3635,
+            "output_tokens": 173,
+            "total_tokens": 3808
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 125,
+          "case_id": "candidate/X01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4607,
+            "output_tokens": 317,
+            "total_tokens": 4924
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 126,
+          "case_id": "candidate/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3635,
+            "output_tokens": 173,
+            "total_tokens": 3808
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 127,
+          "case_id": "candidate/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3918,
+            "output_tokens": 81,
+            "total_tokens": 3999
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 128,
+          "case_id": "candidate/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3918,
+            "output_tokens": 83,
+            "total_tokens": 4001
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 129,
+          "case_id": "candidate/X01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4860,
+            "output_tokens": 399,
+            "total_tokens": 5259
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 130,
+          "case_id": "candidate/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3690,
+            "output_tokens": 173,
+            "total_tokens": 3863
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 131,
+          "case_id": "candidate/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3379,
+            "output_tokens": 92,
+            "total_tokens": 3471
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 132,
+          "case_id": "candidate/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3379,
+            "output_tokens": 88,
+            "total_tokens": 3467
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 133,
+          "case_id": "candidate/X02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4348,
+            "output_tokens": 356,
+            "total_tokens": 4704
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 134,
+          "case_id": "candidate/X02/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3690,
+            "output_tokens": 173,
+            "total_tokens": 3863
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 135,
+          "case_id": "candidate/X02/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4079,
+            "output_tokens": 278,
+            "total_tokens": 4357
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 136,
+          "case_id": "candidate/X03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3697,
+            "output_tokens": 177,
+            "total_tokens": 3874
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 137,
+          "case_id": "candidate/X03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4240,
+            "output_tokens": 346,
+            "total_tokens": 4586
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 138,
+          "case_id": "candidate/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3697,
+            "output_tokens": 177,
+            "total_tokens": 3874
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 139,
+          "case_id": "candidate/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3536,
+            "output_tokens": 89,
+            "total_tokens": 3625
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 140,
+          "case_id": "candidate/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3536,
+            "output_tokens": 82,
+            "total_tokens": 3618
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 141,
+          "case_id": "candidate/X03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4500,
+            "output_tokens": 391,
+            "total_tokens": 4891
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 142,
+          "case_id": "candidate/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3700,
+            "output_tokens": 174,
+            "total_tokens": 3874
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 143,
+          "case_id": "candidate/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3938,
+            "output_tokens": 76,
+            "total_tokens": 4014
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 144,
+          "case_id": "candidate/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3938,
+            "output_tokens": 89,
+            "total_tokens": 4027
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 145,
+          "case_id": "candidate/X04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4884,
+            "output_tokens": 367,
+            "total_tokens": 5251
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 146,
+          "case_id": "candidate/X04/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3700,
+            "output_tokens": 174,
+            "total_tokens": 3874
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 147,
+          "case_id": "candidate/X04/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4630,
+            "output_tokens": 331,
+            "total_tokens": 4961
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 148,
+          "case_id": "candidate/X05/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3701,
+            "output_tokens": 176,
+            "total_tokens": 3877
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 149,
+          "case_id": "candidate/X05/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4698,
+            "output_tokens": 371,
+            "total_tokens": 5069
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 150,
+          "case_id": "candidate/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3701,
+            "output_tokens": 198,
+            "total_tokens": 3899
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 151,
+          "case_id": "candidate/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4021,
+            "output_tokens": 99,
+            "total_tokens": 4120
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 152,
+          "case_id": "candidate/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4021,
+            "output_tokens": 81,
+            "total_tokens": 4102
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 153,
+          "case_id": "candidate/X05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 5011,
+            "output_tokens": 445,
+            "total_tokens": 5456
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 154,
+          "case_id": "candidate/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3634,
+            "output_tokens": 177,
+            "total_tokens": 3811
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 155,
+          "case_id": "candidate/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3945,
+            "output_tokens": 79,
+            "total_tokens": 4024
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 156,
+          "case_id": "candidate/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3945,
+            "output_tokens": 78,
+            "total_tokens": 4023
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 157,
+          "case_id": "candidate/X06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4883,
+            "output_tokens": 388,
+            "total_tokens": 5271
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 158,
+          "case_id": "candidate/X06/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 159,
+          "case_id": "candidate/X07/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 160,
+          "case_id": "candidate/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3703,
+            "output_tokens": 175,
+            "total_tokens": 3878
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 161,
+          "case_id": "candidate/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3404,
+            "output_tokens": 146,
+            "total_tokens": 3550
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 162,
+          "case_id": "candidate/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3404,
+            "output_tokens": 83,
+            "total_tokens": 3487
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 163,
+          "case_id": "candidate/X07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4425,
+            "output_tokens": 362,
+            "total_tokens": 4787
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 164,
+          "case_id": "candidate/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3708,
+            "output_tokens": 181,
+            "total_tokens": 3889
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 165,
+          "case_id": "candidate/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3991,
+            "output_tokens": 88,
+            "total_tokens": 4079
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 166,
+          "case_id": "candidate/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3991,
+            "output_tokens": 82,
+            "total_tokens": 4073
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 167,
+          "case_id": "candidate/X08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4950,
+            "output_tokens": 387,
+            "total_tokens": 5337
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 168,
+          "case_id": "candidate/X08/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3708,
+            "output_tokens": 181,
+            "total_tokens": 3889
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 169,
+          "case_id": "candidate/X08/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4691,
+            "output_tokens": 344,
+            "total_tokens": 5035
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 170,
+          "case_id": "candidate/X09/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3674,
+            "output_tokens": 175,
+            "total_tokens": 3849
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 171,
+          "case_id": "candidate/X09/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3903,
+            "output_tokens": 273,
+            "total_tokens": 4176
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 172,
+          "case_id": "candidate/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3674,
+            "output_tokens": 175,
+            "total_tokens": 3849
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 173,
+          "case_id": "candidate/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3198,
+            "output_tokens": 76,
+            "total_tokens": 3274
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 174,
+          "case_id": "candidate/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3198,
+            "output_tokens": 94,
+            "total_tokens": 3292
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 175,
+          "case_id": "candidate/X09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4162,
+            "output_tokens": 313,
+            "total_tokens": 4475
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 176,
+          "case_id": "candidate/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3694,
+            "output_tokens": 192,
+            "total_tokens": 3886
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 177,
+          "case_id": "candidate/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3238,
+            "output_tokens": 85,
+            "total_tokens": 3323
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 178,
+          "case_id": "candidate/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3238,
+            "output_tokens": 73,
+            "total_tokens": 3311
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 179,
+          "case_id": "candidate/X10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4216,
+            "output_tokens": 350,
+            "total_tokens": 4566
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 180,
+          "case_id": "candidate/X10/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3694,
+            "output_tokens": 170,
+            "total_tokens": 3864
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 181,
+          "case_id": "candidate/X10/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3925,
+            "output_tokens": 270,
+            "total_tokens": 4195
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 182,
+          "case_id": "candidate/X11/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3715,
+            "output_tokens": 180,
+            "total_tokens": 3895
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 183,
+          "case_id": "candidate/X11/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4707,
+            "output_tokens": 353,
+            "total_tokens": 5060
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 184,
+          "case_id": "candidate/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3715,
+            "output_tokens": 180,
+            "total_tokens": 3895
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 185,
+          "case_id": "candidate/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4012,
+            "output_tokens": 93,
+            "total_tokens": 4105
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 186,
+          "case_id": "candidate/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4012,
+            "output_tokens": 79,
+            "total_tokens": 4091
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 187,
+          "case_id": "candidate/X11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4969,
+            "output_tokens": 395,
+            "total_tokens": 5364
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 188,
+          "case_id": "candidate/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3718,
+            "output_tokens": 176,
+            "total_tokens": 3894
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 189,
+          "case_id": "candidate/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3240,
+            "output_tokens": 75,
+            "total_tokens": 3315
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 190,
+          "case_id": "candidate/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3240,
+            "output_tokens": 79,
+            "total_tokens": 3319
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 191,
+          "case_id": "candidate/X12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4196,
+            "output_tokens": 298,
+            "total_tokens": 4494
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 192,
+          "case_id": "candidate/X12/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3718,
+            "output_tokens": 176,
+            "total_tokens": 3894
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 193,
+          "case_id": "candidate/X12/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3953,
+            "output_tokens": 272,
+            "total_tokens": 4225
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 194,
+          "case_id": "candidate/X13/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3698,
+            "output_tokens": 174,
+            "total_tokens": 3872
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 195,
+          "case_id": "candidate/X13/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3698,
+            "output_tokens": 174,
+            "total_tokens": 3872
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 196,
+          "case_id": "candidate/X14/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3700,
+            "output_tokens": 171,
+            "total_tokens": 3871
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 197,
+          "case_id": "candidate/X14/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3700,
+            "output_tokens": 192,
+            "total_tokens": 3892
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 198,
+          "case_id": "candidate/X15/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3720,
+            "output_tokens": 176,
+            "total_tokens": 3896
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 199,
+          "case_id": "candidate/X15/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3720,
+            "output_tokens": 176,
+            "total_tokens": 3896
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 200,
+          "case_id": "candidate/X16/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 201,
+          "case_id": "candidate/X16/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3702,
+            "output_tokens": 172,
+            "total_tokens": 3874
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 202,
+          "case_id": "candidate/X17/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3763,
+            "output_tokens": 40,
+            "total_tokens": 3803
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 203,
+          "case_id": "candidate/X17/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3763,
+            "output_tokens": 45,
+            "total_tokens": 3808
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 204,
+          "case_id": "candidate/X18/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3800,
+            "output_tokens": 48,
+            "total_tokens": 3848
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 205,
+          "case_id": "candidate/X18/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3800,
+            "output_tokens": 54,
+            "total_tokens": 3854
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 206,
+          "case_id": "candidate/X19/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3917,
+            "output_tokens": 69,
+            "total_tokens": 3986
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 207,
+          "case_id": "candidate/X19/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3917,
+            "output_tokens": 71,
+            "total_tokens": 3988
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 208,
+          "case_id": "candidate/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3760,
+            "output_tokens": 178,
+            "total_tokens": 3938
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 209,
+          "case_id": "candidate/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4076,
+            "output_tokens": 93,
+            "total_tokens": 4169
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 210,
+          "case_id": "candidate/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4076,
+            "output_tokens": 102,
+            "total_tokens": 4178
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 211,
+          "case_id": "candidate/X20/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 5055,
+            "output_tokens": 485,
+            "total_tokens": 5540
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 212,
+          "case_id": "candidate/X20/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3760,
+            "output_tokens": 178,
+            "total_tokens": 3938
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 213,
+          "case_id": "candidate/X20/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4771,
+            "output_tokens": 344,
+            "total_tokens": 5115
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 214,
+          "case_id": "candidate/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3648,
+            "output_tokens": 42,
+            "total_tokens": 3690
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 215,
+          "case_id": "candidate/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3729,
+            "output_tokens": 172,
+            "total_tokens": 3901
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 216,
+          "case_id": "candidate/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4691,
+            "output_tokens": 361,
+            "total_tokens": 5052
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 217,
+          "case_id": "candidate/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3648,
+            "output_tokens": 35,
+            "total_tokens": 3683
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 218,
+          "case_id": "candidate/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3722,
+            "output_tokens": 172,
+            "total_tokens": 3894
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 219,
+          "case_id": "candidate/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3996,
+            "output_tokens": 77,
+            "total_tokens": 4073
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 220,
+          "case_id": "candidate/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3996,
+            "output_tokens": 100,
+            "total_tokens": 4096
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 221,
+          "case_id": "candidate/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4950,
+            "output_tokens": 422,
+            "total_tokens": 5372
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 222,
+          "case_id": "candidate/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3669,
+            "output_tokens": 33,
+            "total_tokens": 3702
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 223,
+          "case_id": "candidate/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3735,
+            "output_tokens": 192,
+            "total_tokens": 3927
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 224,
+          "case_id": "candidate/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3465,
+            "output_tokens": 80,
+            "total_tokens": 3545
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 225,
+          "case_id": "candidate/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3465,
+            "output_tokens": 78,
+            "total_tokens": 3543
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 226,
+          "case_id": "candidate/X22/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4431,
+            "output_tokens": 344,
+            "total_tokens": 4775
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 227,
+          "case_id": "candidate/X22/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3669,
+            "output_tokens": 32,
+            "total_tokens": 3701
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 228,
+          "case_id": "candidate/X22/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3734,
+            "output_tokens": 192,
+            "total_tokens": 3926
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 229,
+          "case_id": "candidate/X22/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4183,
+            "output_tokens": 310,
+            "total_tokens": 4493
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 230,
+          "case_id": "candidate/X23/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3686,
+            "output_tokens": 40,
+            "total_tokens": 3726
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 231,
+          "case_id": "candidate/X23/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3755,
+            "output_tokens": 177,
+            "total_tokens": 3932
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 232,
+          "case_id": "candidate/X23/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4724,
+            "output_tokens": 335,
+            "total_tokens": 5059
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 233,
+          "case_id": "candidate/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3686,
+            "output_tokens": 39,
+            "total_tokens": 3725
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 234,
+          "case_id": "candidate/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3754,
+            "output_tokens": 177,
+            "total_tokens": 3931
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 235,
+          "case_id": "candidate/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4031,
+            "output_tokens": 110,
+            "total_tokens": 4141
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 236,
+          "case_id": "candidate/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4031,
+            "output_tokens": 87,
+            "total_tokens": 4118
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 237,
+          "case_id": "candidate/X23/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 5009,
+            "output_tokens": 397,
+            "total_tokens": 5406
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 238,
+          "case_id": "candidate/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3750,
+            "output_tokens": 42,
+            "total_tokens": 3792
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 239,
+          "case_id": "candidate/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3821,
+            "output_tokens": 180,
+            "total_tokens": 4001
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 240,
+          "case_id": "candidate/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3353,
+            "output_tokens": 80,
+            "total_tokens": 3433
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 241,
+          "case_id": "candidate/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3353,
+            "output_tokens": 84,
+            "total_tokens": 3437
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 242,
+          "case_id": "candidate/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4319,
+            "output_tokens": 323,
+            "total_tokens": 4642
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 243,
+          "case_id": "candidate/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3750,
+            "output_tokens": 65,
+            "total_tokens": 3815
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 244,
+          "case_id": "candidate/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3844,
+            "output_tokens": 247,
+            "total_tokens": 4091
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 245,
+          "case_id": "candidate/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4223,
+            "output_tokens": 354,
+            "total_tokens": 4577
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 246,
+          "case_id": "holdout/H01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3682,
+            "output_tokens": 176,
+            "total_tokens": 3858
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 247,
+          "case_id": "holdout/H01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4682,
+            "output_tokens": 341,
+            "total_tokens": 5023
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 248,
+          "case_id": "holdout/H01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3682,
+            "output_tokens": 304,
+            "total_tokens": 3986
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 249,
+          "case_id": "holdout/H01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4113,
+            "output_tokens": 80,
+            "total_tokens": 4193
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 250,
+          "case_id": "holdout/H01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4113,
+            "output_tokens": 76,
+            "total_tokens": 4189
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 251,
+          "case_id": "holdout/H01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 5183,
+            "output_tokens": 512,
+            "total_tokens": 5695
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 252,
+          "case_id": "holdout/H02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3674,
+            "output_tokens": 173,
+            "total_tokens": 3847
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 253,
+          "case_id": "holdout/H02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3205,
+            "output_tokens": 83,
+            "total_tokens": 3288
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 254,
+          "case_id": "holdout/H02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3205,
+            "output_tokens": 81,
+            "total_tokens": 3286
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 255,
+          "case_id": "holdout/H02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4167,
+            "output_tokens": 288,
+            "total_tokens": 4455
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 256,
+          "case_id": "holdout/H02/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3674,
+            "output_tokens": 173,
+            "total_tokens": 3847
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 257,
+          "case_id": "holdout/H02/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 258,
+          "case_id": "holdout/H03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3718,
+            "output_tokens": 186,
+            "total_tokens": 3904
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 259,
+          "case_id": "holdout/H03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4713,
+            "output_tokens": 357,
+            "total_tokens": 5070
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 260,
+          "case_id": "holdout/H03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3718,
+            "output_tokens": 186,
+            "total_tokens": 3904
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 261,
+          "case_id": "holdout/H03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4013,
+            "output_tokens": 77,
+            "total_tokens": 4090
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 262,
+          "case_id": "holdout/H03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4013,
+            "output_tokens": 97,
+            "total_tokens": 4110
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 263,
+          "case_id": "holdout/H03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4976,
+            "output_tokens": 390,
+            "total_tokens": 5366
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 264,
+          "case_id": "holdout/H04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3686,
+            "output_tokens": 177,
+            "total_tokens": 3863
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 265,
+          "case_id": "holdout/H04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3989,
+            "output_tokens": 78,
+            "total_tokens": 4067
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 266,
+          "case_id": "holdout/H04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3989,
+            "output_tokens": 94,
+            "total_tokens": 4083
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 267,
+          "case_id": "holdout/H04/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 268,
+          "case_id": "holdout/H04/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 269,
+          "case_id": "holdout/H05/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 270,
+          "case_id": "holdout/H05/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 271,
+          "case_id": "holdout/H06/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 272,
+          "case_id": "holdout/H06/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 273,
+          "case_id": "holdout/H07/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 274,
+          "case_id": "holdout/H07/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 275,
+          "case_id": "holdout/H08/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 276,
+          "case_id": "holdout/H08/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 277,
+          "case_id": "holdout/H09/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 278,
+          "case_id": "holdout/H09/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 279,
+          "case_id": "holdout/H10/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 280,
+          "case_id": "holdout/H10/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 281,
+          "case_id": "holdout/H11/single_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 282,
+          "case_id": "holdout/H11/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 283,
+          "case_id": "holdout/H12/expert_forecast",
+          "outcome": "issued_usage_unknown"
+        },
+        {
+          "number": 284,
+          "case_id": "holdout/H12/single_forecast",
+          "outcome": "issued_usage_unknown"
+        }
+      ],
+      "source_sha256": "d49b4c61989ad2dada88ecf56e54af4c07e92a1c9704241cb58a475411311be5",
+      "stopped": {
+        "used": 284,
+        "unused": 76,
+        "reason": "fixed_schedule_completed"
+      }
+    },
+    "dialogue_recheck": {
+      "used": 16,
+      "limit": 16,
+      "requests": [
+        {
+          "number": 1,
+          "case_id": "dialogue-recheck/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3894,
+            "output_tokens": 35,
+            "total_tokens": 3929
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 2,
+          "case_id": "dialogue-recheck/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3968,
+            "output_tokens": 180,
+            "total_tokens": 4148
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 3,
+          "case_id": "dialogue-recheck/X24/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4088,
+            "output_tokens": 274,
+            "total_tokens": 4362
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 4,
+          "case_id": "dialogue-recheck/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3894,
+            "output_tokens": 61,
+            "total_tokens": 3955
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 5,
+          "case_id": "dialogue-recheck/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3995,
+            "output_tokens": 180,
+            "total_tokens": 4175
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 6,
+          "case_id": "dialogue-recheck/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3402,
+            "output_tokens": 78,
+            "total_tokens": 3480
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 7,
+          "case_id": "dialogue-recheck/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3402,
+            "output_tokens": 72,
+            "total_tokens": 3474
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 8,
+          "case_id": "dialogue-recheck/X24/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4354,
+            "output_tokens": 330,
+            "total_tokens": 4684
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 9,
+          "case_id": "dialogue-recheck/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3785,
+            "output_tokens": 43,
+            "total_tokens": 3828
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 10,
+          "case_id": "dialogue-recheck/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3888,
+            "output_tokens": 172,
+            "total_tokens": 4060
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 11,
+          "case_id": "dialogue-recheck/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4034,
+            "output_tokens": 87,
+            "total_tokens": 4121
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 12,
+          "case_id": "dialogue-recheck/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4034,
+            "output_tokens": 82,
+            "total_tokens": 4116
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 13,
+          "case_id": "dialogue-recheck/X21/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4980,
+            "output_tokens": 424,
+            "total_tokens": 5404
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 14,
+          "case_id": "dialogue-recheck/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3785,
+            "output_tokens": 33,
+            "total_tokens": 3818
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 15,
+          "case_id": "dialogue-recheck/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3878,
+            "output_tokens": 172,
+            "total_tokens": 4050
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 16,
+          "case_id": "dialogue-recheck/X21/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4712,
+            "output_tokens": 359,
+            "total_tokens": 5071
+          },
+          "model": "deepseek-flash"
+        }
+      ],
+      "source_sha256": "c13421947b25165d4db3e1947bcd67440a7be990efc76a273ac7e734500edf5e",
+      "stopped": {
+        "used": 16,
+        "total_used": 300,
+        "total_limit": 360,
+        "reason": "fixed_supplement_completed",
+        "not_run": []
+      }
+    },
+    "final_validation": {
+      "used": 60,
+      "limit": 60,
+      "requests": [
+        {
+          "number": 1,
+          "case_id": "final-validation/Z01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3837,
+            "output_tokens": 173,
+            "total_tokens": 4010
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 2,
+          "case_id": "final-validation/Z01/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4680,
+            "output_tokens": 344,
+            "total_tokens": 5024
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 3,
+          "case_id": "final-validation/Z01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3837,
+            "output_tokens": 173,
+            "total_tokens": 4010
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 4,
+          "case_id": "final-validation/Z01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3984,
+            "output_tokens": 85,
+            "total_tokens": 4069
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 5,
+          "case_id": "final-validation/Z01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3984,
+            "output_tokens": 85,
+            "total_tokens": 4069
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 6,
+          "case_id": "final-validation/Z01/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4939,
+            "output_tokens": 422,
+            "total_tokens": 5361
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 7,
+          "case_id": "final-validation/Z02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3829,
+            "output_tokens": 172,
+            "total_tokens": 4001
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 8,
+          "case_id": "final-validation/Z02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3247,
+            "output_tokens": 76,
+            "total_tokens": 3323
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 9,
+          "case_id": "final-validation/Z02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3247,
+            "output_tokens": 65,
+            "total_tokens": 3312
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 10,
+          "case_id": "final-validation/Z02/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4189,
+            "output_tokens": 302,
+            "total_tokens": 4491
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 11,
+          "case_id": "final-validation/Z02/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3829,
+            "output_tokens": 172,
+            "total_tokens": 4001
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 12,
+          "case_id": "final-validation/Z02/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3959,
+            "output_tokens": 262,
+            "total_tokens": 4221
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 13,
+          "case_id": "final-validation/Z03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3874,
+            "output_tokens": 181,
+            "total_tokens": 4055
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 14,
+          "case_id": "final-validation/Z03/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4779,
+            "output_tokens": 361,
+            "total_tokens": 5140
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 15,
+          "case_id": "final-validation/Z03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3874,
+            "output_tokens": 181,
+            "total_tokens": 4055
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 16,
+          "case_id": "final-validation/Z03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4077,
+            "output_tokens": 95,
+            "total_tokens": 4172
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 17,
+          "case_id": "final-validation/Z03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4077,
+            "output_tokens": 74,
+            "total_tokens": 4151
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 18,
+          "case_id": "final-validation/Z03/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 5038,
+            "output_tokens": 449,
+            "total_tokens": 5487
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 19,
+          "case_id": "final-validation/Z04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3834,
+            "output_tokens": 187,
+            "total_tokens": 4021
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 20,
+          "case_id": "final-validation/Z04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4028,
+            "output_tokens": 98,
+            "total_tokens": 4126
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 21,
+          "case_id": "final-validation/Z04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4028,
+            "output_tokens": 91,
+            "total_tokens": 4119
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 22,
+          "case_id": "final-validation/Z04/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 5000,
+            "output_tokens": 397,
+            "total_tokens": 5397
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 23,
+          "case_id": "final-validation/Z04/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3834,
+            "output_tokens": 187,
+            "total_tokens": 4021
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 24,
+          "case_id": "final-validation/Z04/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4722,
+            "output_tokens": 332,
+            "total_tokens": 5054
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 25,
+          "case_id": "final-validation/Z05/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3870,
+            "output_tokens": 176,
+            "total_tokens": 4046
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 26,
+          "case_id": "final-validation/Z05/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4002,
+            "output_tokens": 263,
+            "total_tokens": 4265
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 27,
+          "case_id": "final-validation/Z05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3870,
+            "output_tokens": 176,
+            "total_tokens": 4046
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 28,
+          "case_id": "final-validation/Z05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3288,
+            "output_tokens": 82,
+            "total_tokens": 3370
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 29,
+          "case_id": "final-validation/Z05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3288,
+            "output_tokens": 74,
+            "total_tokens": 3362
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 30,
+          "case_id": "final-validation/Z05/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4247,
+            "output_tokens": 312,
+            "total_tokens": 4559
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 31,
+          "case_id": "final-validation/Z06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3865,
+            "output_tokens": 201,
+            "total_tokens": 4066
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 32,
+          "case_id": "final-validation/Z06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3316,
+            "output_tokens": 72,
+            "total_tokens": 3388
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 33,
+          "case_id": "final-validation/Z06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3316,
+            "output_tokens": 73,
+            "total_tokens": 3389
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 34,
+          "case_id": "final-validation/Z06/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4283,
+            "output_tokens": 340,
+            "total_tokens": 4623
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 35,
+          "case_id": "final-validation/Z06/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3865,
+            "output_tokens": 181,
+            "total_tokens": 4046
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 36,
+          "case_id": "final-validation/Z06/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4009,
+            "output_tokens": 277,
+            "total_tokens": 4286
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 37,
+          "case_id": "final-validation/Z07/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3864,
+            "output_tokens": 174,
+            "total_tokens": 4038
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 38,
+          "case_id": "final-validation/Z07/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3864,
+            "output_tokens": 174,
+            "total_tokens": 4038
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 39,
+          "case_id": "final-validation/Z08/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3852,
+            "output_tokens": 174,
+            "total_tokens": 4026
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 40,
+          "case_id": "final-validation/Z08/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3852,
+            "output_tokens": 174,
+            "total_tokens": 4026
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 41,
+          "case_id": "final-validation/Z09/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3860,
+            "output_tokens": 43,
+            "total_tokens": 3903
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 42,
+          "case_id": "final-validation/Z09/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3860,
+            "output_tokens": 47,
+            "total_tokens": 3907
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 43,
+          "case_id": "final-validation/Z10/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4062,
+            "output_tokens": 68,
+            "total_tokens": 4130
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 44,
+          "case_id": "final-validation/Z10/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4062,
+            "output_tokens": 67,
+            "total_tokens": 4129
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 45,
+          "case_id": "final-validation/Z11/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3839,
+            "output_tokens": 46,
+            "total_tokens": 3885
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 46,
+          "case_id": "final-validation/Z11/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3929,
+            "output_tokens": 177,
+            "total_tokens": 4106
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 47,
+          "case_id": "final-validation/Z11/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4049,
+            "output_tokens": 259,
+            "total_tokens": 4308
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 48,
+          "case_id": "final-validation/Z11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3839,
+            "output_tokens": 29,
+            "total_tokens": 3868
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 49,
+          "case_id": "final-validation/Z11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3912,
+            "output_tokens": 177,
+            "total_tokens": 4089
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 50,
+          "case_id": "final-validation/Z11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3325,
+            "output_tokens": 81,
+            "total_tokens": 3406
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 51,
+          "case_id": "final-validation/Z11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3325,
+            "output_tokens": 74,
+            "total_tokens": 3399
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 52,
+          "case_id": "final-validation/Z11/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4276,
+            "output_tokens": 349,
+            "total_tokens": 4625
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 53,
+          "case_id": "final-validation/Z12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3768,
+            "output_tokens": 41,
+            "total_tokens": 3809
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 54,
+          "case_id": "final-validation/Z12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3869,
+            "output_tokens": 174,
+            "total_tokens": 4043
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 55,
+          "case_id": "final-validation/Z12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4030,
+            "output_tokens": 92,
+            "total_tokens": 4122
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 56,
+          "case_id": "final-validation/Z12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4030,
+            "output_tokens": 88,
+            "total_tokens": 4118
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 57,
+          "case_id": "final-validation/Z12/expert_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4987,
+            "output_tokens": 366,
+            "total_tokens": 5353
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 58,
+          "case_id": "final-validation/Z12/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3768,
+            "output_tokens": 44,
+            "total_tokens": 3812
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 59,
+          "case_id": "final-validation/Z12/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 3872,
+            "output_tokens": 174,
+            "total_tokens": 4046
+          },
+          "model": "deepseek-flash"
+        },
+        {
+          "number": 60,
+          "case_id": "final-validation/Z12/single_forecast",
+          "outcome": "response_received",
+          "usage": {
+            "input_tokens": 4721,
+            "output_tokens": 343,
+            "total_tokens": 5064
+          },
+          "model": "deepseek-flash"
+        }
+      ],
+      "source_sha256": "a1b1b6873ee3a7bdd41a45b16af21ae25a36d311b5a432fc3109f5a61700fbf6",
+      "stopped": {
+        "used": 60,
+        "total_used": 360,
+        "total_limit": 360,
+        "reason": "fixed_final_schedule_completed",
+        "not_run": []
+      }
+    }
+  }
+}

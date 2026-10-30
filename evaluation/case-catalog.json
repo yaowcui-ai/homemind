@@ -1,11 +1,47 @@
 {
   "definition": "Core catalog: C/C2 base development plus this expansion. Historical DD/A/Q experiments remain separate.",
-  "counts": {"base_development_unique_ids": 44, "expanded_development": 24, "frozen_validation": 12, "core_total": 80},
+  "counts": {
+    "base_development_unique_ids": 44,
+    "expanded_development": 24,
+    "original_frozen_validation": 12,
+    "final_frozen_validation": 12,
+    "development_total": 68,
+    "validation_total": 24,
+    "core_total": 92
+  },
   "sets": [
-    {"name": "base_development", "files": ["product-c-cases.json", "product-c2-cases.json"], "deduplicate_by": "id", "count": 44},
-    {"name": "expanded_development", "file": "product-expanded-cases.json", "split": "development", "count": 24},
-    {"name": "frozen_validation", "file": "product-expanded-cases.json", "split": "holdout", "count": 12}
+    {
+      "name": "base_development",
+      "files": [
+        "product-c-cases.json",
+        "product-c2-cases.json"
+      ],
+      "deduplicate_by": "id",
+      "count": 44
+    },
+    {
+      "name": "expanded_development",
+      "file": "product-expanded-cases.json",
+      "split": "development",
+      "count": 24
+    },
+    {
+      "name": "frozen_validation",
+      "file": "product-expanded-cases.json",
+      "split": "holdout",
+      "count": 12
+    },
+    {
+      "name": "final_frozen_validation",
+      "file": "product-final-validation-cases.json",
+      "split": "final_validation",
+      "count": 12
+    }
   ],
-  "historical_experiments": ["product-d4-cases.json", "product-d5-cases.json", "product-quality-cases.json"],
-  "measurement_note": "This batch runs the 36 expanded cases under its frozen 120-run protocol. Catalog size is not the denominator of real-model accuracy."
+  "historical_experiments": [
+    "product-d4-cases.json",
+    "product-d5-cases.json",
+    "product-quality-cases.json"
+  ],
+  "measurement_note": "This expansion ran 48 unique cases, 148 tasks, 360 real requests: 120 principal, 4 separate regression, 24 fresh final-validation runs. Catalog size 92 is not an accuracy denominator."
 }

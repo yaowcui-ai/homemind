@@ -4,6 +4,12 @@
 
 ## 当前授权与进度
 
+**当前阶段：扩充定向评测与调优，真实模型已封账，正在完成公开发布验收（2026-10-30）。** 用户要求增加案例、真实调优、更新Docker及公开GitHub。分支codex/expanded-evaluation，基线491df1f、V1提示02c99c9、V2用户约束历史与安全诊断b7f1c4a、最终新验证入口24ad823。主测284+用户另批准补测16+最终新验证60=360请求，148运行、48不同场景，全部停止，不能继续用旧额度。
+
+目录92例（C/C2去重44+X24开发+H12/Z12验证），68开发/24验证。X同条件S1 19→21/24、M21→23/24，合计40→44/48。H原2/12及3/12保留，19失败任务遇到2超时17model_unavailable，旧HTTP状态未存不能猜原因。V1新增X24/S1助手摘要污染优先级，V2纯用户历史修复后X24/X21四补测通过。Z全新12例两组均通过（各8完整执行、4异常首轮），不将服务恢复说成提示收益，仍未证M普遍优势。语义核对是作者审计。338请求已知用量、22未知。[报告](docs/product/expanded-evaluation.md)、[逐例矩阵](docs/product/expanded-evaluation-matrix.md)、安全148记录/360账本已整理，原始账号库仅在output。
+
+Docker已重建运行最新V2，网页18080；容器推理源文件SHA与密钥解析核对一致。真实浏览器登录/设备/刷新/1440及360px、API重启会话数据保持通过；原2账号/家庭原行（不含会话）哈希不变，同卷/安装身份。MySQL补unless-stopped后容器重建，不声称同容器ID。alice此前重置凭据仍.local/alice-login.txt，没有再次改密码。后端337passed/7skip，另真实MySQL7passed；根脚本98passed+证据3passed，静态与兼容性通过。[工程记录](docs/verification/expanded-evaluation-delivery.md)。仅更新AI全栈项目MD，不编辑Word/制作问答。待推送及云端CI完成补记；不继续扩大功能。
+
 **最新：本机完整 Docker 部署已完成（2026-10-30）。** 用户确认 Nginx / FastAPI / MySQL 全栈容器化。分支 `codex/local-docker-deployment`；根 `compose.yaml` 扩展现有 MySQL，同一容器、卷和安装身份保留，新增 migrate→api→web 就绪门禁。`docker compose --env-file .local/mysql.env up -d --build --wait` 已实际构建、启动并在 stop 后重启验证，网页 **http://127.0.0.1:18080/** 当前运行。API 内部8100，不与本机开发8110/5174冲突；模型只在运行时读取 backend/.env。新增 `/ready` 校验数据库，不创建会话，原 `/health` 不变。21项后端相关、5项脚本回归通过；真实浏览器登录/设备读回/刷新/桌面窄屏、API重启及整套重启数据保持通过。原1账号家庭全部原行哈希不变，只新增1个合成验收账号；本机凭据/原始记录只在.local。初版raw dotenv保留密钥引号的问题已RED/GREEN修复，实际容器密钥散列与本机解析值一致。无真实模型请求，无公网/TLS/硬件部署声明。README已增加一键启动及停止说明，并修正旧开发启动目录。[验证](docs/verification/local-docker.md)。
 
 **最新：简历质量反馈后的真实调优已完成（2026-10-30）。** 用户批评资源参数/批次流水账堆叠，要求定位失败并调优。分支codex/agent-quality-tuning；旧版53b9e30，首版候选a5d61d2。目标/专家/选择分阶段提示，澄清软偏好与硬约束、明确辅助未知读数，提供固定Plan字段和Advice格式；只删除过往事件文本，保留全部当前事实；最终选择不再重复读工具，标准助手不改。没有改模型、物理、排序或执行门禁。
