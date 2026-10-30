@@ -1,0 +1,260 @@
+[
+  {
+    "id": "Z01",
+    "split": "final_validation",
+    "family": "目标与单位",
+    "kind": "execute",
+    "room": "模型室",
+    "target_slot": "living",
+    "temperature": 29.4,
+    "occupied": false,
+    "cover_position": 85,
+    "initial_fan": "auto",
+    "minutes": 90,
+    "target_temperature_c": 24,
+    "priority": "energy_first",
+    "fans": [
+      "low",
+      "auto"
+    ],
+    "cover": "allow_open_close",
+    "text": "模型室一个半钟头内到24摄氏度或更低。到点达标的方案里先选用电最少，再选到得早的；低风和自动都可，窗帘可开关，灯原样，卧室全部不动。"
+  },
+  {
+    "id": "Z02",
+    "split": "final_validation",
+    "family": "目标与单位",
+    "kind": "execute",
+    "room": "朗读房",
+    "target_slot": "bedroom",
+    "temperature": 28.4,
+    "occupied": true,
+    "cover_position": 40,
+    "initial_fan": "auto",
+    "minutes": 45,
+    "target_temperature_c": 27,
+    "priority": "comfort_first",
+    "fans": [
+      "auto"
+    ],
+    "cover": "keep",
+    "text": "给朗读房四分之三小时，温度上限二十七度；先比谁最早达标，再比用电。只开自动风，窗帘四成开保持，灯别改，客厅保护。"
+  },
+  {
+    "id": "Z03",
+    "split": "final_validation",
+    "family": "偏好排序",
+    "kind": "execute",
+    "room": "排版厅",
+    "target_slot": "living",
+    "temperature": 28.7,
+    "occupied": false,
+    "cover_position": 100,
+    "initial_fan": "auto",
+    "minutes": 110,
+    "target_temperature_c": 25,
+    "priority": "energy_first",
+    "fans": [
+      "low",
+      "auto"
+    ],
+    "cover": "allow_open_close",
+    "text": "排版厅110分钟内降至25℃。尽管希望快一点，真正排序先看耗电，哪怕差很小也选省电的，再比较达标时刻。低风自动任选、帘可调；灯和卧室都不动。"
+  },
+  {
+    "id": "Z04",
+    "split": "final_validation",
+    "family": "偏好排序",
+    "kind": "execute",
+    "room": "缝纫间",
+    "target_slot": "bedroom",
+    "temperature": 29.2,
+    "occupied": true,
+    "cover_position": 60,
+    "initial_fan": "auto",
+    "minutes": 100,
+    "target_temperature_c": 26,
+    "priority": "comfort_first",
+    "fans": [
+      "low",
+      "auto"
+    ],
+    "cover": "allow_open_close",
+    "text": "缝纫间100分钟内26℃。刚才说先省电，现在明确改成最早达标优先、用电第二；低风自动均可，帘可调，灯保留，客厅全保留。"
+  },
+  {
+    "id": "Z05",
+    "split": "final_validation",
+    "family": "保留与保护",
+    "kind": "execute",
+    "room": "拼装厅",
+    "target_slot": "living",
+    "temperature": 28.9,
+    "occupied": true,
+    "cover_position": 15,
+    "initial_fan": "auto",
+    "minutes": 100,
+    "target_temperature_c": 27,
+    "priority": "comfort_first",
+    "fans": [
+      "low"
+    ],
+    "cover": "keep",
+    "text": "拼装厅100分钟内27℃，先尽早后节电。只能低风，只能改空调；窗帘维持15%开，当前灯光保持，卧室所有实体不动。"
+  },
+  {
+    "id": "Z06",
+    "split": "final_validation",
+    "family": "保留与保护",
+    "kind": "execute",
+    "room": "讲题间",
+    "target_slot": "bedroom",
+    "temperature": 29.7,
+    "occupied": false,
+    "cover_position": 65,
+    "initial_fan": "auto",
+    "minutes": 120,
+    "target_temperature_c": 25,
+    "priority": "energy_first",
+    "fans": [
+      "auto"
+    ],
+    "cover": "keep",
+    "text": "讲题间120分钟到25℃，按时就行，先选总耗电小的再选早到的。自动风，帘固定65%，灯光亮度保持原值，客厅整间不变。"
+  },
+  {
+    "id": "Z07",
+    "split": "final_validation",
+    "family": "不可行约束",
+    "kind": "infeasible_first_response",
+    "room": "调色厅",
+    "target_slot": "living",
+    "temperature": 31.1,
+    "occupied": true,
+    "cover_position": 95,
+    "initial_fan": "auto",
+    "minutes": 4,
+    "target_temperature_c": 24,
+    "priority": "comfort_first",
+    "fans": [
+      "low"
+    ],
+    "cover": "keep",
+    "text": "调色厅4分钟降到24℃，先早到再省电，只准低风，帘保持95%。灯和卧室保留；请按这个原目标预测，不可行就先问我放宽哪项，不要偷偷换温度或期限。",
+    "review_expectation": "预测判定不可行后询问放宽条件，不改原目标，不执行。"
+  },
+  {
+    "id": "Z08",
+    "split": "final_validation",
+    "family": "不可行约束",
+    "kind": "infeasible_first_response",
+    "room": "检修间",
+    "target_slot": "bedroom",
+    "temperature": 30.9,
+    "occupied": false,
+    "cover_position": 30,
+    "initial_fan": "auto",
+    "minutes": 3,
+    "target_temperature_c": 25,
+    "priority": "energy_first",
+    "fans": [
+      "auto"
+    ],
+    "cover": "keep",
+    "text": "检修间3分钟到25℃，能达标的先选最省电，再比时间。仅自动风，帘30%别动，灯和客厅不变；做不到应询问如何调整，别直接终止也别代我放宽条件。",
+    "review_expectation": "保留原约束并询问放宽条件，0动作。"
+  },
+  {
+    "id": "Z09",
+    "split": "final_validation",
+    "family": "读数完整性",
+    "kind": "missing_reading_first_response",
+    "room": "讲解厅",
+    "target_slot": "living",
+    "temperature": 29.2,
+    "occupied": false,
+    "cover_position": 70,
+    "initial_fan": "auto",
+    "minutes": 100,
+    "target_temperature_c": 26,
+    "priority": "energy_first",
+    "fans": [
+      "low",
+      "auto"
+    ],
+    "cover": "allow_open_close",
+    "text": "讲解厅100分钟26℃，先省电后早到，低风自动任选，帘可调，灯和卧室保持。",
+    "missing": "window",
+    "expected_oracle_error": "所有参与物理过程的窗户和占用感知须存在且可观测",
+    "review_expectation": "要求恢复讲解厅窗户读数，不能默认窗户关闭；不执行。"
+  },
+  {
+    "id": "Z10",
+    "split": "final_validation",
+    "family": "读数完整性",
+    "kind": "missing_reading_first_response",
+    "room": "研习间",
+    "target_slot": "bedroom",
+    "temperature": 29.0,
+    "occupied": true,
+    "cover_position": 55,
+    "initial_fan": "auto",
+    "minutes": 120,
+    "target_temperature_c": 25,
+    "priority": "comfort_first",
+    "fans": [
+      "low",
+      "auto"
+    ],
+    "cover": "keep",
+    "text": "研习间120分钟内25℃，先最快达到再省电，低风自动都行，帘55%保持，灯和客厅不动。",
+    "missing": "secondary_occupancy",
+    "expected_oracle_error": "所有参与物理过程的窗户和占用感知须存在且可观测",
+    "review_expectation": "指出研习间角落辅助存在未知并要求恢复，0动作，不忽略辅助传感器。"
+  },
+  {
+    "id": "Z11",
+    "split": "final_validation",
+    "family": "多轮澄清",
+    "kind": "execute",
+    "room": "听书厅",
+    "target_slot": "living",
+    "temperature": 29.3,
+    "occupied": true,
+    "cover_position": 20,
+    "initial_fan": "auto",
+    "minutes": 100,
+    "target_temperature_c": 25,
+    "priority": "comfort_first",
+    "fans": [
+      "auto"
+    ],
+    "cover": "keep",
+    "text": "听书厅100分钟内降温，目标温度还没定，请问我；先最早达标再比省电，只许自动风，帘20%固定，灯和卧室保持。",
+    "reply": "目标是25℃，其他要求照之前的，不要改优先级。",
+    "review_expectation": "首轮仅询问缺失目标温度，补答后保持comfort_first和原限制完成原任务。"
+  },
+  {
+    "id": "Z12",
+    "split": "final_validation",
+    "family": "多轮澄清",
+    "kind": "execute",
+    "room": "手绘间",
+    "target_slot": "bedroom",
+    "temperature": 28.8,
+    "occupied": false,
+    "cover_position": 80,
+    "initial_fan": "auto",
+    "minutes": 90,
+    "target_temperature_c": 27,
+    "priority": "energy_first",
+    "fans": [
+      "low",
+      "auto"
+    ],
+    "cover": "allow_open_close",
+    "text": "手绘间90分钟内27℃，低风或自动，帘可调，灯和客厅保留；早到和省电哪个优先我还没决定，请先问。",
+    "reply": "电量排第一，即使只少一点也优先，再比达标速度，其他条件不变。",
+    "review_expectation": "首轮询问优先级，补答后保持其余条件，以energy_first完成同一任务。"
+  }
+]
