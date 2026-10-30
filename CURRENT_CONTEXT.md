@@ -10,6 +10,8 @@
 
 验证：首版完整后端329passed/7数据库条件skip，根脚本最终82passed；不可行补丁后相关57passed，浏览器修复同类视口读取时序后17passed、ESLint通过。没有新数据库迁移或依赖。完整简历只替换HomeMind两条为“可靠执行与恢复”“评测驱动调优”，保留一页布局，私有桌面文件不进Git；项目MD在docs/resume/homemind-ai-fullstack.md。源码与安全证据在本分支，发布时检查敏感信息与远端结果。以下为历史，不替代本段。
 
+发布确认：`1c71104`已正常上传origin/main；[最新云端CI](https://github.com/yaowcui-ai/homemind/actions/runs/40989689055)实际全绿。项目Markdown已远端读取核对，原参数/批次段落移除；源文件和Git历史密钥扫描无匹配。随后仅补Markdown交付记录，不改已验代码；全部模型批次停止。
+
 **最新：AI全栈简历与公开源码交付（2026-10-29）。** 用户明确只要本项目一份AI全栈简历MD，移除AI产品简历和面试问答任务，保留产品文档。文件见[简历](docs/resume/homemind-ai-fullstack.md)，公开仓库[yaowcui-ai/homemind](https://github.com/yaowcui-ai/homemind)，当前分支codex/fullstack-delivery，origin/main。最新状态以本段为准，下方为历史，不再适用历史的“仅本地、不推送”或“双方向求职材料”要求。
 
 用户另授权最多120请求，固定12新例×S1/M与A02/A03/A11各额外两次成对重复，共36运行。实际98/120，余22停止；没有新集调优或临时换题。冻结47项源/规则哈希、精确合成初态与金标，首轮审计后S1 9/12、M6/12，硬目标6/8对3/8，M无收益证据；标准仍默认，M实验。重复与首次分列。开发助手语义核对非独立人工；评分器对4条已否决语义记录仍标pending，公开汇总明确此标签缺陷，不改原件/分子。92请求有用量（input538751/output16018），6未知。报告：[D5](docs/product/product-d5-evaluation.md)，公开36任务证据/逐请求账本与源码/原件哈希在evaluation/results；本机原始SQLite账号库不上传。旧余额全部不转用。未来该集已公开，不能再当未见集。
