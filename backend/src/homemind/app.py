@@ -112,6 +112,13 @@ def create_app(settings: Settings | None = None, *, database: Database | None = 
     def health():
         return HealthResponse()
 
+    @app.get("/ready", tags=["system"])
+    async def ready():
+        if app.state.database is None:
+            raise SimulationError(503, "database_unavailable", "请先配置并迁移本项目数据库")
+        await app.state.database.ready()
+        return JSONResponse({"status": "ready"}, headers={"Cache-Control": "no-store"})
+
     app.include_router(auth_router())
     app.include_router(preferences_router())
     app.include_router(simulation_router())

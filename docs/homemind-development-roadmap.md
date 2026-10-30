@@ -2,6 +2,8 @@
 
 更新日期：2026-10-30（Asia/Shanghai）
 
+最新追加：[本机完整 Docker 部署](verification/local-docker.md)已完成。新增 React/Nginx、FastAPI、受保护迁移与原 MySQL 的一键 Compose；默认网页18080。真实构建、浏览器操作、API及整套停止重启和原数据保留验证通过，模型配置仅运行时注入，无新增模型调用。属于本机部署，不代表公网或旧M10完整上线。
+
 最新追加：[2026-10-30定向调优](product/product-quality-tuning.md)完成分阶段提示、当前事实精简、Plan固定字段契约与冗余读取移除。6组对照M 3/6→6/6、S1 5/6→5/6；新4例两组通过。发现的不可行目标拒绝回归另补1次验证，原成绩不覆盖；总75/80请求，余5停止。简历移除预算/批次堆叠，写具体问题、方法与实测结果；既有Figma/硬件边界不变。
 
 设计依据：[系统设计与验收规范](superpowers/specs/2026-10-26-homemind-system-design.md)。

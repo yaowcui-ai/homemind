@@ -1,0 +1,10 @@
+# Allow only package inputs. Local credentials and test databases never enter context.
+*
+!Dockerfile
+!.dockerignore
+!pyproject.toml
+!uv.lock
+!src/
+!src/**
+**/__pycache__/
+**/*.pyc

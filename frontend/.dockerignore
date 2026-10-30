@@ -1,0 +1,14 @@
+*
+!Dockerfile
+!.dockerignore
+!package.json
+!package-lock.json
+!*.ts
+!tsconfig*.json
+!index.html
+!src/
+!src/**
+!e2e/
+!e2e/**
+!public/
+!public/**

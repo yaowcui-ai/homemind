@@ -39,7 +39,40 @@ D1完成[全栈方案与分阶段交付](docs/product/product-d-delivery-plan.md
 - Docker Desktop 的 Linux 引擎已运行；初始化脚本不会自动启动 Docker。启动 Docker 引擎可能按已有重启策略恢复其他项目容器。
 - 手动控制和规则不需要模型密钥；自然语言需要本项目 DeepSeek API 配置。不需要购买硬件。
 
-## Windows 启动
+## Docker 一键启动（本机演示）
+
+React 静态网页由 Nginx 提供，FastAPI 与 MySQL 在容器内运行。网页入口为 **http://127.0.0.1:18080/**，与原本 Vite 的 5174 端口分开。API 不额外映射宿主端口，所有网页请求通过 `/api/` 代理；模型和仿真逻辑不变。仅供本机 HTTP 演示，不代表公网 HTTPS 部署。
+
+先打开 Docker Desktop，等待 Linux 引擎运行。在 `homemind` 根目录执行：
+
+```powershell
+docker compose --env-file .local/mysql.env up -d --build --wait
+```
+
+首次会下载镜像并按 `uv.lock` / `package-lock.json` 安装依赖、构建前后端；以后复用构建缓存。命令等待 MySQL 健康、受保护迁移完成、API 与网页健康，成功后打开 [Docker 网页](http://127.0.0.1:18080/)。后台运行，不需要另外启动 Python 或 Vite，也不需要一直开着 PowerShell。
+
+**全新克隆首次准备：** 本机仅需 Docker Desktop 和 Python（此准备脚本仅使用标准库），先执行以下命令一次，再执行上面的 Compose 命令；已有 `.local/mysql.env` 和 `backend/.env` 的本机安装可以直接启动。
+
+```powershell
+python scripts/setup_mysql.py --provision-only
+```
+
+准备脚本生成本安装专属凭据和标识、核对已有容器/卷归属，不清空数据库。不需要安装本机 Node、uv 或后端虚拟环境。自然语言功能仍需要在本项目 `backend/.env` 配置 DeepSeek；只用手动控制和规则时无需模型密钥。容器在运行时读取该配置，并覆盖数据库地址为容器内 `mysql:3306`；本机配置文件本身不改成容器地址，密钥不进入镜像。
+
+查看状态和停止（保留账号、家庭、任务及数据库卷）：
+
+```powershell
+docker compose --env-file .local/mysql.env ps -a
+docker compose --env-file .local/mysql.env stop
+```
+
+重新打开仍用同一条 `up -d --build --wait` 命令。更新源码后也用该命令重新构建；不要加 `-v` 删除数据卷。不要在同一家庭同时使用本机 API 与容器 API 执行任务，当前执行占用仍是单 API 进程语义。
+
+排错：`docker compose --env-file .local/mysql.env logs --tail 80 migrate api web`。若出现缺少本地配置，先完成首次准备；若迁移失败，检查安装标识和数据库状态，不能删卷绕过。18080 端口被占用时先核对占用来源，不停止其他项目；更换网页端口需同步修改 Compose 中的端口与 `HOMEMIND_ALLOWED_ORIGINS`。不要把 `docker compose config` 的完整输出发到聊天，它可能展开凭据；只检查配置可用 `config --quiet`。
+
+镜像、验证与部署边界见 [本机 Docker 验证](docs/verification/local-docker.md)。
+
+## Windows 本机开发启动
 
 按“Docker → 数据库 → API → 网页”的顺序启动。先打开 Docker Desktop，等待 Linux 引擎就绪；前后端使用两个独立 PowerShell 终端，运行期间保持打开。
 
